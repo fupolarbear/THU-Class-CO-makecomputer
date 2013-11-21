@@ -1,0 +1,10 @@
+EN treg NULL D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/TReg.vhd sub00/vhpl04 1385031825
+AR mem_wb behavioral D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/MEM_WB.vhd sub00/vhpl09 1385033353
+AR pcreg behavioral D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/PCReg.vhd sub00/vhpl01 1385031660
+EN cpu NULL D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/CPU.vhd sub00/vhpl02 1385031671
+AR cpu behavioral D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/CPU.vhd sub00/vhpl03 1385031672
+EN mem_wb NULL D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/MEM_WB.vhd sub00/vhpl08 1385033352
+EN pcreg NULL D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/PCReg.vhd sub00/vhpl00 1385031659
+AR treg behavioral D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/TReg.vhd sub00/vhpl05 1385031826
+EN ex_mem NULL D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/EX_MEM.vhd sub00/vhpl06 1385033211
+AR ex_mem behavioral D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/EX_MEM.vhd sub00/vhpl07 1385033212
