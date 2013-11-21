@@ -36,7 +36,7 @@
  - Address：in 15 downto 0
  - data: out 15 downto 0
 
-### 寄存器堆 RF
+### 寄存器堆 RegFile
  - ReadAddress1: in 3 downto 0
  - ReadAddress2: in 3 downto 0
  - WriteAddress: in 3 downto 0
@@ -87,17 +87,18 @@
  - MemReadOutput: out
  - MemWriteOutput: out
  - MemtoRegOutput: out
- - data_in1: in 15 downto 0
- - data_in2: in 15 downto 0
+ - DataInpu1: in 15 downto 0
+ - DataInput2: in 15 downto 0
  - ImmediateInput: in 15 downto 0
  - ALUdata1: out 15 downto 0
  - ALUdata2: out 15 downto 0
- - Reg_in_Read1: in 3 downto 0
- - Reg_in_Read2: in 3 downto 0
- - Reg_in_Write: in 3 downto 0
- - Reg_out_Read1: out 3 downto 0
- - Reg_out_Read2: out 3 downto 0
- - Reg_out_Write: out 3 downto 0
+ - ImmediateOutput: out 15 downto 0
+ - RegReadInput1: in 3 downto 0
+ - RegReadInput2: in 3 downto 0
+ - RegWriteInput: in 3 downto 0
+ - RegReadOutput1: out 3 downto 0
+ - RegReadOutput2: out 3 downto 0
+ - RegWriteOutput: out 3 downto 0
 
 ### EXMEM流水寄存器  EX_MEM
  - clk: in
@@ -109,14 +110,14 @@
  - MemReadOutput: out
  - MemWriteOutput: out
  - MemtoRegOutput: out
- - data_in: in 15 downto 0
- - data_out: out 15 downto 0
- - Reg_in_Read1: in 3 downto 0
- - Reg_in_Read2: in 3 downto 0
- - Reg_in_Write: in 3 downto 0
- - Reg_out_Read1: out 3 downto 0
- - Reg_out_Read2: out 3 downto 0
- - Reg_out_Write: out 3 downto 0
+ - DataInput: in 15 downto 0
+ - DataOutput: out 15 downto 0
+ - RegReadInput1: in 3 downto 0
+ - RegReadInput2: in 3 downto 0
+ - RegWriteInput: in 3 downto 0
+ - RegReadOutput1: out 3 downto 0
+ - RegReadOutput2: out 3 downto 0
+ - RegWriteOutput: out 3 downto 0
 
 ### MEMWB流水寄存器  MEM_WB
  - clk: in
@@ -124,14 +125,14 @@
  - WriteIn: in
  - MemtoRegInput: in
  - MemtoRegOutput: out
- - AluResult_in: in 15 downto 0
- - AluResult_out: out 15 downto 0
- - Reg_in_Read1: in 3 downto 0
- - Reg_in_Read2: in 3 downto 0
- - Reg_in_Write: in 3 downto 0
- - Reg_out_Read1: out 3 downto 0
- - Reg_out_Read2: out 3 downto 0
- - Reg_out_Write: out 3 downto 0
+ - AluResultInput: in 15 downto 0
+ - AluResultOutput: out 15 downto 0
+ - RegReadInput1: in 3 downto 0
+ - RegReadInput2: in 3 downto 0
+ - RegWriteInput: in 3 downto 0
+ - RegReadOutput1: out 3 downto 0
+ - RegReadOutput2: out 3 downto 0
+ - RegWriteOutput: out 3 downto 0
 
 ### 控制单元 Controller
  - op: in 4 downto 0
