@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2013-11-21T18:57:53</DateModified>
+  <DateModified>2013-11-21T23:20:39</DateModified>
   <ModuleName>CPU</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/iseconfig/CPU.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU\</ImplementationReportsDirectory>
   <DateInitialized>2013-11-21T18:57:53</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
