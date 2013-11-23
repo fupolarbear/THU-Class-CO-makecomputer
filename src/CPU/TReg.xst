@@ -1,5 +1,0 @@
-set -tmpdir "D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/xst/projnav.tmp"
-set -xsthdpdir "D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/xst"
-elaborate
--ifn TReg.prj
--ifmt mixed
