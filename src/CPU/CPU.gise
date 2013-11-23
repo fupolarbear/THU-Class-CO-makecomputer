@@ -23,6 +23,9 @@
 
   <files xmlns="http://www.xilinx.com/XMLSchema">
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name=".lso"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="Add.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="Add.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="Add.xst"/>
     <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="CPU.cmd_log"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="CPU.lso"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="CPU.ngc"/>
@@ -34,12 +37,27 @@
     <file xil_pn:fileType="FILE_HTML" xil_pn:name="CPU_summary.html"/>
     <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="CPU_vhdl.prj"/>
     <file xil_pn:fileType="FILE_XRPT" xil_pn:name="CPU_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="Common.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="Common.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="Common.xst"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="Constant.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="Constant.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="Constant.xst"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="EX_MEM.prj"/>
     <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="EX_MEM.stx"/>
     <file xil_pn:fileType="FILE_XST" xil_pn:name="EX_MEM.xst"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="IF_ID.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="IF_ID.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="IF_ID.xst"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="InstructionMem.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="InstructionMem.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="InstructionMem.xst"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="MEM_WB.prj"/>
     <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="MEM_WB.stx"/>
     <file xil_pn:fileType="FILE_XST" xil_pn:name="MEM_WB.xst"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="Mux.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="Mux.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="Mux.xst"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="PCReg.prj"/>
     <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="PCReg.stx"/>
     <file xil_pn:fileType="FILE_XST" xil_pn:name="PCReg.xst"/>
@@ -88,20 +106,9 @@
       <status xil_pn:value="OutOfDateForOutputs"/>
       <status xil_pn:value="InputAdded"/>
       <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="InputRemoved"/>
       <status xil_pn:value="OutputChanged"/>
-      <outfile xil_pn:name=".lso"/>
-      <outfile xil_pn:name="CPU.lso"/>
-      <outfile xil_pn:name="CPU.ngc"/>
-      <outfile xil_pn:name="CPU.ngr"/>
-      <outfile xil_pn:name="CPU.prj"/>
-      <outfile xil_pn:name="CPU.stx"/>
-      <outfile xil_pn:name="CPU.syr"/>
-      <outfile xil_pn:name="CPU.xst"/>
-      <outfile xil_pn:name="CPU_vhdl.prj"/>
-      <outfile xil_pn:name="CPU_xst.xrpt"/>
-      <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
-      <outfile xil_pn:name="webtalk_pn.xml"/>
-      <outfile xil_pn:name="xst"/>
+      <status xil_pn:value="OutputRemoved"/>
     </transform>
   </transforms>
 

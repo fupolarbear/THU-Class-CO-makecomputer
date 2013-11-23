@@ -17,11 +17,11 @@
   <files>
     <file xil_pn:name="CPU.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="1"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="7"/>
     </file>
     <file xil_pn:name="PCReg.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="2"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="2"/>
     </file>
     <file xil_pn:name="TReg.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="21"/>
@@ -29,11 +29,11 @@
     </file>
     <file xil_pn:name="Add.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="25"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="6"/>
     </file>
     <file xil_pn:name="Mux.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="26"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="3"/>
     </file>
     <file xil_pn:name="Decoder.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="27"/>
@@ -41,7 +41,7 @@
     </file>
     <file xil_pn:name="InstructionMemory.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="28"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="4"/>
     </file>
     <file xil_pn:name="RegFile.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="29"/>
@@ -57,7 +57,7 @@
     </file>
     <file xil_pn:name="IF_ID.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="32"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="5"/>
     </file>
     <file xil_pn:name="ID_EX.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="33"/>
@@ -69,19 +69,23 @@
     </file>
     <file xil_pn:name="MEM_WB.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="38"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="1"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
     </file>
     <file xil_pn:name="Controller.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="42"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="42"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
     </file>
     <file xil_pn:name="Passer.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="43"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="43"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
     </file>
     <file xil_pn:name="RiskChecker.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="44"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="44"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="Common.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="49"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="1"/>
     </file>
   </files>
 
@@ -145,6 +149,7 @@
     <property xil_pn:name="Enable BitStream Compression" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Enable Cyclic Redundancy Checking (CRC)" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Enable Debugging of Serial Mode BitStream" xil_pn:value="false" xil_pn:valueState="default"/>
+    <property xil_pn:name="Enable Hardware Co-Simulation" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Enable Internal Done Pipe" xil_pn:value="true" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Enable Message Filtering" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Enable Multi-Threading" xil_pn:value="Off" xil_pn:valueState="default"/>
@@ -338,7 +343,7 @@
     <property xil_pn:name="Top-Level Source Type" xil_pn:value="HDL" xil_pn:valueState="default"/>
     <property xil_pn:name="Trim Unconnected Signals" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Tristate On Configuration Pulse Width" xil_pn:value="0" xil_pn:valueState="default"/>
-    <property xil_pn:name="Unused IOB Pins" xil_pn:value="Pull Down" xil_pn:valueState="default"/>
+    <property xil_pn:name="Unused IOB Pins" xil_pn:value="Float" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use 64-bit PlanAhead on 64-bit Systems" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Clock Enable" xil_pn:value="Yes" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Project File Behavioral" xil_pn:value="false" xil_pn:valueState="default"/>
@@ -359,7 +364,7 @@
     <property xil_pn:name="Use Synchronous Reset" xil_pn:value="Yes" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Synchronous Set" xil_pn:value="Yes" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Synthesis Constraints File" xil_pn:value="true" xil_pn:valueState="default"/>
-    <property xil_pn:name="User Browsed Strategy Files" xil_pn:value="" xil_pn:valueState="default"/>
+    <property xil_pn:name="User Browsed Strategy Files" xil_pn:value="D:/mydownload/ISExilinx/14.6/ISE_DS/ISE/data/default.xds" xil_pn:valueState="non-default"/>
     <property xil_pn:name="UserID Code (8 Digit Hexadecimal)" xil_pn:value="0xFFFFFFFF" xil_pn:valueState="default"/>
     <property xil_pn:name="VHDL Source Analysis Standard" xil_pn:value="VHDL-93" xil_pn:valueState="default"/>
     <property xil_pn:name="Value Range Check" xil_pn:value="false" xil_pn:valueState="default"/>

@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -31,10 +31,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity Mux is
     Port ( choice : in  STD_LOGIC_VECTOR (1 downto 0);
-           Input1 : in  STD_LOGIC_VECTOR (15 downto 0);
-           Input2 : in  STD_LOGIC_VECTOR (15 downto 0);
-           Input3 : in  STD_LOGIC_VECTOR (15 downto 0);
-           Output : in  STD_LOGIC_VECTOR (15 downto 0));
+           Input1 : in  Int16;
+           Input2 : in  Int16;
+           Input3 : in  Int16;
+           Output : in  Int16);
 end Mux;
 
 architecture Behavioral of Mux is

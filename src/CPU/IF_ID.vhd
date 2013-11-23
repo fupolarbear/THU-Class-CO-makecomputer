@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -30,10 +30,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity IF_ID is
-    Port ( Instruction_in : in  STD_LOGIC_VECTOR (15 downto 0);
-           Instruction_out : out  STD_LOGIC_VECTOR (15 downto 0);
-           PC_in : in  STD_LOGIC_VECTOR (15 downto 0);
-           PC_out : out  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( Instruction_in : in  Int16;
+           Instruction_out : out  Int16;
+           PC_in : in  Int16;
+           PC_out : out  Int16;
            clk : in  STD_LOGIC;
            rst : in  STD_LOGIC;
            WriteIn : in  STD_LOGIC);

@@ -4,30 +4,32 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.47 secs
+Total CPU time to Xst completion: 0.11 secs
  
 --> Parameter xsthdpdir set to D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.47 secs
+Total CPU time to Xst completion: 0.11 secs
  
 --> WARNING:Xst:3164 - Option "-debug" found multiple times in the command line. Only the first occurence is considered.
 
 =========================================================================
 *                          HDL Compilation                              *
 =========================================================================
+Compiling vhdl file "D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/Common.vhd" in Library work.
+Architecture common of Entity common is up to date.
 Compiling vhdl file "D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/PCReg.vhd" in Library work.
-Entity <PCReg> compiled.
-Entity <PCReg> (Architecture <Behavioral>) compiled.
+Entity <pcreg> compiled.
+Entity <pcreg> (Architecture <behavioral>) compiled.
 
 
-Total REAL time to Xst completion: 1.00 secs
-Total CPU time to Xst completion: 0.97 secs
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.15 secs
  
 --> 
 
-Total memory usage is 214684 kilobytes
+Total memory usage is 215260 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :    1 (   0 filtered)

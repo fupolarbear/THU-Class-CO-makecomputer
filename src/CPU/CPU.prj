@@ -1,1 +1,7 @@
+vhdl work "Common.vhd"
+vhdl work "PCReg.vhd"
+vhdl work "Mux.vhd"
+vhdl work "InstructionMemory.vhd"
+vhdl work "IF_ID.vhd"
+vhdl work "Add.vhd"
 vhdl work "CPU.vhd"

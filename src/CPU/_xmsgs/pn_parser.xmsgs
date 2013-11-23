@@ -8,55 +8,7 @@
 <!-- Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/ALU.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/Add.vhd&quot; into library work</arg>
-</msg>
-
 <msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/CPU.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/Controller.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/DataMem.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/Decoder.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/EX_MEM.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/ID_EX.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/IF_ID.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/InstructionMemory.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/MEM_WB.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/Mux.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/PCReg.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/Passer.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/RegFile.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/RiskChecker.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;D:/study/2013fall/ComputerOrganization/lastproject/makecomputer/src/CPU/TReg.vhd&quot; into library work</arg>
 </msg>
 
 </messages>

@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -30,8 +30,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity PCReg is
-    Port ( Input : in  STD_LOGIC_VECTOR (15 downto 0);
-           Output : out  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( Input : in  Int16;
+           Output : out  Int16;
            clk : in  STD_LOGIC;
            rst : in  STD_LOGIC;
            PCWrite : in  STD_LOGIC);

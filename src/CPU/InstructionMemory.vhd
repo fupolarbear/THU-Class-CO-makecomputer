@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -30,8 +30,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity InstructionMem is
-    Port ( Address : in  STD_LOGIC_VECTOR (15 downto 0);
-           Data : out  STD_LOGIC_VECTOR (15 downto 0));
+    Port ( Address : in  Int16;
+           Data : out  Int16);
 end InstructionMem;
 
 architecture Behavioral of InstructionMem is

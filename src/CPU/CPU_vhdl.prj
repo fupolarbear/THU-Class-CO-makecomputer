@@ -1,1 +1,7 @@
+vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\Common.vhd"
+vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\PCReg.vhd"
+vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\Mux.vhd"
+vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\InstructionMemory.vhd"
+vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\IF_ID.vhd"
+vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\Add.vhd"
 vhdl work "D:\study\2013fall\ComputerOrganization\lastproject\makecomputer\src\CPU\CPU.vhd"
