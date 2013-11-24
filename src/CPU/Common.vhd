@@ -30,9 +30,18 @@ package Common is
 --
 	subtype Int16 is std_logic_vector(15 downto 0);
 	subtype Int15 is std_logic_vector(14 downto 0);
+	subtype Int5 is std_logic_vector(4 downto 0);
+	subtype Int4 is std_logic_vector(3 downto 0);
+	subtype Int3 is std_logic_vector(2 downto 0);
 	
 	constant Int16_Zero : Int16 := "0000000000000000";
 	constant Int15_Zero : Int15 := "000000000000000";
+	constant Int5_Zero : Int5 := "00000";
+	constant Int4_Zero : Int4 := "0000";
+	constant Int4_One : Int4 := "1111";
+	constant Int3_Zero : Int3 := "000";
+	
+	function sll_2(imm: Int16) return Int16;
 end Common;
 
 package body Common is
@@ -62,5 +71,12 @@ package body Common is
 --  begin
 --    
 --  end <procedure_name>;
- 
+ function sll_2(imm: Int16) return Int16 is
+	variable i : integer := 2;
+	variable n1: bit_vector(15 downto 0);
+	begin 
+		i := 2;
+		n1 := TO_BITVECTOR(imm);
+		return TO_STDLOGICVECTOR(n1 sll i);
+	end sll_2;
 end Common;

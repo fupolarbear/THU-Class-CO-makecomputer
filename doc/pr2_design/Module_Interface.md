@@ -137,7 +137,6 @@
 ### 控制单元 Controller
  - op: in 4 downto 0
  - rst: in
- - Branch: out 1 downto 0
  - ALUop: out 2 downto 0
  - Ttype: out
  - TWrite: out
@@ -163,3 +162,9 @@
  - IDEX_W: in
  - IDEX_R1: in
  - IDEX_R2: in
+ 
+### 分支选择单元 BranchSelector
+ - Op: in 4 downto 0
+ - RegInput: in 15 downto 0
+ - T: in
+ - Branch: out 1 downto 0

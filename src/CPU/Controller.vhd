@@ -32,13 +32,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Controller is
     Port ( Op : in  STD_LOGIC_VECTOR (4 downto 0);
            rst : in  STD_LOGIC;
-           Branch : out  STD_LOGIC_VECTOR (1 downto 0);
            ALUop : out  STD_LOGIC_VECTOR (2 downto 0);
            TType : out  STD_LOGIC;
            TWrite : out  STD_LOGIC;
            MemRead : out  STD_LOGIC;
            MemWrite : out  STD_LOGIC;
-           MemtoReg : out  STD_LOGIC);
+           MemtoReg : out  STD_LOGIC;
+			  RegWrite: out STD_LOGIC);
 end Controller;
 
 architecture Behavioral of Controller is

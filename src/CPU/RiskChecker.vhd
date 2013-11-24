@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -34,9 +34,9 @@ entity RiskChecker is
            IFIDWrite : out  STD_LOGIC;
            ControlRst : out  STD_LOGIC;
            IDEX_MemWrite : in  STD_LOGIC;
-           IDEX_W : in  STD_LOGIC;
-           IDEX_R1 : in  STD_LOGIC;
-           IDEX_R2 : in  STD_LOGIC);
+           IDEX_W : in  Int4;
+           IFID_R1 : in  Int4;
+           IFID_R2 : in  Int4);
 end RiskChecker;
 
 architecture Behavioral of RiskChecker is
