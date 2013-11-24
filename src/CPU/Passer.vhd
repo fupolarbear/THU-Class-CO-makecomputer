@@ -36,8 +36,8 @@ entity Passer is
            MEMWB_W : in  STD_LOGIC_VECTOR (3 downto 0);
            IDEX_R1 : in  STD_LOGIC_VECTOR (3 downto 0);
            IDEX_R2 : in  STD_LOGIC_VECTOR (3 downto 0);
-           ForwardA : out  STD_LOGIC_VECTOR (2 downto 0);
-           ForwardB : out  STD_LOGIC_VECTOR (2 downto 0));
+           ForwardA : out  STD_LOGIC_VECTOR (1 downto 0);
+           ForwardB : out  STD_LOGIC_VECTOR (1 downto 0));
 end Passer;
 
 architecture Behavioral of Passer is

@@ -33,93 +33,208 @@ use work.Common.all;
 
 entity CPU is
     Port ( clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC);
+		rst : in  STD_LOGIC);
 end CPU;
 
 architecture Behavioral of CPU is
 --IF
 component PCReg is
     Port ( Input : in  Int16;
-           Output : out  Int16;
-           clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC;
-           PCWrite : in  STD_LOGIC);
+		Output : out  Int16;
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		PCWrite : in  STD_LOGIC);
 end component;
 component Mux is
 	Port ( choice : in  STD_LOGIC_VECTOR (1 downto 0);
-           Input1 : in  Int16;
-           Input2 : in  Int16;
-           Input3 : in  Int16;
-           Output : in  Int16);
+		Input1 : in  Int16;
+		Input2 : in  Int16;
+		Input3 : in  Int16;
+		Output : in  Int16);
+end component;
+component Mux2 is
+    Port ( choice : in  STD_LOGIC;
+           Input1 : in  STD_LOGIC_VECTOR (15 downto 0);
+           Input2 : in  STD_LOGIC_VECTOR (15 downto 0);
+           Output : out  STD_LOGIC_VECTOR (15 downto 0));
 end component;
 component Add is
     Port ( Input1 : in  Int16;
-           Input2 : in  Int16;
-           Output : out Int16);
+		Input2 : in  Int16;
+		Output : out Int16);
 end component;
 component InstructionMem is
     Port ( Address : in  Int16;
-           Data : out  Int16);
+		Data : out  Int16);
 end component;
 
 component IF_ID is
     Port ( Instruction_in : in  Int16;
-           Instruction_out : out  Int16;
-           PC_in : in  Int16;
-           PC_out : out  Int16;
-           clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC;
-           WriteIn : in  STD_LOGIC);
+		Instruction_out : out  Int16;
+		PC_in : in  Int16;
+		PC_out : out  Int16;
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		WriteIn : in  STD_LOGIC);
 end component;
 
 --ID
 component Decoder is
     Port ( Instruction : in  STD_LOGIC_VECTOR (15 downto 0);
-           Op : out  STD_LOGIC_VECTOR (4 downto 0);
-           Reg1 : out  STD_LOGIC_VECTOR (3 downto 0);
-           Reg2 : out  STD_LOGIC_VECTOR (3 downto 0);
-           Reg3 : out  STD_LOGIC_VECTOR (3 downto 0);
-           Imm : out  STD_LOGIC_VECTOR (15 downto 0));
+		Op : out  STD_LOGIC_VECTOR (4 downto 0);
+		Reg1 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Reg2 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Reg3 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Imm : out  STD_LOGIC_VECTOR (15 downto 0));
 end component;
 component Controller is
     Port ( Op : in  STD_LOGIC_VECTOR (4 downto 0);
-           rst : in  STD_LOGIC;
-           ALUop : out  STD_LOGIC_VECTOR (2 downto 0);
-           TType : out  STD_LOGIC;
-           TWrite : out  STD_LOGIC;
-           MemRead : out  STD_LOGIC;
-           MemWrite : out  STD_LOGIC;
-           MemtoReg : out  STD_LOGIC;
-			  RegWrite: out STD_LOGIC);
+		rst : in  STD_LOGIC;
+		ALUop : out  STD_LOGIC_VECTOR (2 downto 0);
+		TType : out  STD_LOGIC;
+		TWrite : out  STD_LOGIC;
+		MemRead : out  STD_LOGIC;
+		MemWrite : out  STD_LOGIC;
+		MemtoReg : out  STD_LOGIC;
+		RegWrite: out STD_LOGIC);
 end component;
 component BranchSelector is
     Port ( Op : in  STD_LOGIC_VECTOR (4 downto 0);
-           RegInput : in  STD_LOGIC_VECTOR (15 downto 0);
-           T : in  STD_LOGIC;
-           Branch : out  STD_LOGIC_VECTOR (1 downto 0));
+		RegInput : in  STD_LOGIC_VECTOR (15 downto 0);
+		T : in  STD_LOGIC;
+		Branch : out  STD_LOGIC_VECTOR (1 downto 0));
 end component;
 component RegFile is
     Port ( ReadAddress1 : in  STD_LOGIC_VECTOR (3 downto 0);
-           ReadAddress2 : in  STD_LOGIC_VECTOR (3 downto 0);
-           WriteAddress : in  STD_LOGIC_VECTOR (3 downto 0);
-           WriteData : in  STD_LOGIC_VECTOR (15 downto 0);
-           Reg1 : out  STD_LOGIC_VECTOR (15 downto 0);
-           Reg2 : out  STD_LOGIC_VECTOR (15 downto 0);
-           RegWrite : in  STD_LOGIC;
-           clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC);
+		ReadAddress2 : in  STD_LOGIC_VECTOR (3 downto 0);
+		WriteAddress : in  STD_LOGIC_VECTOR (3 downto 0);
+		WriteData : in  STD_LOGIC_VECTOR (15 downto 0);
+		Reg1 : out  STD_LOGIC_VECTOR (15 downto 0);
+		Reg2 : out  STD_LOGIC_VECTOR (15 downto 0);
+		RegWrite : in  STD_LOGIC;
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC);
 end component;
 component RiskChecker is
     Port ( PCWrite : out  STD_LOGIC;
-           IFIDWrite : out  STD_LOGIC;
-           ControlRst : out  STD_LOGIC;
-           IDEX_MemWrite : in  STD_LOGIC;
-           IDEX_W : in  Int4;
-           IFID_R1 : in  Int4;
-           IFID_R2 : in  Int4);
+		IFIDWrite : out  STD_LOGIC;
+		ControlRst : out  STD_LOGIC;
+		IDEX_MemWrite : in  STD_LOGIC;
+		IDEX_W : in  Int4;
+		IFID_R1 : in  Int4;
+		IFID_R2 : in  Int4);
 end component;
 
+component ID_EX is
+    Port ( clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		WriteIn : in  STD_LOGIC;
+		ALUopInput : in  STD_LOGIC_VECTOR (2 downto 0);
+		ALUsrcInput : in  STD_LOGIC;
+		TTypeInput : in  STD_LOGIC;
+		TWriteInput : in  STD_LOGIC;
+		MemReadInput : in  STD_LOGIC;
+		MemWriteInput : in  STD_LOGIC;
+		MemtoRegInput : in  STD_LOGIC;
+		ALUopOutput : out  STD_LOGIC_VECTOR (2 downto 0);
+		ALUsrcOutput : out  STD_LOGIC;
+		TTypeOutput : out  STD_LOGIC;
+		TWriteOutput : out  STD_LOGIC;
+		MemReadOutput : out  STD_LOGIC;
+		MemWriteOutput : out  STD_LOGIC;
+		MemtoRegOutput : out  STD_LOGIC;
+		RegWriteInput: in STD_LOGIC;
+		RegWriteOutput: out STD_LOGIC;
+		DataInput1 : in  STD_LOGIC_VECTOR (15 downto 0);
+		DataInput2 : in  STD_LOGIC_VECTOR (15 downto 0);
+		ImmediateInput : in  STD_LOGIC_VECTOR (15 downto 0);
+		RegResult: out Int16;
+		ALUdata1 : out  STD_LOGIC_VECTOR (15 downto 0);
+		ALUdata2 : out  STD_LOGIC_VECTOR (15 downto 0);
+		RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+end component;
 
+--EX 
+component ALU is
+    Port ( Input1 : in  STD_LOGIC_VECTOR (15 downto 0);
+		Input2 : in  STD_LOGIC_VECTOR (15 downto 0);
+		Output : out  STD_LOGIC_VECTOR (15 downto 0);
+		ALUop : in  STD_LOGIC_VECTOR (2 downto 0));
+end component;
+component TReg is
+    Port ( Input : in  STD_LOGIC_VECTOR (15 downto 0);
+		TType : in  STD_LOGIC;
+		TWrite : in  STD_LOGIC;
+		T : out  STD_LOGIC);
+end component;
+component Passer is
+    Port ( EXMEM_RegWrite : in  STD_LOGIC;
+		MEMWB_RegWrite : in  STD_LOGIC;
+		EXMEM_W : in  STD_LOGIC_VECTOR (3 downto 0);
+		MEMWB_W : in  STD_LOGIC_VECTOR (3 downto 0);
+		IDEX_R1 : in  STD_LOGIC_VECTOR (3 downto 0);
+		IDEX_R2 : in  STD_LOGIC_VECTOR (3 downto 0);
+		ForwardA : out  STD_LOGIC_VECTOR (1 downto 0);
+		ForwardB : out  STD_LOGIC_VECTOR (1 downto 0));
+end component;
+
+component EX_MEM is
+	Port ( clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		WriteIn : in  STD_LOGIC;
+		MemReadInput : in  STD_LOGIC;
+		MemWriteInput : in  STD_LOGIC;
+		MemtoRegInput : in  STD_LOGIC;
+		RegWriteInput: in STD_LOGIC;
+		RegWriteOutput: out STD_LOGIC;
+		MemReadOutput : out  STD_LOGIC;
+		MemWriteOutput : out  STD_LOGIC;
+		MemtoRegOutput : out  STD_LOGIC;
+		RegResultInput: in Int16;
+		RegResultOutput: out Int16;
+		DataInput : in  STD_LOGIC_VECTOR (15 downto 0);
+		DataOutput : out  STD_LOGIC_VECTOR (15 downto 0);
+		RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+end component;
+
+-- MEM
+component DataMem is
+    Port ( Address : in  STD_LOGIC_VECTOR (15 downto 0);
+		Input : in  STD_LOGIC_VECTOR (15 downto 0);
+		Output : out  STD_LOGIC_VECTOR (15 downto 0);
+		MemWrite : in  STD_LOGIC;
+		MemRead : in  STD_LOGIC);
+end component;
+
+component MEM_WB is
+    Port ( clk : in  STD_LOGIC;
+           rst : in  STD_LOGIC;
+           WriteIn : in  STD_LOGIC;
+           MemtoRegInput : in  STD_LOGIC;
+           MemtoRegOutput : out  STD_LOGIC;
+			  RegWriteInput: in STD_LOGIC;
+			  RegWriteOutput: out STD_LOGIC;
+           AluResultInput : in  STD_LOGIC_VECTOR (15 downto 0);
+           AluResultOutput : out  STD_LOGIC_VECTOR (15 downto 0);
+			  MemResultInput: in STD_LOGIC_VECTOR (15 downto 0);
+			  MemResultOutput: in STD_LOGIC_VECTOR (15 downto 0);
+			  RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
+           RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
+           RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
+           RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
+           RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
+           RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+end component;
 signal pcreg_input: Int16:= Int16_Zero;
 signal pcreg_output: Int16:= Int16_Zero;
 
@@ -145,21 +260,61 @@ signal regfile_reg1: Int16:= Int16_Zero;
 signal regfile_reg2: Int16:= Int16_Zero;
 signal regfile_writedata: Int16:= Int16_Zero;
 
+signal IDEX_aluop: Int3 := Int3_Zero;
+signal IDEX_alusrc: std_logic:= '0';
+signal IDEX_ttype: std_logic:= '0';
+signal IDEX_twrite: std_logic:= '0';
+signal IDEX_memread: std_logic:= '0';
 signal IDEX_memwrite: std_logic:= '0';
-signal IDEX_regwriteoutput: Int4 := Int4_One;
+signal IDEX_memtoreg: std_logic:= '0';
+signal IDEX_regwrite: std_logic:= '0';
+signal IDEX_aludata1: Int16 := Int16_Zero;
+signal IDEX_aludata2: Int16 := Int16_Zero;
+signal IDEX_regread1: Int4 := Int4_One;
+signal IDEX_regread2: Int4 := Int4_One;
+signal IDEX_regwriteto: Int4 := Int4_One;
+signal IDEX_regresult: Int16:= Int16_Zero;
 -- EXE
 signal T: std_logic:= '0';
+signal alu_input1: Int16:= Int16_Zero;
+signal alu_input2: Int16:= Int16_Zero;
+signal alu_output: Int16:= Int16_Zero;
+
+signal EXMEM_memread: std_logic:= '0';
+signal EXMEM_memwrite: std_logic:= '0';
+signal EXMEM_memtoreg: std_logic:= '0';
+signal EXMEM_regwrite: std_logic:= '0';
+signal EXMEM_regread1: Int4 := Int4_One;
+signal EXMEM_regread2: Int4 := Int4_One;
+signal EXMEM_regwriteto: Int4 := Int4_One;
+signal EXMEM_data: Int16:= Int16_Zero;
+signal EXMEM_regresult: Int16:= Int16_Zero;
+
+signal MEMWB_regwrite: std_logic:= '0';
+signal MEMWB_regread1: Int4 := Int4_One;
+signal MEMWB_regread2: Int4 := Int4_One;
+signal MEMWB_regwriteto: Int4 := Int4_One;
+signal MEMWB_aluresult: Int16:= Int16_Zero;
+signal MEMWB_memresult: Int16:= Int16_Zero;
+signal MEMWB_memtoreg: std_logic:= '0';
+
+--MEM
+signal DataMem_output: Int16:= Int16_Zero;
 
 -- control signal
 signal pcwrite: std_logic:= '1';
 signal branch: std_logic_vector(1 downto 0):= "00";
 signal aluop: Int3:= Int3_Zero;
+signal alusrc: std_logic:= '0';
 signal ttype: std_logic:= '0';
 signal twrite: std_logic:= '0';
 signal memread: std_logic:= '0';
 signal memwrite: std_logic:= '0';
 signal memtoreg: std_logic:= '0';
 signal regwrite: std_logic:= '0';
+
+signal forwardA: std_logic_vector(1 downto 0):= "00";
+signal forwardB: std_logic_vector(1 downto 0):= "00";
 
 begin
 	PCReg_1: PCReg port map(
@@ -233,7 +388,7 @@ begin
 		WriteData => regfile_writedata,
 		Reg1 => regfile_reg1,
 		Reg2 => regfile_reg2,
-		RegWrite => regwrite,
+		RegWrite => MEMWB_regwrite,
 		clk => clk,
 		rst => rst
 		);
@@ -242,9 +397,139 @@ begin
 		IFIDWrite => IFID_writein,
 		ControlRst => controller_rst,
 		IDEX_MemWrite => IDEX_memwrite,
-		IDEX_W => IDEX_regwriteoutput,
+		IDEX_W => IDEX_regwriteto,
 		IFID_R1 => decoder_reg1,
 		IFID_R2 => decoder_reg2
+		);
+	
+	ID_EX_1: ID_EX port map(
+		clk => clk,
+		rst => rst,
+		WriteIn => '1',
+		ALUopInput => aluop,
+		ALUsrcInput => alusrc,
+		TTypeInput => ttype,
+		TWriteInput => twrite,
+		MemReadInput => memread,
+		MemWriteInput => memwrite,
+		MemtoRegInput => memtoreg,
+		RegWriteInput => regwrite,
+		RegWriteOutput => IDEX_regwrite,
+		ALUopOutput => IDEX_aluop,
+		ALUsrcOutput => IDEX_alusrc,
+		TTypeOutput => IDEX_ttype,
+		TWriteOutput => IDEX_twrite,
+		MemReadOutput => IDEX_memread,
+		MemWriteOutput => IDEX_memwrite,
+		MemtoRegOutput => IDEX_memtoreg,
+		DataInput1 => regfile_reg1,
+		DataInput2 => regfile_reg2,
+		ImmediateInput => decoder_imm,
+		ALUdata1 => IDEX_aludata1,
+		ALUdata2 => IDEX_aludata2,
+		RegResult => IDEX_regresult,
+		RegReadInput1 => decoder_reg1,
+		RegReadInput2 => decoder_reg2,
+		RegWriteToInput => decoder_reg3,
+		RegReadOutput1 => IDEX_regread1,
+		RegReadOutput2 => IDEX_regread2,
+		RegWriteToOutput => IDEX_regwriteto
+		);
+	
+	ALU_1: ALU port map(
+		Input1 => alu_input1, 
+		Input2 => alu_input2,
+		Output => alu_output,
+		ALUOp => IDEX_aluop
+		);
+	TReg_1: TReg port map(
+		Input => alu_output,
+		TType => IDEX_ttype,
+		TWrite => IDEX_twrite,
+		T => T
+		);
+	Mux_alusrc1: Mux port map(
+		choice => forwardA,
+		Input1 => IDEX_aludata1,
+		Input2 => regfile_writedata,
+		Input3 => EXMEM_data,
+		Output => alu_input1
+		);
+	Mux_alusrc2: Mux port map(
+		choice => forwardB,
+		Input1 => IDEX_aludata2,
+		Input2 => regfile_writedata,
+		Input3 => EXMEM_data,
+		Output => alu_input2
+		);
+	Passer_1: Passer port map(
+		EXMEM_RegWrite => EXMEM_regwrite,
+		MEMWB_RegWrite => MEMWB_regwrite,
+		EXMEM_W => EXMEM_regwriteto,
+		MEMWB_W => MEMWB_regwriteto,
+		IDEX_R1 => IDEX_regread1,
+		IDEX_R2 => IDEX_regread2,
+		ForwardA => forwardA,
+		ForwardB => forwardB
+		);
+	
+	EX_MEM_1: EX_MEM port map(
+		clk => clk,
+		rst => rst,
+		WriteIn => '1',
+		MemReadInput => IDEX_memread,
+		MemWriteInput => IDEX_memwrite,
+		MemtoRegInput => IDEX_memtoreg,
+		MemReadOutput => EXMEM_memread,
+		MemWriteOutput => EXMEM_memwrite,
+		MemtoRegOutput => EXMEM_memtoreg,
+		RegWriteInput => IDEX_regwrite,
+		RegWriteOutput => EXMEM_regwrite,
+		DataInput => alu_output,
+		DataOutput => EXMEM_data,
+		RegResultInput => IDEX_regresult,
+		RegResultOutput => EXMEM_regresult,
+		RegReadInput1 => IDEX_regread1,
+		RegReadInput2 => IDEX_regread2,
+		RegWriteToInput => IDEX_regwriteto,
+		RegReadOutput1 => EXMEM_regread1,
+		RegReadOutput2 => EXMEM_regread2,
+		RegWriteToOutput => EXMEM_regwriteto
+		);
+	
+	DataMem_1: DataMem port map(
+		Address => EXMEM_data,
+		Input => EXMEM_regresult,
+		Output => DataMem_output,
+		MemWrite => EXMEM_memwrite,
+		MemRead => EXMEM_memread
+		);
+	
+	MEM_WB_1: MEM_WB port map(
+		clk => clk,
+		rst => rst,
+		WriteIn => '1',
+		RegWriteInput => EXMEM_regwrite,
+		RegWriteOutput => MEMWB_regwrite,
+		MemtoRegInput => EXMEM_memtoreg,
+		MemtoRegOutput => MEMWB_memtoreg,
+		AluResultInput => EXMEM_data,
+		AluResultOutput => MEMWB_aluresult,
+		MemResultInput => DataMem_output,
+		MemResultOutput => MEMWB_memresult,
+		RegReadInput1 => EXMEM_regread1,
+		RegReadInput2 => EXMEM_regread2,
+		RegWriteToInput => EXMEM_regwriteto,
+		RegReadOutput1 => MEMWB_regread1,
+		RegReadOutput2 => MEMWB_regread2,
+		RegWriteToOutput => MEMWB_regwriteto
+		);
+	
+	Mux_wb: Mux2 port map(
+		choice => MEMWB_memtoreg,
+		Input1 => MEMWB_aluresult,
+		Input2 => MEMWB_memresult,
+		Output => regfile_writedata
 		);
 end Behavioral;
 

@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -40,6 +40,8 @@ entity ID_EX is
            MemReadInput : in  STD_LOGIC;
            MemWriteInput : in  STD_LOGIC;
            MemtoRegInput : in  STD_LOGIC;
+			  RegWriteInput: in STD_LOGIC;
+			  RegWriteOutput: out STD_LOGIC;
            ALUopOutput : out  STD_LOGIC_VECTOR (2 downto 0);
            ALUsrcOutput : out  STD_LOGIC;
            TTypeOutput : out  STD_LOGIC;
@@ -50,15 +52,15 @@ entity ID_EX is
            DataInput1 : in  STD_LOGIC_VECTOR (15 downto 0);
            DataInput2 : in  STD_LOGIC_VECTOR (15 downto 0);
            ImmediateInput : in  STD_LOGIC_VECTOR (15 downto 0);
+			  RegResult: out Int16;
            ALUdata1 : out  STD_LOGIC_VECTOR (15 downto 0);
            ALUdata2 : out  STD_LOGIC_VECTOR (15 downto 0);
-           ImmediateOutput : out  STD_LOGIC_VECTOR (15 downto 0);
            RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
            RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
-           RegWriteInput : in  STD_LOGIC_VECTOR (3 downto 0);
+           RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
            RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
            RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-           RegWriteOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+           RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
 end ID_EX;
 
 architecture Behavioral of ID_EX is
