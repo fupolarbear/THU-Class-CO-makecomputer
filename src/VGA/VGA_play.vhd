@@ -1,10 +1,10 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Fu Zuoyou.
 -- 
 -- Create Date:    17:12:10 11/26/2013 
 -- Design Name: 
--- Module Name:    VGA-play - Behavioral 
+-- Module Name:    VGA_play - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
