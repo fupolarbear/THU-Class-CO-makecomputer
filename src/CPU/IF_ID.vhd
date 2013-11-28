@@ -42,7 +42,16 @@ end IF_ID;
 architecture Behavioral of IF_ID is
 
 begin
-
-
+	process (rst, clk)
+	begin
+		if (rst = '0') then 
+			Instruction_out <= Int16_Zero;
+		elsif (clk'event and clk = '1') then
+			if (WriteIn = '1') then
+				Instruction_out <= Instruction_in;
+				PC_out <= PC_in;
+			end if;
+		end if;
+	end process;
 end Behavioral;
 

@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use Common.all;
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -34,13 +34,17 @@ entity Mux is
            Input1 : in  Int16;
            Input2 : in  Int16;
            Input3 : in  Int16;
-           Output : in  Int16);
+           Output : out  Int16);
 end Mux;
 
 architecture Behavioral of Mux is
 
 begin
-
+with choice select
+Output <= Input1 when "00",
+			 Input2 when "01",
+			 Input3 when "10",
+			 Int16_Zero when others;
 
 end Behavioral;
 

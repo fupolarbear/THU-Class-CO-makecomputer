@@ -50,7 +50,7 @@ component Mux is
 		Input1 : in  Int16;
 		Input2 : in  Int16;
 		Input3 : in  Int16;
-		Output : in  Int16);
+		Output : out  Int16);
 end component;
 component Mux2 is
     Port ( choice : in  STD_LOGIC;
@@ -317,6 +317,7 @@ signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 
 begin
+	pc_reg <= regfile_reg1;
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
 		Output => pcreg_output,

@@ -40,7 +40,15 @@ end PCReg;
 architecture Behavioral of PCReg is
 
 begin
-
-
+	process(CLK, RST)
+	begin
+		if (rst = '0') then 
+			Output <= Int16_Zero;
+		elsif (clk'event and clk = '1') then
+			if (PCwrite = '1') then
+				Output <= Input;
+			end if;
+		end if;
+	end process;
 end Behavioral;
 
