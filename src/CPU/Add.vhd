@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: tuk
 -- 
 -- Create Date:    19:04:59 11/21/2013 
 -- Design Name: 
@@ -41,6 +41,6 @@ end Add;
 architecture Behavioral of Add is
 
 begin
-	Output <= Input1+Input2;
+	Output <= Input1 + Input2;
 end Behavioral;
 

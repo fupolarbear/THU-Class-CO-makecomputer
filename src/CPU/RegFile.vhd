@@ -52,7 +52,7 @@ architecture Behavioral of RegFile is
 			input: in std_logic_vector(15 downto 0);
 			output: out std_logic_vector(15 downto 0);
 			wrn: in std_logic;
-			clock: in std_logic;
+			clock: in std_logic
 		);
 	end component;
 begin
