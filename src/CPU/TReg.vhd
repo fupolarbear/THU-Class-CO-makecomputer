@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Fu Zuoyou.
 -- 
 -- Create Date:    19:03:31 11/21/2013 
 -- Design Name: 
@@ -30,10 +30,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity TReg is
-    Port ( Input : in  STD_LOGIC_VECTOR (15 downto 0);
-           TType : in  STD_LOGIC;
-           TWrite : in  STD_LOGIC;
-           T : out  STD_LOGIC);
+    Port(
+		Input : in  STD_LOGIC_VECTOR (15 downto 0);
+		TType : in  STD_LOGIC;
+		TWrite : in  STD_LOGIC;
+		T : out  STD_LOGIC
+	);
 end TReg;
 
 architecture Behavioral of TReg is

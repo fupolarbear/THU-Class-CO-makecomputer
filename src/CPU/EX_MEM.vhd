@@ -30,27 +30,29 @@ use work.Common.all;
 --use UNISIM.VComponents.all;
 
 entity EX_MEM is
-    Port ( clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC;
-           WriteIn : in  STD_LOGIC;
-           MemReadInput : in  STD_LOGIC;
-           MemWriteInput : in  STD_LOGIC;
-           MemtoRegInput : in  STD_LOGIC;
-			  RegWriteInput: in STD_LOGIC;
-			  RegWriteOutput: out STD_LOGIC;
-           MemReadOutput : out  STD_LOGIC;
-           MemWriteOutput : out  STD_LOGIC;
-           MemtoRegOutput : out  STD_LOGIC;
-			  RegResultInput: in Int16;
-			  RegResultOutput: out Int16;
-           DataInput : in  STD_LOGIC_VECTOR (15 downto 0);
-           DataOutput : out  STD_LOGIC_VECTOR (15 downto 0);
-			  RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
-           RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
-           RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
-           RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
-           RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-           RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+	Port(
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		WriteIn : in  STD_LOGIC;
+		MemReadInput : in  STD_LOGIC;
+		MemWriteInput : in  STD_LOGIC;
+		MemtoRegInput : in  STD_LOGIC;
+		RegWriteInput: in STD_LOGIC;
+		RegWriteOutput: out STD_LOGIC;
+		MemReadOutput : out  STD_LOGIC;
+		MemWriteOutput : out  STD_LOGIC;
+		MemtoRegOutput : out  STD_LOGIC;
+		RegResultInput: in Int16;
+		RegResultOutput: out Int16;
+		DataInput : in  STD_LOGIC_VECTOR (15 downto 0);
+		DataOutput : out  STD_LOGIC_VECTOR (15 downto 0);
+		RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
+		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0)
+	);
 end EX_MEM;
 
 architecture Behavioral of EX_MEM is

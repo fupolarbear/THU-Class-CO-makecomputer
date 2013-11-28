@@ -30,11 +30,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity DataMem is
-    Port ( Address : in  STD_LOGIC_VECTOR (15 downto 0);
-           Input : in  STD_LOGIC_VECTOR (15 downto 0);
-           Output : out  STD_LOGIC_VECTOR (15 downto 0);
-           MemWrite : in  STD_LOGIC;
-           MemRead : in  STD_LOGIC);
+	Port(
+		Address : in  STD_LOGIC_VECTOR (15 downto 0);
+		Input : in  STD_LOGIC_VECTOR (15 downto 0);
+		Output : out  STD_LOGIC_VECTOR (15 downto 0);
+		MemWrite : in  STD_LOGIC;
+		MemRead : in  STD_LOGIC
+	);
 end DataMem;
 
 architecture Behavioral of DataMem is

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: tuk
 -- 
 -- Create Date:    18:57:52 11/21/2013 
 -- Design Name: 
@@ -32,8 +32,10 @@ use work.Common.all;
 --use UNISIM.VComponents.all;
 
 entity CPU is
-    Port ( clk : in  STD_LOGIC;
-		rst : in  STD_LOGIC);
+	Port (
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC
+	);
 end CPU;
 
 architecture Behavioral of CPU is

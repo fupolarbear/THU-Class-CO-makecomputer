@@ -30,12 +30,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Decoder is
-    Port ( Instruction : in  STD_LOGIC_VECTOR (15 downto 0);
-           Op : out  STD_LOGIC_VECTOR (4 downto 0);
-           Reg1 : out  STD_LOGIC_VECTOR (3 downto 0);
-           Reg2 : out  STD_LOGIC_VECTOR (3 downto 0);
-           Reg3 : out  STD_LOGIC_VECTOR (3 downto 0);
-           Imm : out  STD_LOGIC_VECTOR (15 downto 0));
+	Port ( 
+		Instruction : in  STD_LOGIC_VECTOR (15 downto 0);
+		Op : out  STD_LOGIC_VECTOR (4 downto 0);
+		Reg1 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Reg2 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Reg3 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Imm : out  STD_LOGIC_VECTOR (15 downto 0)
+	);
 end Decoder;
 
 architecture Behavioral of Decoder is

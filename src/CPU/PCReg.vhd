@@ -30,11 +30,13 @@ use Common.all;
 --use UNISIM.VComponents.all;
 
 entity PCReg is
-    Port ( Input : in  Int16;
-           Output : out  Int16;
-           clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC;
-           PCWrite : in  STD_LOGIC);
+	Port ( 
+		Input : in  Int16;
+		Output : out  Int16;
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		PCWrite : in  STD_LOGIC
+	);
 end PCReg;
 
 architecture Behavioral of PCReg is

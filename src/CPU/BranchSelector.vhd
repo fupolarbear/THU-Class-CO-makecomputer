@@ -30,10 +30,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity BranchSelector is
-    Port ( Op : in  STD_LOGIC_VECTOR (4 downto 0);
-           RegInput : in  STD_LOGIC_VECTOR (15 downto 0);
-           T : in  STD_LOGIC;
-           Branch : out  STD_LOGIC_VECTOR (1 downto 0));
+	Port(
+		Op : in  STD_LOGIC_VECTOR (4 downto 0);
+		RegInput : in  STD_LOGIC_VECTOR (15 downto 0);
+		T : in  STD_LOGIC;
+		Branch : out  STD_LOGIC_VECTOR (1 downto 0)
+	);
 end BranchSelector;
 
 architecture Behavioral of BranchSelector is

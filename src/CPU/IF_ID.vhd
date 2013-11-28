@@ -30,13 +30,15 @@ use Common.all;
 --use UNISIM.VComponents.all;
 
 entity IF_ID is
-    Port ( Instruction_in : in  Int16;
-           Instruction_out : out  Int16;
-           PC_in : in  Int16;
-           PC_out : out  Int16;
-           clk : in  STD_LOGIC;
-           rst : in  STD_LOGIC;
-           WriteIn : in  STD_LOGIC);
+	Port(
+		Instruction_in : in  Int16;
+		Instruction_out : out  Int16;
+		PC_in : in  Int16;
+		PC_out : out  Int16;
+		clk : in  STD_LOGIC;
+		rst : in  STD_LOGIC;
+		WriteIn : in  STD_LOGIC
+	);
 end IF_ID;
 
 architecture Behavioral of IF_ID is

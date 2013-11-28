@@ -30,8 +30,10 @@ use Common.all;
 --use UNISIM.VComponents.all;
 
 entity InstructionMem is
-    Port ( Address : in  Int16;
-           Data : out  Int16);
+	Port(
+		Address : in  Int16;
+		Data : out  Int16
+	);
 end InstructionMem;
 
 architecture Behavioral of InstructionMem is

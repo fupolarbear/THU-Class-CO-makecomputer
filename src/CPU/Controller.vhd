@@ -30,15 +30,17 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Controller is
-    Port ( Op : in  STD_LOGIC_VECTOR(4 downto 0);
-           rst : in  STD_LOGIC;
-           ALUop : out  STD_LOGIC_VECTOR(2 downto 0);
-           TType : out  STD_LOGIC;
-           TWrite : out  STD_LOGIC;
-           MemRead : out  STD_LOGIC;
-           MemWrite : out  STD_LOGIC;
-           MemtoReg : out  STD_LOGIC;
-			  RegWrite: out STD_LOGIC);
+	Port(
+		Op : in  STD_LOGIC_VECTOR(4 downto 0);
+		rst : in  STD_LOGIC;
+		ALUop : out  STD_LOGIC_VECTOR(2 downto 0);
+		TType : out  STD_LOGIC;
+		TWrite : out  STD_LOGIC;
+		MemRead : out  STD_LOGIC;
+		MemWrite : out  STD_LOGIC;
+		MemtoReg : out  STD_LOGIC;
+		RegWrite: out STD_LOGIC
+	);
 end Controller;
 
 architecture Behavioral of Controller is

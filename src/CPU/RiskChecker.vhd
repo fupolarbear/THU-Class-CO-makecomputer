@@ -30,13 +30,15 @@ use work.Common.all;
 --use UNISIM.VComponents.all;
 
 entity RiskChecker is
-    Port ( PCWrite : out  STD_LOGIC;
-           IFIDWrite : out  STD_LOGIC;
-           ControlRst : out  STD_LOGIC;
-           IDEX_MemWrite : in  STD_LOGIC;
-           IDEX_W : in  Int4;
-           IFID_R1 : in  Int4;
-           IFID_R2 : in  Int4);
+	Port(
+		PCWrite : out  STD_LOGIC;
+		IFIDWrite : out  STD_LOGIC;
+		ControlRst : out  STD_LOGIC;
+		IDEX_MemWrite : in  STD_LOGIC;
+		IDEX_W : in  Int4;
+		IFID_R1 : in  Int4;
+		IFID_R2 : in  Int4
+	);
 end RiskChecker;
 
 architecture Behavioral of RiskChecker is

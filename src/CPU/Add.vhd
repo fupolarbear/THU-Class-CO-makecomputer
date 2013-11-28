@@ -33,9 +33,11 @@ use Common.all;
 --use UNISIM.VComponents.all;
 
 entity Add is
-    Port ( Input1 : in  Int16;
-           Input2 : in  Int16;
-           Output : out Int16);
+	Port(
+		Input1 : in  Int16;
+		Input2 : in  Int16;
+		Output : out Int16
+	);
 end Add;
 
 architecture Behavioral of Add is
