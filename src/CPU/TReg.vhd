@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -41,7 +41,18 @@ end TReg;
 architecture Behavioral of TReg is
 
 begin
-
-
+	process(Input, TType, TWrite)
+	begin
+		if Twrite = '1' then
+			T <= '0';
+			if (TType = '0') then 
+				if Input(15) = '1' then 
+					T <= '1';
+				end if;
+			elsif (Input /= Int16_Zero) then
+				T <= '1';
+			end if;
+		end if;
+	end process;
 end Behavioral;
 

@@ -68,7 +68,39 @@ end ID_EX;
 architecture Behavioral of ID_EX is
 
 begin
-
+	process (rst, clk)
+	begin
+		if (rst = '0') then 
+			ALUopOutput <= Int3_Zero;
+			RegWriteOutput <= '0';
+			ALUsrcOutput <= '0';
+			TTypeOutput <= '0';
+			TWriteOutput <= '0';
+			MemReadOutput <= '0';
+			MemWriteOutput <= '0';
+			MemtoRegOutput <= '0';
+		elsif (clk'event and clk = '1') then
+			if (WriteIn = '1') then
+				ALUopOutput <= ALUopInput;
+				RegWriteOutput <= RegWriteInput;
+				ALUsrcOutput <= ALUsrcInput;
+				TTypeOutput <= TTypeInput;
+				TWriteOutput <= TWriteInput;
+				MemReadOutput <= MemReadInput;
+				MemWriteOutput <= MemWriteInput;
+				MemtoRegOutput <= MemtoRegInput;
+				ALUdata1 <= DataInput1;
+				if  ALUsrcInput = '0' then
+					ALUdata2 <= DataInput2;
+				else
+					ALUdata2 <= ImmediateInput;
+				end if;
+				RegReadOutput1 <= RegReadInput1;
+				RegReadOutput2 <= RegReadInput2;
+				RegWriteToOutput <= RegWriteToInput;
+			end if;
+		end if;
+	end process;
 
 end Behavioral;
 
