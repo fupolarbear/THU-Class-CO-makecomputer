@@ -61,7 +61,7 @@ begin
 				output <= TO_STDLOGICVECTOR(TO_BITVECTOR(input1) sll CONV_INTEGER(input2));
 			when "110" =>
 				output <= TO_STDLOGICVECTOR(TO_BITVECTOR(input1) srl CONV_INTEGER(input2));
-			when "111" =>
+			when others =>
 				output <= (others => '0');
 		end case;
 	end process;
