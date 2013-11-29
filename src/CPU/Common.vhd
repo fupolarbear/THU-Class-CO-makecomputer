@@ -42,8 +42,13 @@ package Common is
 	constant Int4_One : Int4 := "1111";
 	constant Int3_Zero : Int3 := "000";
 	constant Int8_Zero : Int8 := "00000000";
+	constant Int16_eight: Int16 := "0000000000001000"; 
 	
 	constant Zero_Reg: Int4 := "1000"; 
+	constant PC_Reg: Int4 := "1010";
+	constant IH_reg: Int4 := "1011"; 
+	constant RA_reg: Int4 := "1100"; 
+	constant SP_reg: Int4 := "1101"; 
 	
 	function sll_2(imm: Int16) return Int16;
 	function extend(imm: Int16; imm_n: Int4; sign: std_logic) return int16;

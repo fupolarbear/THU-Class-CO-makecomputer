@@ -33,9 +33,9 @@ entity Decoder is
 	Port ( 
 		Instruction : in  STD_LOGIC_VECTOR (15 downto 0);
 		Op : out  STD_LOGIC_VECTOR (4 downto 0);
-		Reg1 : out  STD_LOGIC_VECTOR (3 downto 0);
-		Reg2 : out  STD_LOGIC_VECTOR (3 downto 0);
-		Reg3 : out  STD_LOGIC_VECTOR (3 downto 0);
+		Reg1 : out  STD_LOGIC_VECTOR (3 downto 0); --for read
+		Reg2 : out  STD_LOGIC_VECTOR (3 downto 0); --for read
+		Reg3 : out  STD_LOGIC_VECTOR (3 downto 0); --for write
 		Imm : out  STD_LOGIC_VECTOR (15 downto 0)
 	);
 end Decoder;
@@ -50,45 +50,94 @@ begin
 		Reg3 <= Zero_Reg;
 		Imm <= Int16_Zero;
 		case Instruction(15 downto 11) is
-			when "00000" | "11100" => null; --NOP, JRRA
-			when "00001" | "00010" | "00011" | "00100" => 
+			when "00000" => null; --NOP
+			when "00001" => --MFIH
+				Reg1 <= IH_reg;
+				Reg3 <= '0' & Instruction(10 downto 8);
+			when "00010" => --MFPC
+				Reg1 <= PC_reg;
+				Reg3 <= '0' & Instruction(10 downto 8);
+			when "00011" => --MTIH
+				Reg3 <= IH_reg;
 				Reg1 <= '0' & Instruction(10 downto 8);
-			when "00101" | "00110" | "00111" | "01000" | "01001" =>
+			when "00100" => --MTSP
+				Reg3 <= SP_reg;
+				Reg1 <= '0' & Instruction(10 downto 8);
+			when "00101" | "00110" => --AND, OR
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
-			when "01010" | "01011" =>
+				Reg3 <= '0' & Instruction(10 downto 8);
+			when "00111" => --NOT*
+				Reg1 <= '0' & Instruction(7 downto 5);
+				Reg3 <= '0' & Instruction(10 downto 8);
+			when "01000" | "01001" => --SLT*, CMP
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
-				Imm <= extend("0000000000000" & Instruction(4 downto 2), "0011", '1');
+			when "01010" | "01011" => --SLL, SRA
+				Reg1 <= '0' & Instruction(10 downto 8);
+				Reg2 <= '0' & Instruction(7 downto 5);
+				if Instruction(4 downto 2) /= "000" then 
+					Imm <= extend("0000000000000" & Instruction(4 downto 2), "0011", '1');
+				else 
+					Imm <= Int16_eight;
+				end if;
 			when "01100" | "01101" => 
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
 				Reg3 <= '0' & Instruction(4 downto 2);
-			when "01110" =>
+			when "01110" => --ADDSP
+				Reg1 <= SP_reg;
+				Reg3 <= SP_reg;
 				Imm <= extend(Int8_zero & Instruction(10 downto 3), "1000", '1');
-			when "01111" | "10000" | "10001" | "10010" | "10011" =>
+			when "01111" | "10011" => -- LW_SP, ADDSP3*
+				Reg3 <= '0' & Instruction(10 downto 8);
+				Reg1 <= SP_reg;
+				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
+			when "10000" => --SW_SP
+				Reg2 <= '0' & Instruction(10 downto 8);
+				Reg1 <= SP_reg;
+				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
+			when "10001" => --ADDIU
+				Reg1 <= '0' & Instruction(10 downto 8);
+				Reg3 <= '0' & Instruction(10 downto 8);
+				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
+			when "10010" => --SLTI
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
 			when "10100" =>
-				Reg1 <= '0' & Instruction(10 downto 8);
+				Reg3 <= '0' & Instruction(10 downto 8);
 				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '0');
 			when "10101" => --ADDIU3
 				Reg1 <= '0' & Instruction(10 downto 8);
-				Reg2 <= '0' & Instruction(7 downto 5);
+				Reg3 <= '0' & Instruction(7 downto 5);
 				Imm <= extend("000000000000" & Instruction(3 downto 0), "0100", '1');
-			when "10110" | "10111" =>
+			when "10110" => --LW
+				Reg1 <= '0' & Instruction(10 downto 8);
+				Reg3 <= '0' & Instruction(7 downto 5);
+				Imm <= extend("00000000000" & Instruction(4 downto 0), "0101", '1');
+			when "10111" => --SW
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
 				Imm <= extend("00000000000" & Instruction(4 downto 0), "0101", '1');
-			when "11000" => 
+			when "11000" => --B
+				Reg1 <= PC_reg;
+				Reg3 <= PC_reg;
 				Imm <= extend(Int5_Zero & Instruction(10 downto 0), "1011", '1');
-			when "11001" => 
+			when "11001" => --BTEQZ
+				Reg1 <= PC_reg;
+				Reg3 <= PC_reg;
 				Imm <= extend(Int8_Zero & Instruction(10 downto 3), "1000", '1');
-			when "11010" | "11011"=> 
+			when "11010" | "11011"=> --BEQZ, BNEZ 
 				Reg1 <= '0' & Instruction(10 downto 8);
+				Reg2 <= PC_reg;
+				Reg3 <= PC_reg;
 				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
-			when "11101" => 
+			when "11100" => --JRRA*
+				Reg1 <= RA_reg;
+				Reg3 <= PC_reg;
+			when "11101" => --JR
 				Reg1 <= '0' & Instruction(10 downto 8);
+				Reg3 <= PC_reg;
 			when others => null;
 		end case;
 	end process;
