@@ -33,6 +33,7 @@ PAT_BINSTR = re.compile(r'[01]{16}')
 ferr = sys.stderr
 # options
 debug = False
+printBin = False
 # global state
 lineNum = 0
 codeAddr = 0
@@ -126,6 +127,8 @@ def main():
             # Parsers other than parseWithPrototype can be invoke here
             # to provide smarter parse.  Keep parseWithPrototype pure and
             # clean.
+            if printBin:
+                print (parseWithPrototype(tokenList))
             fout.write(genFromBinStr(parseWithPrototype(tokenList)))
         except Exception as err:
             raise Exception('Line %d: %s' % (lineNum, err.message))
@@ -195,52 +198,52 @@ def genFromBinStr(binStr):
 
 
 PROTOTYPE = {
-    'ADDIU': ['01001', parseReg, parseImm, ],
-    'ADDIU3': ['01000', parseReg, parseReg, '0', lambda t: parseImm(t, 4), ],
-    'ADDSP3': ['00000', parseReg, parseImm, ],
-    'ADDSP': ['01100011', parseImm, ],
-    'ADDU': ['11100', parseReg, parseReg, parseReg, '01', ],
-    'AND': ['11101', parseReg, parseReg, '01100', ],
-    'B': ['00010', lambda t: parseImm(t, 11, relative='rel'), ],
-    'BEQZ': ['00100', parseReg, lambda t: parseImm(t, relative='rel'), ],
-    'BNEZ': ['00101', parseReg, lambda t: parseImm(t, relative='rel'), ],
-    'BTEQZ': ['01100000', lambda t: parseImm(t, relative='rel'), ],
-    'BTNEZ': ['01100001', lambda t: parseImm(t, relative='rel'), ],
-    'CMP': ['11101', parseReg, parseReg, '01010', ],
-    'CMPI': ['01110', parseReg, parseImm, ],
-    'INT': ['111110000000', lambda t: parseImm(t, 4), ],
-    'JALR': ['11101', parseReg, '11000000', ],
+    'ADDIU': ['10001', parseReg, parseImm, ],
+    'ADDIU3': ['10101', parseReg, parseReg, '0', lambda t: parseImm(t, 4), ],
+    'ADDSP3': ['10011', parseReg, parseImm, ],
+    'ADDSP': ['01110', parseImm, '000'],
+    'ADDU': ['01100', parseReg, parseReg, parseReg, '00', ],
+    'AND': ['00101', parseReg, parseReg, '00000', ],
+    'B': ['11000', lambda t: parseImm(t, 11, relative='rel'), ],
+    'BEQZ': ['11010', parseReg, lambda t: parseImm(t, relative='rel'), ],
+    'BNEZ': ['11011', parseReg, lambda t: parseImm(t, relative='rel'), ],
+    'BTEQZ': ['11001', lambda t: parseImm(t, relative='rel'), '000'],
+    # 'BTNEZ': ['01100001', lambda t: parseImm(t, relative='rel'), ],
+    'CMP': ['01001', parseReg, parseReg, '00000', ],
+    # 'CMPI': ['01110', parseReg, parseImm, ],
+    # 'INT': ['111110000000', lambda t: parseImm(t, 4), ],
+    # 'JALR': ['11101', parseReg, '11000000', ],
     'JR': ['11101', parseReg, '00000000', ],
-    'JRRA': ['1110100000100000', ],
-    'LI': ['01101', parseReg, parseImm, ],
-    'LW': ['10011', parseReg, parseReg, lambda t: parseImm(t, 5), ],
-    'LW_SP': ['10010', parseReg, parseImm, ],
-    'MFIH': ['11110', parseReg, '00000000', ],
-    'MFPC': ['11101', parseReg, '01000000', ],
-    'MOVE': ['01111', parseReg, parseReg, '00000', ],
-    'MTIH': ['11110', parseReg, '00000001', ],
-    'MTSP': ['01100100', parseReg, '00000', ],
-    'NEG': ['11101', parseReg, parseReg, '01011', ],
-    'NOT': ['11101', parseReg, parseReg, '01111', ],
-    'NOP': ['0000100000000000', ],
-    'OR': ['11101', parseReg, parseReg, '01101', ],
-    'SLL': ['00110', parseReg, parseReg, lambda t: parseImm(t, 3), '00', ],
-    'SLLV': ['11101', parseReg, parseReg, '00100', ],
-    'SLT': ['11101', parseReg, parseReg, '00010', ],
-    'SLTI': ['01010', parseReg, parseImm, ],
-    'SLTU': ['11101', parseReg, parseReg, '00011', ],
-    'SLTUI': ['01011', parseReg, parseImm, ],
-    'SRA': ['00110', parseReg, parseReg, lambda t: parseImm(t, 3), '11', ],
-    'SRAV': ['11101', parseReg, parseReg, '00111', ],
-    'SRL': ['00110', parseReg, parseReg, lambda t: parseImm(t, 3), '10', ],
-    'SRLV': ['11101', parseReg, parseReg, '00110', ],
-    'SUBU': ['11100', parseReg, parseReg, parseReg, '11', ],
-    'SW': ['11011', parseReg, parseReg, lambda t: parseImm(t, 5), ],
-    'SW_RS': ['01100010', parseImm, ],
+    'JRRA': ['1110000000000000', ],
+    'LI': ['10100', parseReg, parseImm, ],
+    'LW': ['10110', parseReg, parseReg, lambda t: parseImm(t, 5), ],
+    'LW_SP': ['01111', parseReg, parseImm, ],
+    'MFIH': ['00001', parseReg, '00000000', ],
+    'MFPC': ['00010', parseReg, '00000000', ],
+    # 'MOVE': ['01111', parseReg, parseReg, '00000', ],
+    'MTIH': ['00011', parseReg, '00000000', ],
+    'MTSP': ['00100', parseReg, '00000000', ],
+    # 'NEG': ['11101', parseReg, parseReg, '01011', ],
+    'NOT': ['00111', parseReg, parseReg, '00000', ],
+    'NOP': ['0000000000000000', ],
+    'OR': ['00110', parseReg, parseReg, '00000', ],
+    'SLL': ['01010', parseReg, parseReg, lambda t: parseImm(t, 3), '00', ],
+    # 'SLLV': ['11101', parseReg, parseReg, '00100', ],
+    'SLT': ['01000', parseReg, parseReg, '00000', ],
+    'SLTI': ['10010', parseReg, parseImm, ],
+    # 'SLTU': ['11101', parseReg, parseReg, '00011', ],
+    # 'SLTUI': ['01011', parseReg, parseImm, ],
+    'SRA': ['01011', parseReg, parseReg, lambda t: parseImm(t, 3), '00', ],
+    # 'SRAV': ['11101', parseReg, parseReg, '00111', ],
+    # 'SRL': ['00110', parseReg, parseReg, lambda t: parseImm(t, 3), '10', ],
+    # 'SRLV': ['11101', parseReg, parseReg, '00110', ],
+    'SUBU': ['01101', parseReg, parseReg, parseReg, '00', ],
+    'SW': ['10111', parseReg, parseReg, lambda t: parseImm(t, 5), ],
+    # 'SW_RS': ['01100010', parseImm, ],
     'SW_SP': ['11010', parseReg, parseImm, ],
-    'XOR': ['11101', parseReg, parseReg, '01110', ],
+    # 'XOR': ['11101', parseReg, parseReg, '01110', ],
     'RET': ['1111111111111111', ],
-    'LIT': [lambda t: parseImm(t, 16), ],
+    # 'LIT': [lambda t: parseImm(t, 16), ],
     }
 
 
