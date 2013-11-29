@@ -66,9 +66,12 @@ begin
 				Reg3 <= '0' & Instruction(4 downto 2);
 			when "01110" =>
 				Imm <= extend(Int8_zero & Instruction(10 downto 3), "1000", '1');
-			when "01111" | "10000" | "10001" | "10010" | "10011" | "10100" =>
+			when "01111" | "10000" | "10001" | "10010" | "10011" =>
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
+			when "10100" =>
+				Reg1 <= '0' & Instruction(10 downto 8);
+				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '0');
 			when "10101" => --ADDIU3
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
