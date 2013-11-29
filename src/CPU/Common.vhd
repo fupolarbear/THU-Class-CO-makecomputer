@@ -33,15 +33,20 @@ package Common is
 	subtype Int5 is std_logic_vector(4 downto 0);
 	subtype Int4 is std_logic_vector(3 downto 0);
 	subtype Int3 is std_logic_vector(2 downto 0);
-
+	subtype Int8 is std_logic_vector(7 downto 0);
+	
 	constant Int16_Zero : Int16 := "0000000000000000";
 	constant Int15_Zero : Int15 := "000000000000000";
 	constant Int5_Zero : Int5 := "00000";
 	constant Int4_Zero : Int4 := "0000";
 	constant Int4_One : Int4 := "1111";
 	constant Int3_Zero : Int3 := "000";
-
+	constant Int8_Zero : Int8 := "00000000";
+	
+	constant Zero_Reg: Int4 := "1000"; 
+	
 	function sll_2(imm: Int16) return Int16;
+	function extend(imm: Int16; imm_n: Int4; sign: std_logic) return int16;
 end Common;
 
 package body Common is
@@ -79,4 +84,32 @@ function sll_2(imm: Int16) return Int16 is
 		n1 := TO_BITVECTOR(imm);
 		return TO_STDLOGICVECTOR(n1 sll i);
 	end sll_2;
+
+function extend(imm: Int16; imm_n: Int4; sign: std_logic) return int16 is
+	variable re: int16 := int16_zero;
+	begin 
+		if sign = '1' then --sign_extend
+			case imm_n is
+				when "0011" => 
+					re(15 downto 3) := (others => imm(2));
+					re(2 downto 0) := imm(2 downto 0);
+				when "1000" =>
+					re(15 downto 8) := (others => imm(7));
+					re(7 downto 0) := imm(7 downto 0);
+				when "0100" =>
+					re(15 downto 4) := (others => imm(3));
+					re(3 downto 0) := imm(3 downto 0);
+				when "0101" =>
+					re(15 downto 5) := (others => imm(4));
+					re(4 downto 0) := imm(4 downto 0);
+				when "1011" =>
+					re(15 downto 11) := (others => imm(10));
+					re(10 downto 0) := imm(10 downto 0);
+				when others => null;
+			end case;
+		else --zero_extend
+			null;
+		end if;
+		return re;
+	end extend;
 end Common;

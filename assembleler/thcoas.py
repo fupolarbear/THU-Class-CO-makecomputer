@@ -33,7 +33,7 @@ PAT_BINSTR = re.compile(r'[01]{16}')
 ferr = sys.stderr
 # options
 debug = False
-printBin = False
+printBin = True
 # global state
 lineNum = 0
 codeAddr = 0
