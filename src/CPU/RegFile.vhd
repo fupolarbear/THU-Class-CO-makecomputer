@@ -68,17 +68,18 @@ r7	: Reg16 port map(input => WriteData, output => opt7, wrn => control(7), clock
 -- r8 Zero register
 r9	: Reg16 port map(input => WriteData, output => opt9, wrn => control(9), clock => clk);
 -- r10 PC register
+r10	: Reg16 port map(input => WriteData, output => opt10, wrn => control(10), clock => clk);
+-- r11 IH register (interrput ÖÐ¶Ï)
 r11	: Reg16 port map(input => WriteData, output => opt11, wrn => control(11), clock => clk);
+-- r12 RA register (return address)
 r12	: Reg16 port map(input => WriteData, output => opt12, wrn => control(12), clock => clk);
+-- r13 SP register (stack point)
 r13	: Reg16 port map(input => WriteData, output => opt13, wrn => control(13), clock => clk);
 r14	: Reg16 port map(input => WriteData, output => opt14, wrn => control(14), clock => clk);
 r15 : Reg16 port map(input => WriteData, output => opt15, wrn => control(15), clock => clk);
 
+-- because it's forever zero output (but can still write)
 opt8 <= (others => '0');	--ZERO
-
--- TODO: undifined now
--- opt10 <= PCInput;	--PC
-
 
 with ReadAddress1 select
 	Reg1<=  
