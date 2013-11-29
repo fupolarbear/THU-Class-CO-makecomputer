@@ -117,6 +117,9 @@ function extend(imm: Int16; imm_n: Int4; sign: std_logic) return int16 is
 				when "1000" => 
 					re(15 downto 8) := (others => '0');
 					re(7 downto 0) := imm(7 downto 0);
+				when "0011" => 
+					re(15 downto 3) := (others => '0');
+					re(2 downto 0) := imm(2 downto 0);
 				when others => null;
 			end case;
 		end if;

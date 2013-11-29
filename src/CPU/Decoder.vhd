@@ -77,7 +77,7 @@ begin
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
 				if Instruction(4 downto 2) /= "000" then 
-					Imm <= extend("0000000000000" & Instruction(4 downto 2), "0011", '1');
+					Imm <= extend("0000000000000" & Instruction(4 downto 2), "0011", '0');
 				else 
 					Imm <= Int16_eight;
 				end if;
