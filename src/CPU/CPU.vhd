@@ -93,6 +93,7 @@ component Controller is
     Port ( Op : in  STD_LOGIC_VECTOR (4 downto 0);
 		rst : in  STD_LOGIC;
 		ALUop : out  STD_LOGIC_VECTOR (2 downto 0);
+		ALUsrc : out STD_LOGIC;
 		TType : out  STD_LOGIC;
 		TWrite : out  STD_LOGIC;
 		MemRead : out  STD_LOGIC;
@@ -371,6 +372,7 @@ begin
 		Op => decoder_op,
 		rst => controller_rst,
 		ALUop => aluop,
+		ALUsrc => alusrc,
 		TType => ttype,
 		TWrite => twrite,
 		MemRead => memread,
