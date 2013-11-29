@@ -68,7 +68,7 @@ end ID_EX;
 architecture Behavioral of ID_EX is
 
 begin
-	process (rst, clk)
+	process (rst, clk, WriteIn)
 	begin
 		if (rst = '0') then 
 			ALUopOutput <= Int3_Zero;

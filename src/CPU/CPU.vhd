@@ -229,7 +229,7 @@ component MEM_WB is
            AluResultInput : in  STD_LOGIC_VECTOR (15 downto 0);
            AluResultOutput : out  STD_LOGIC_VECTOR (15 downto 0);
 			  MemResultInput: in STD_LOGIC_VECTOR (15 downto 0);
-			  MemResultOutput: in STD_LOGIC_VECTOR (15 downto 0);
+			  MemResultOutput: out STD_LOGIC_VECTOR (15 downto 0);
 			  RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
            RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
            RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);

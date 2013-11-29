@@ -58,7 +58,25 @@ end EX_MEM;
 architecture Behavioral of EX_MEM is
 
 begin
-
-
+	process (rst, clk, WriteIn)
+	begin
+		if (rst = '0') then 
+			MemReadOutput <= '0';
+			MemWriteOutput <= '0';
+			MemtoRegOutput <= '0';
+			RegWriteOutput <= '0';
+		elsif (clk'event and clk = '1') then
+			if (WriteIn = '1') then
+				MemReadOutput <= MemReadInput;
+				MemWriteOutput <= MemWriteInput;
+				MemtoRegOutput <= MemtoRegInput;
+				RegWriteOutput <= RegWriteInput;
+				RegReadOutput1 <= RegReadInput1;
+				RegReadOutput2 <= RegReadInput2;
+				RegWriteToOutput <= RegWriteToInput;
+				DataOutput <= DataInput;
+			end if;
+		end if;
+	end process;
 end Behavioral;
 

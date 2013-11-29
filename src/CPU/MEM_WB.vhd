@@ -41,7 +41,7 @@ entity MEM_WB is
 		AluResultInput : in  STD_LOGIC_VECTOR (15 downto 0);
 		AluResultOutput : out  STD_LOGIC_VECTOR (15 downto 0);
 		MemResultInput: in STD_LOGIC_VECTOR (15 downto 0);
-		MemResultOutput: in STD_LOGIC_VECTOR (15 downto 0);
+		MemResultOutput: out STD_LOGIC_VECTOR (15 downto 0);
 		RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
@@ -54,7 +54,22 @@ end MEM_WB;
 architecture Behavioral of MEM_WB is
 
 begin
-
-
+	process (rst, clk, WriteIn)
+	begin
+		if (rst = '0') then 
+			MemtoRegOutput <= '0';
+			RegWriteOutput <= '0';
+		elsif (clk'event and clk = '1') then
+			if (WriteIn = '1') then
+				MemtoRegOutput <= MemtoRegInput;
+				RegWriteOutput <= RegWriteInput;
+				AluResultOutput <= AluResultInput;
+				MemResultOutput <= MemResultInput;
+				RegReadOutput1 <= RegReadInput1;
+				RegReadOutput2 <= RegReadInput2;
+				RegWriteToOutput <= RegWriteToInput;
+			end if;
+		end if;
+	end process;
 end Behavioral;
 

@@ -44,7 +44,7 @@ end IF_ID;
 architecture Behavioral of IF_ID is
 
 begin
-	process (rst, clk)
+	process (rst, clk, WriteIn)
 	begin
 		if (rst = '0') then 
 			Instruction_out <= Int16_Zero;
