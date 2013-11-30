@@ -57,3 +57,17 @@ xlnx_auto_0_xdb/
 xst/
 _ngo/
 _xmsgs/
+planAhead*/
+
+# Vivado/PlanAhead
+*.xpr
+*.ppr
+*.cache/
+*.runs/
+*.sdk/
+*.jou
+*.log
+
+# strange file
+*.debug
+*.tcl
