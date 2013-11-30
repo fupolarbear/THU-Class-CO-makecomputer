@@ -304,7 +304,7 @@ signal IDEX_regread2: Int4 := Int4_One;
 signal IDEX_regwriteto: Int4 := Int4_One;
 signal IDEX_regresult: Int16:= Int16_Zero;
 -- EXE
-signal T: std_logic:= '0';
+signal T_sign: std_logic:= '0';
 signal alu_input1: Int16:= Int16_Zero;
 signal alu_input2: Int16:= Int16_Zero;
 signal alu_output: Int16:= Int16_Zero;
@@ -418,7 +418,7 @@ begin
 	BranchSelector_1: BranchSelector port map(
 		Op => decoder_op,
 		RegInput => regfile_reg1,
-		T => T,
+		T => T_sign,
 		Branch => branch
 		);
 	RegFile_1: RegFile port map(
@@ -486,7 +486,7 @@ begin
 		Input => alu_output,
 		TType => IDEX_ttype,
 		TWrite => IDEX_twrite,
-		T => T
+		T => T_sign
 		);
 	Mux_alusrc1: Mux port map(
 		choice => forwardA,
