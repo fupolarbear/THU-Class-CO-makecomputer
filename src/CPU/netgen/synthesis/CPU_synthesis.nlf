@@ -17,4 +17,4 @@ INFO:NetListWriters:635 - The generated VHDL netlist contains Xilinx UNISIM
    compilation and simulation. 
 Number of warnings: 0
 Number of info messages: 1
-Total memory usage is 138852 kilobytes
+Total memory usage is 138788 kilobytes

@@ -45,7 +45,8 @@ end Passer;
 architecture Behavioral of Passer is
 
 begin
-
-
+ -- TODO
+	ForwardB <= "00";
+	ForwardA <= "00";
 end Behavioral;
 

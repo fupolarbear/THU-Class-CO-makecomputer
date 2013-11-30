@@ -34,7 +34,18 @@ use work.Common.all;
 entity CPU is
 	Port (
 		clk : in  STD_LOGIC;
-		rst : in  STD_LOGIC
+		rst : in  STD_LOGIC;
+		
+		Ram1Addr : out  STD_LOGIC_VECTOR (17 downto 0);
+		Ram1Data : inout  STD_LOGIC_VECTOR (15 downto 0);
+		Ram1OE : out  STD_LOGIC;
+		Ram1WE : out  STD_LOGIC;
+		Ram1EN : out  STD_LOGIC
+--		Ram2Addr : out  STD_LOGIC_VECTOR (17 downto 0);
+--		Ram2Data : inout  STD_LOGIC_VECTOR (15 downto 0);
+--		Ram2OE : out  STD_LOGIC;
+--		Ram2WE : out  STD_LOGIC;
+--		Ram2EN : out  STD_LOGIC
 	);
 end CPU;
 
@@ -66,8 +77,17 @@ component Add is
 		Output : out Int16);
 end component;
 component InstructionMem is
-    Port ( Address : in  Int16;
-		Data : out  Int16);
+    Port (
+		rst : in std_logic;
+		clk : in std_logic;
+		Address : in  Int16;
+		Data : out  Int16;
+		ramdata : INOUT std_logic_vector(15 downto 0);      
+		ramaddr : OUT std_logic_vector(17 downto 0);
+		OE : OUT std_logic;
+		WE : OUT std_logic;
+		EN : OUT std_logic
+		);
 end component;
 
 component IF_ID is
@@ -238,6 +258,12 @@ component MEM_WB is
            RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
            RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
 end component;
+
+component divClk is
+	Port ( rst : in  STD_LOGIC;
+		clk : in  STD_LOGIC;
+		clk0 : out  STD_LOGIC);
+end component;
 signal pcreg_input: Int16:= Int16_Zero;
 signal pcreg_output: Int16:= Int16_Zero;
 
@@ -249,7 +275,7 @@ signal instmem_data: Int16:= Int16_Zero;
 
 signal IFID_inst_out: Int16:= Int16_Zero;
 signal IFID_pc_out: Int16:= Int16_Zero;
-signal IFID_writein: std_logic:= '0';
+signal IFID_writein: std_logic:= '1';
 
 signal decoder_op: Int5 := Int5_Zero;
 signal decoder_reg1: Int4 := Int4_One;
@@ -319,12 +345,14 @@ signal regwrite: std_logic:= '0';
 signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 
+signal clk0: std_logic:='0';
+
 begin
 	pc_reg <= regfile_reg1;
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
 		Output => pcreg_output,
-		clk => clk,
+		clk => clk0,
 		rst => rst,
 		PCWrite => pcwrite
 		);
@@ -341,8 +369,15 @@ begin
 		Output => pc_add4
 		);
 	InstructionMem_1: InstructionMem port map(
+		clk => clk,
+		rst => rst,
 		Address => pcreg_output,
-		Data => instmem_data
+		Data => instmem_data,
+		ramaddr => Ram1Addr,
+		ramdata => Ram1Data,
+		OE => Ram1OE,
+		WE => Ram1WE,
+		EN => Ram1EN
 		);
 		
 	IF_ID_1: IF_ID port map(
@@ -350,7 +385,7 @@ begin
 		Instruction_out => IFID_inst_out,
 		PC_in => pcreg_output,
 		PC_out => IFID_pc_out,
-		clk => clk, 
+		clk => clk0, 
 		rst => rst, 
 		WriteIn => IFID_writein
 		);
@@ -394,7 +429,7 @@ begin
 		Reg1 => regfile_reg1,
 		Reg2 => regfile_reg2,
 		RegWrite => MEMWB_regwrite,
-		clk => clk,
+		clk => clk0,
 		rst => rst
 		);
 	RiskChecker_1: RiskChecker port map(
@@ -408,7 +443,7 @@ begin
 		);
 	
 	ID_EX_1: ID_EX port map(
-		clk => clk,
+		clk => clk0,
 		rst => rst,
 		WriteIn => '1',
 		ALUopInput => aluop,
@@ -479,7 +514,7 @@ begin
 		);
 	
 	EX_MEM_1: EX_MEM port map(
-		clk => clk,
+		clk => clk0,
 		rst => rst,
 		WriteIn => '1',
 		MemReadInput => IDEX_memread,
@@ -511,7 +546,7 @@ begin
 		);
 	
 	MEM_WB_1: MEM_WB port map(
-		clk => clk,
+		clk => clk0,
 		rst => rst,
 		WriteIn => '1',
 		RegWriteInput => EXMEM_regwrite,
@@ -535,6 +570,11 @@ begin
 		Input1 => MEMWB_aluresult,
 		Input2 => MEMWB_memresult,
 		Output => regfile_writedata
+		);
+	divClk_1: divClk port map(
+		rst => rst,
+		clk => clk,
+		clk0 => clk0
 		);
 end Behavioral;
 

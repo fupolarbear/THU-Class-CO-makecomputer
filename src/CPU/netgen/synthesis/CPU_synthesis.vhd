@@ -7,7 +7,7 @@
 -- \   \   \/     Version: P.68d
 --  \   \         Application: netgen
 --  /   /         Filename: CPU_synthesis.vhd
--- /___/   /\     Timestamp: Sun Nov 24 18:51:59 2013
+-- /___/   /\     Timestamp: Sat Nov 30 23:59:56 2013
 -- \   \  /  \ 
 --  \___\/\___\
 --             
@@ -41,373 +41,882 @@ use UNISIM.VPKG.ALL;
 entity CPU is
   port (
     clk : in STD_LOGIC := 'X'; 
-    rst : in STD_LOGIC := 'X' 
+    Ram1WE : out STD_LOGIC; 
+    rst : in STD_LOGIC := 'X'; 
+    Ram1EN : out STD_LOGIC; 
+    Ram1OE : out STD_LOGIC; 
+    Ram1Data : inout STD_LOGIC_VECTOR ( 15 downto 0 ); 
+    Ram1Addr : out STD_LOGIC_VECTOR ( 17 downto 0 ) 
   );
 end CPU;
 
 architecture Structure of CPU is
-  component PCReg
-    port (
-      clk : in STD_LOGIC := 'X'; 
-      rst : in STD_LOGIC := 'X'; 
-      PCWrite : in STD_LOGIC := 'X'; 
-      Output : out STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Input : in STD_LOGIC_VECTOR ( 15 downto 0 ) 
-    );
-  end component;
-  component Mux
-    port (
-      choice : in STD_LOGIC_VECTOR ( 1 downto 0 ); 
-      Output : in STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Input1 : in STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Input2 : in STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Input3 : in STD_LOGIC_VECTOR ( 15 downto 0 ) 
-    );
-  end component;
-  component Add
-    port (
-      Output : out STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Input1 : in STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Input2 : in STD_LOGIC_VECTOR ( 15 downto 0 ) 
-    );
-  end component;
-  component InstructionMem
-    port (
-      Data : out STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Address : in STD_LOGIC_VECTOR ( 15 downto 0 ) 
-    );
-  end component;
-  component IF_ID
-    port (
-      clk : in STD_LOGIC := 'X'; 
-      WriteIn : in STD_LOGIC := 'X'; 
-      rst : in STD_LOGIC := 'X'; 
-      Instruction_out : out STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      PC_out : out STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      PC_in : in STD_LOGIC_VECTOR ( 15 downto 0 ); 
-      Instruction_in : in STD_LOGIC_VECTOR ( 15 downto 0 ) 
-    );
-  end component;
-  signal N0 : STD_LOGIC; 
-  signal N1 : STD_LOGIC; 
-  signal clk_IBUF_3 : STD_LOGIC; 
-  signal rst_IBUF_53 : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_15_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_14_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_13_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_12_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_11_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_10_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_9_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_8_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_7_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_6_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_5_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_4_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_3_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_2_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_1_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_Instruction_out_0_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_15_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_14_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_13_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_12_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_11_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_10_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_9_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_8_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_7_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_6_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_5_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_4_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_3_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_2_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_1_UNCONNECTED : STD_LOGIC; 
-  signal NLW_IF_ID_1_PC_out_0_UNCONNECTED : STD_LOGIC; 
-  signal instmem_data : STD_LOGIC_VECTOR ( 15 downto 0 ); 
-  signal pc_add4 : STD_LOGIC_VECTOR ( 15 downto 0 ); 
-  signal pcreg_output : STD_LOGIC_VECTOR ( 15 downto 0 ); 
+  signal ALU_1_Mmux_Output_45 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_10_rt_2 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_11_rt_4 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_12_rt_6 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_13_rt_8 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_14_rt_10 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_3_rt_13 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_4_rt_15 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_5_rt_17 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_6_rt_19 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_7_rt_21 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_8_rt_23 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy_9_rt_25 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_xor_15_rt_27 : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_EN_28 : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_EN_mux0000 : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_flag_FSM_FFd1_31 : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_flag_FSM_FFd2_32 : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_flag_FSM_FFd3_33 : STD_LOGIC; 
+  signal InstructionMem_1_Inst_RAM_ramaddr_and0000 : STD_LOGIC; 
+  signal Ram1Addr_0_OBUF_81 : STD_LOGIC; 
+  signal clk0 : STD_LOGIC; 
+  signal clk_BUFGP_103 : STD_LOGIC; 
+  signal divClk_1_Mcount_num : STD_LOGIC; 
+  signal divClk_1_Mcount_num1 : STD_LOGIC; 
+  signal divClk_1_temp_108 : STD_LOGIC; 
+  signal divClk_1_temp_and0000 : STD_LOGIC; 
+  signal divClk_1_temp_not0001 : STD_LOGIC; 
+  signal rst_IBUF_126 : STD_LOGIC; 
+  signal Add_PC_Madd_Output_cy : STD_LOGIC_VECTOR ( 14 downto 2 ); 
+  signal Add_PC_Madd_Output_lut : STD_LOGIC_VECTOR ( 2 downto 2 ); 
+  signal InstructionMem_1_Inst_RAM_ramaddr : STD_LOGIC_VECTOR ( 15 downto 2 ); 
+  signal PCReg_1_Output : STD_LOGIC_VECTOR ( 15 downto 2 ); 
+  signal divClk_1_num : STD_LOGIC_VECTOR ( 1 downto 0 ); 
+  signal pc_add4 : STD_LOGIC_VECTOR ( 15 downto 2 ); 
 begin
   XST_GND : GND
     port map (
-      G => N0
+      G => Ram1Addr_0_OBUF_81
     );
   XST_VCC : VCC
     port map (
-      P => N1
+      P => ALU_1_Mmux_Output_45
     );
-  PCReg_1 : PCReg
+  divClk_1_temp : FDE
+    generic map(
+      INIT => '0'
+    )
     port map (
-      clk => clk_IBUF_3,
-      rst => rst_IBUF_53,
-      PCWrite => N1,
-      Output(15) => pcreg_output(15),
-      Output(14) => pcreg_output(14),
-      Output(13) => pcreg_output(13),
-      Output(12) => pcreg_output(12),
-      Output(11) => pcreg_output(11),
-      Output(10) => pcreg_output(10),
-      Output(9) => pcreg_output(9),
-      Output(8) => pcreg_output(8),
-      Output(7) => pcreg_output(7),
-      Output(6) => pcreg_output(6),
-      Output(5) => pcreg_output(5),
-      Output(4) => pcreg_output(4),
-      Output(3) => pcreg_output(3),
-      Output(2) => pcreg_output(2),
-      Output(1) => pcreg_output(1),
-      Output(0) => pcreg_output(0),
-      Input(15) => N0,
-      Input(14) => N0,
-      Input(13) => N0,
-      Input(12) => N0,
-      Input(11) => N0,
-      Input(10) => N0,
-      Input(9) => N0,
-      Input(8) => N0,
-      Input(7) => N0,
-      Input(6) => N0,
-      Input(5) => N0,
-      Input(4) => N0,
-      Input(3) => N0,
-      Input(2) => N0,
-      Input(1) => N0,
-      Input(0) => N0
+      C => clk_BUFGP_103,
+      CE => divClk_1_temp_and0000,
+      D => divClk_1_temp_not0001,
+      Q => divClk_1_temp_108
     );
-  Mux_PC : Mux
+  divClk_1_num_0 : FDC
+    generic map(
+      INIT => '0'
+    )
     port map (
-      choice(1) => N0,
-      choice(0) => N0,
-      Output(15) => N0,
-      Output(14) => N0,
-      Output(13) => N0,
-      Output(12) => N0,
-      Output(11) => N0,
-      Output(10) => N0,
-      Output(9) => N0,
-      Output(8) => N0,
-      Output(7) => N0,
-      Output(6) => N0,
-      Output(5) => N0,
-      Output(4) => N0,
-      Output(3) => N0,
-      Output(2) => N0,
-      Output(1) => N0,
-      Output(0) => N0,
-      Input1(15) => pc_add4(15),
-      Input1(14) => pc_add4(14),
-      Input1(13) => pc_add4(13),
-      Input1(12) => pc_add4(12),
-      Input1(11) => pc_add4(11),
-      Input1(10) => pc_add4(10),
-      Input1(9) => pc_add4(9),
-      Input1(8) => pc_add4(8),
-      Input1(7) => pc_add4(7),
-      Input1(6) => pc_add4(6),
-      Input1(5) => pc_add4(5),
-      Input1(4) => pc_add4(4),
-      Input1(3) => pc_add4(3),
-      Input1(2) => pc_add4(2),
-      Input1(1) => pc_add4(1),
-      Input1(0) => pc_add4(0),
-      Input2(15) => N0,
-      Input2(14) => N0,
-      Input2(13) => N0,
-      Input2(12) => N0,
-      Input2(11) => N0,
-      Input2(10) => N0,
-      Input2(9) => N0,
-      Input2(8) => N0,
-      Input2(7) => N0,
-      Input2(6) => N0,
-      Input2(5) => N0,
-      Input2(4) => N0,
-      Input2(3) => N0,
-      Input2(2) => N0,
-      Input2(1) => N0,
-      Input2(0) => N0,
-      Input3(15) => N0,
-      Input3(14) => N0,
-      Input3(13) => N0,
-      Input3(12) => N0,
-      Input3(11) => N0,
-      Input3(10) => N0,
-      Input3(9) => N0,
-      Input3(8) => N0,
-      Input3(7) => N0,
-      Input3(6) => N0,
-      Input3(5) => N0,
-      Input3(4) => N0,
-      Input3(3) => N0,
-      Input3(2) => N0,
-      Input3(1) => N0,
-      Input3(0) => N0
+      C => clk_BUFGP_103,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => divClk_1_Mcount_num,
+      Q => divClk_1_num(0)
     );
-  Add_PC : Add
+  divClk_1_num_1 : FDC
+    generic map(
+      INIT => '0'
+    )
     port map (
-      Output(15) => pc_add4(15),
-      Output(14) => pc_add4(14),
-      Output(13) => pc_add4(13),
-      Output(12) => pc_add4(12),
-      Output(11) => pc_add4(11),
-      Output(10) => pc_add4(10),
-      Output(9) => pc_add4(9),
-      Output(8) => pc_add4(8),
-      Output(7) => pc_add4(7),
-      Output(6) => pc_add4(6),
-      Output(5) => pc_add4(5),
-      Output(4) => pc_add4(4),
-      Output(3) => pc_add4(3),
-      Output(2) => pc_add4(2),
-      Output(1) => pc_add4(1),
-      Output(0) => pc_add4(0),
-      Input1(15) => pcreg_output(15),
-      Input1(14) => pcreg_output(14),
-      Input1(13) => pcreg_output(13),
-      Input1(12) => pcreg_output(12),
-      Input1(11) => pcreg_output(11),
-      Input1(10) => pcreg_output(10),
-      Input1(9) => pcreg_output(9),
-      Input1(8) => pcreg_output(8),
-      Input1(7) => pcreg_output(7),
-      Input1(6) => pcreg_output(6),
-      Input1(5) => pcreg_output(5),
-      Input1(4) => pcreg_output(4),
-      Input1(3) => pcreg_output(3),
-      Input1(2) => pcreg_output(2),
-      Input1(1) => pcreg_output(1),
-      Input1(0) => pcreg_output(0),
-      Input2(15) => N0,
-      Input2(14) => N0,
-      Input2(13) => N0,
-      Input2(12) => N0,
-      Input2(11) => N0,
-      Input2(10) => N0,
-      Input2(9) => N0,
-      Input2(8) => N0,
-      Input2(7) => N0,
-      Input2(6) => N0,
-      Input2(5) => N0,
-      Input2(4) => N0,
-      Input2(3) => N0,
-      Input2(2) => N1,
-      Input2(1) => N0,
-      Input2(0) => N0
+      C => clk_BUFGP_103,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => divClk_1_Mcount_num1,
+      Q => divClk_1_num(1)
     );
-  InstructionMem_1 : InstructionMem
+  Add_PC_Madd_Output_cy_2_Q : MUXCY
     port map (
-      Data(15) => instmem_data(15),
-      Data(14) => instmem_data(14),
-      Data(13) => instmem_data(13),
-      Data(12) => instmem_data(12),
-      Data(11) => instmem_data(11),
-      Data(10) => instmem_data(10),
-      Data(9) => instmem_data(9),
-      Data(8) => instmem_data(8),
-      Data(7) => instmem_data(7),
-      Data(6) => instmem_data(6),
-      Data(5) => instmem_data(5),
-      Data(4) => instmem_data(4),
-      Data(3) => instmem_data(3),
-      Data(2) => instmem_data(2),
-      Data(1) => instmem_data(1),
-      Data(0) => instmem_data(0),
-      Address(15) => pcreg_output(15),
-      Address(14) => pcreg_output(14),
-      Address(13) => pcreg_output(13),
-      Address(12) => pcreg_output(12),
-      Address(11) => pcreg_output(11),
-      Address(10) => pcreg_output(10),
-      Address(9) => pcreg_output(9),
-      Address(8) => pcreg_output(8),
-      Address(7) => pcreg_output(7),
-      Address(6) => pcreg_output(6),
-      Address(5) => pcreg_output(5),
-      Address(4) => pcreg_output(4),
-      Address(3) => pcreg_output(3),
-      Address(2) => pcreg_output(2),
-      Address(1) => pcreg_output(1),
-      Address(0) => pcreg_output(0)
+      CI => Ram1Addr_0_OBUF_81,
+      DI => ALU_1_Mmux_Output_45,
+      S => Add_PC_Madd_Output_lut(2),
+      O => Add_PC_Madd_Output_cy(2)
     );
-  IF_ID_1 : IF_ID
+  Add_PC_Madd_Output_xor_2_Q : XORCY
     port map (
-      clk => clk_IBUF_3,
-      WriteIn => N1,
-      rst => rst_IBUF_53,
-      Instruction_out(15) => NLW_IF_ID_1_Instruction_out_15_UNCONNECTED,
-      Instruction_out(14) => NLW_IF_ID_1_Instruction_out_14_UNCONNECTED,
-      Instruction_out(13) => NLW_IF_ID_1_Instruction_out_13_UNCONNECTED,
-      Instruction_out(12) => NLW_IF_ID_1_Instruction_out_12_UNCONNECTED,
-      Instruction_out(11) => NLW_IF_ID_1_Instruction_out_11_UNCONNECTED,
-      Instruction_out(10) => NLW_IF_ID_1_Instruction_out_10_UNCONNECTED,
-      Instruction_out(9) => NLW_IF_ID_1_Instruction_out_9_UNCONNECTED,
-      Instruction_out(8) => NLW_IF_ID_1_Instruction_out_8_UNCONNECTED,
-      Instruction_out(7) => NLW_IF_ID_1_Instruction_out_7_UNCONNECTED,
-      Instruction_out(6) => NLW_IF_ID_1_Instruction_out_6_UNCONNECTED,
-      Instruction_out(5) => NLW_IF_ID_1_Instruction_out_5_UNCONNECTED,
-      Instruction_out(4) => NLW_IF_ID_1_Instruction_out_4_UNCONNECTED,
-      Instruction_out(3) => NLW_IF_ID_1_Instruction_out_3_UNCONNECTED,
-      Instruction_out(2) => NLW_IF_ID_1_Instruction_out_2_UNCONNECTED,
-      Instruction_out(1) => NLW_IF_ID_1_Instruction_out_1_UNCONNECTED,
-      Instruction_out(0) => NLW_IF_ID_1_Instruction_out_0_UNCONNECTED,
-      PC_out(15) => NLW_IF_ID_1_PC_out_15_UNCONNECTED,
-      PC_out(14) => NLW_IF_ID_1_PC_out_14_UNCONNECTED,
-      PC_out(13) => NLW_IF_ID_1_PC_out_13_UNCONNECTED,
-      PC_out(12) => NLW_IF_ID_1_PC_out_12_UNCONNECTED,
-      PC_out(11) => NLW_IF_ID_1_PC_out_11_UNCONNECTED,
-      PC_out(10) => NLW_IF_ID_1_PC_out_10_UNCONNECTED,
-      PC_out(9) => NLW_IF_ID_1_PC_out_9_UNCONNECTED,
-      PC_out(8) => NLW_IF_ID_1_PC_out_8_UNCONNECTED,
-      PC_out(7) => NLW_IF_ID_1_PC_out_7_UNCONNECTED,
-      PC_out(6) => NLW_IF_ID_1_PC_out_6_UNCONNECTED,
-      PC_out(5) => NLW_IF_ID_1_PC_out_5_UNCONNECTED,
-      PC_out(4) => NLW_IF_ID_1_PC_out_4_UNCONNECTED,
-      PC_out(3) => NLW_IF_ID_1_PC_out_3_UNCONNECTED,
-      PC_out(2) => NLW_IF_ID_1_PC_out_2_UNCONNECTED,
-      PC_out(1) => NLW_IF_ID_1_PC_out_1_UNCONNECTED,
-      PC_out(0) => NLW_IF_ID_1_PC_out_0_UNCONNECTED,
-      PC_in(15) => pcreg_output(15),
-      PC_in(14) => pcreg_output(14),
-      PC_in(13) => pcreg_output(13),
-      PC_in(12) => pcreg_output(12),
-      PC_in(11) => pcreg_output(11),
-      PC_in(10) => pcreg_output(10),
-      PC_in(9) => pcreg_output(9),
-      PC_in(8) => pcreg_output(8),
-      PC_in(7) => pcreg_output(7),
-      PC_in(6) => pcreg_output(6),
-      PC_in(5) => pcreg_output(5),
-      PC_in(4) => pcreg_output(4),
-      PC_in(3) => pcreg_output(3),
-      PC_in(2) => pcreg_output(2),
-      PC_in(1) => pcreg_output(1),
-      PC_in(0) => pcreg_output(0),
-      Instruction_in(15) => instmem_data(15),
-      Instruction_in(14) => instmem_data(14),
-      Instruction_in(13) => instmem_data(13),
-      Instruction_in(12) => instmem_data(12),
-      Instruction_in(11) => instmem_data(11),
-      Instruction_in(10) => instmem_data(10),
-      Instruction_in(9) => instmem_data(9),
-      Instruction_in(8) => instmem_data(8),
-      Instruction_in(7) => instmem_data(7),
-      Instruction_in(6) => instmem_data(6),
-      Instruction_in(5) => instmem_data(5),
-      Instruction_in(4) => instmem_data(4),
-      Instruction_in(3) => instmem_data(3),
-      Instruction_in(2) => instmem_data(2),
-      Instruction_in(1) => instmem_data(1),
-      Instruction_in(0) => instmem_data(0)
+      CI => Ram1Addr_0_OBUF_81,
+      LI => Add_PC_Madd_Output_lut(2),
+      O => pc_add4(2)
     );
-  clk_IBUF : IBUF
+  Add_PC_Madd_Output_cy_3_Q : MUXCY
     port map (
-      I => clk,
-      O => clk_IBUF_3
+      CI => Add_PC_Madd_Output_cy(2),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_3_rt_13,
+      O => Add_PC_Madd_Output_cy(3)
+    );
+  Add_PC_Madd_Output_xor_3_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(2),
+      LI => Add_PC_Madd_Output_cy_3_rt_13,
+      O => pc_add4(3)
+    );
+  Add_PC_Madd_Output_cy_4_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(3),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_4_rt_15,
+      O => Add_PC_Madd_Output_cy(4)
+    );
+  Add_PC_Madd_Output_xor_4_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(3),
+      LI => Add_PC_Madd_Output_cy_4_rt_15,
+      O => pc_add4(4)
+    );
+  Add_PC_Madd_Output_cy_5_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(4),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_5_rt_17,
+      O => Add_PC_Madd_Output_cy(5)
+    );
+  Add_PC_Madd_Output_xor_5_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(4),
+      LI => Add_PC_Madd_Output_cy_5_rt_17,
+      O => pc_add4(5)
+    );
+  Add_PC_Madd_Output_cy_6_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(5),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_6_rt_19,
+      O => Add_PC_Madd_Output_cy(6)
+    );
+  Add_PC_Madd_Output_xor_6_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(5),
+      LI => Add_PC_Madd_Output_cy_6_rt_19,
+      O => pc_add4(6)
+    );
+  Add_PC_Madd_Output_cy_7_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(6),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_7_rt_21,
+      O => Add_PC_Madd_Output_cy(7)
+    );
+  Add_PC_Madd_Output_xor_7_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(6),
+      LI => Add_PC_Madd_Output_cy_7_rt_21,
+      O => pc_add4(7)
+    );
+  Add_PC_Madd_Output_cy_8_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(7),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_8_rt_23,
+      O => Add_PC_Madd_Output_cy(8)
+    );
+  Add_PC_Madd_Output_xor_8_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(7),
+      LI => Add_PC_Madd_Output_cy_8_rt_23,
+      O => pc_add4(8)
+    );
+  Add_PC_Madd_Output_cy_9_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(8),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_9_rt_25,
+      O => Add_PC_Madd_Output_cy(9)
+    );
+  Add_PC_Madd_Output_xor_9_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(8),
+      LI => Add_PC_Madd_Output_cy_9_rt_25,
+      O => pc_add4(9)
+    );
+  Add_PC_Madd_Output_cy_10_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(9),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_10_rt_2,
+      O => Add_PC_Madd_Output_cy(10)
+    );
+  Add_PC_Madd_Output_xor_10_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(9),
+      LI => Add_PC_Madd_Output_cy_10_rt_2,
+      O => pc_add4(10)
+    );
+  Add_PC_Madd_Output_cy_11_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(10),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_11_rt_4,
+      O => Add_PC_Madd_Output_cy(11)
+    );
+  Add_PC_Madd_Output_xor_11_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(10),
+      LI => Add_PC_Madd_Output_cy_11_rt_4,
+      O => pc_add4(11)
+    );
+  Add_PC_Madd_Output_cy_12_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(11),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_12_rt_6,
+      O => Add_PC_Madd_Output_cy(12)
+    );
+  Add_PC_Madd_Output_xor_12_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(11),
+      LI => Add_PC_Madd_Output_cy_12_rt_6,
+      O => pc_add4(12)
+    );
+  Add_PC_Madd_Output_cy_13_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(12),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_13_rt_8,
+      O => Add_PC_Madd_Output_cy(13)
+    );
+  Add_PC_Madd_Output_xor_13_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(12),
+      LI => Add_PC_Madd_Output_cy_13_rt_8,
+      O => pc_add4(13)
+    );
+  Add_PC_Madd_Output_cy_14_Q : MUXCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(13),
+      DI => Ram1Addr_0_OBUF_81,
+      S => Add_PC_Madd_Output_cy_14_rt_10,
+      O => Add_PC_Madd_Output_cy(14)
+    );
+  Add_PC_Madd_Output_xor_14_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(13),
+      LI => Add_PC_Madd_Output_cy_14_rt_10,
+      O => pc_add4(14)
+    );
+  Add_PC_Madd_Output_xor_15_Q : XORCY
+    port map (
+      CI => Add_PC_Madd_Output_cy(14),
+      LI => Add_PC_Madd_Output_xor_15_rt_27,
+      O => pc_add4(15)
+    );
+  PCReg_1_Output_15 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(15),
+      Q => PCReg_1_Output(15)
+    );
+  PCReg_1_Output_14 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(14),
+      Q => PCReg_1_Output(14)
+    );
+  PCReg_1_Output_13 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(13),
+      Q => PCReg_1_Output(13)
+    );
+  PCReg_1_Output_12 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(12),
+      Q => PCReg_1_Output(12)
+    );
+  PCReg_1_Output_11 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(11),
+      Q => PCReg_1_Output(11)
+    );
+  PCReg_1_Output_10 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(10),
+      Q => PCReg_1_Output(10)
+    );
+  PCReg_1_Output_9 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(9),
+      Q => PCReg_1_Output(9)
+    );
+  PCReg_1_Output_8 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(8),
+      Q => PCReg_1_Output(8)
+    );
+  PCReg_1_Output_7 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(7),
+      Q => PCReg_1_Output(7)
+    );
+  PCReg_1_Output_6 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(6),
+      Q => PCReg_1_Output(6)
+    );
+  PCReg_1_Output_5 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(5),
+      Q => PCReg_1_Output(5)
+    );
+  PCReg_1_Output_4 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(4),
+      Q => PCReg_1_Output(4)
+    );
+  PCReg_1_Output_3 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(3),
+      Q => PCReg_1_Output(3)
+    );
+  PCReg_1_Output_2 : FDCE
+    port map (
+      C => clk0,
+      CE => ALU_1_Mmux_Output_45,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => pc_add4(2),
+      Q => PCReg_1_Output(2)
+    );
+  InstructionMem_1_Inst_RAM_flag_FSM_FFd1 : FDC
+    generic map(
+      INIT => '0'
+    )
+    port map (
+      C => clk_BUFGP_103,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => InstructionMem_1_Inst_RAM_flag_FSM_FFd2_32,
+      Q => InstructionMem_1_Inst_RAM_flag_FSM_FFd1_31
+    );
+  InstructionMem_1_Inst_RAM_flag_FSM_FFd2 : FDC
+    generic map(
+      INIT => '0'
+    )
+    port map (
+      C => clk_BUFGP_103,
+      CLR => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      D => InstructionMem_1_Inst_RAM_flag_FSM_FFd3_33,
+      Q => InstructionMem_1_Inst_RAM_flag_FSM_FFd2_32
+    );
+  InstructionMem_1_Inst_RAM_flag_FSM_FFd3 : FDP
+    generic map(
+      INIT => '1'
+    )
+    port map (
+      C => clk_BUFGP_103,
+      D => InstructionMem_1_Inst_RAM_flag_FSM_FFd1_31,
+      PRE => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      Q => InstructionMem_1_Inst_RAM_flag_FSM_FFd3_33
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_15 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(15),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(15)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_14 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(14),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(14)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_13 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(13),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(13)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_12 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(12),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(12)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_11 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(11),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(11)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_10 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(10),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(10)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_9 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(9),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(9)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_8 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(8),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(8)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_7 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(7),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(7)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_6 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(6),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(6)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_5 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(5),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(5)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_4 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(4),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(4)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_3 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(3),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(3)
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_2 : FDE
+    port map (
+      C => clk_BUFGP_103,
+      CE => InstructionMem_1_Inst_RAM_ramaddr_and0000,
+      D => PCReg_1_Output(2),
+      Q => InstructionMem_1_Inst_RAM_ramaddr(2)
+    );
+  InstructionMem_1_Inst_RAM_EN : FDP
+    port map (
+      C => clk_BUFGP_103,
+      D => InstructionMem_1_Inst_RAM_EN_mux0000,
+      PRE => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv,
+      Q => InstructionMem_1_Inst_RAM_EN_28
+    );
+  divClk_1_clk01 : LUT2
+    generic map(
+      INIT => X"8"
+    )
+    port map (
+      I0 => rst_IBUF_126,
+      I1 => divClk_1_temp_108,
+      O => clk0
+    );
+  divClk_1_Mcount_num_xor_1_11 : LUT2
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => divClk_1_num(0),
+      I1 => divClk_1_num(1),
+      O => divClk_1_Mcount_num1
+    );
+  divClk_1_Mcount_num_xor_0_11 : LUT2
+    generic map(
+      INIT => X"1"
+    )
+    port map (
+      I0 => divClk_1_num(0),
+      I1 => divClk_1_num(1),
+      O => divClk_1_Mcount_num
+    );
+  InstructionMem_1_Inst_RAM_EN_mux00001 : LUT3
+    generic map(
+      INIT => X"F2"
+    )
+    port map (
+      I0 => InstructionMem_1_Inst_RAM_EN_28,
+      I1 => InstructionMem_1_Inst_RAM_flag_FSM_FFd3_33,
+      I2 => InstructionMem_1_Inst_RAM_flag_FSM_FFd1_31,
+      O => InstructionMem_1_Inst_RAM_EN_mux0000
+    );
+  InstructionMem_1_Inst_RAM_ramaddr_and00001 : LUT2
+    generic map(
+      INIT => X"8"
+    )
+    port map (
+      I0 => rst_IBUF_126,
+      I1 => InstructionMem_1_Inst_RAM_flag_FSM_FFd3_33,
+      O => InstructionMem_1_Inst_RAM_ramaddr_and0000
+    );
+  divClk_1_temp_and00001 : LUT3
+    generic map(
+      INIT => X"20"
+    )
+    port map (
+      I0 => rst_IBUF_126,
+      I1 => divClk_1_num(0),
+      I2 => divClk_1_num(1),
+      O => divClk_1_temp_and0000
     );
   rst_IBUF : IBUF
     port map (
       I => rst,
-      O => rst_IBUF_53
+      O => rst_IBUF_126
+    );
+  Ram1Data_15_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(15)
+    );
+  Ram1Data_14_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(14)
+    );
+  Ram1Data_13_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(13)
+    );
+  Ram1Data_12_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(12)
+    );
+  Ram1Data_11_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(11)
+    );
+  Ram1Data_10_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(10)
+    );
+  Ram1Data_9_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(9)
+    );
+  Ram1Data_8_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(8)
+    );
+  Ram1Data_7_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(7)
+    );
+  Ram1Data_6_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(6)
+    );
+  Ram1Data_5_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(5)
+    );
+  Ram1Data_4_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(4)
+    );
+  Ram1Data_3_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(3)
+    );
+  Ram1Data_2_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(2)
+    );
+  Ram1Data_1_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(1)
+    );
+  Ram1Data_0_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Data(0)
+    );
+  Ram1WE_OBUF : OBUF
+    port map (
+      I => ALU_1_Mmux_Output_45,
+      O => Ram1WE
+    );
+  Ram1EN_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_EN_28,
+      O => Ram1EN
+    );
+  Ram1OE_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_EN_28,
+      O => Ram1OE
+    );
+  Ram1Addr_17_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Addr(17)
+    );
+  Ram1Addr_16_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Addr(16)
+    );
+  Ram1Addr_15_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(15),
+      O => Ram1Addr(15)
+    );
+  Ram1Addr_14_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(14),
+      O => Ram1Addr(14)
+    );
+  Ram1Addr_13_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(13),
+      O => Ram1Addr(13)
+    );
+  Ram1Addr_12_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(12),
+      O => Ram1Addr(12)
+    );
+  Ram1Addr_11_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(11),
+      O => Ram1Addr(11)
+    );
+  Ram1Addr_10_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(10),
+      O => Ram1Addr(10)
+    );
+  Ram1Addr_9_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(9),
+      O => Ram1Addr(9)
+    );
+  Ram1Addr_8_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(8),
+      O => Ram1Addr(8)
+    );
+  Ram1Addr_7_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(7),
+      O => Ram1Addr(7)
+    );
+  Ram1Addr_6_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(6),
+      O => Ram1Addr(6)
+    );
+  Ram1Addr_5_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(5),
+      O => Ram1Addr(5)
+    );
+  Ram1Addr_4_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(4),
+      O => Ram1Addr(4)
+    );
+  Ram1Addr_3_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(3),
+      O => Ram1Addr(3)
+    );
+  Ram1Addr_2_OBUF : OBUF
+    port map (
+      I => InstructionMem_1_Inst_RAM_ramaddr(2),
+      O => Ram1Addr(2)
+    );
+  Ram1Addr_1_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Addr(1)
+    );
+  Ram1Addr_0_OBUF : OBUF
+    port map (
+      I => Ram1Addr_0_OBUF_81,
+      O => Ram1Addr(0)
+    );
+  Add_PC_Madd_Output_cy_3_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(3),
+      O => Add_PC_Madd_Output_cy_3_rt_13
+    );
+  Add_PC_Madd_Output_cy_4_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(4),
+      O => Add_PC_Madd_Output_cy_4_rt_15
+    );
+  Add_PC_Madd_Output_cy_5_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(5),
+      O => Add_PC_Madd_Output_cy_5_rt_17
+    );
+  Add_PC_Madd_Output_cy_6_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(6),
+      O => Add_PC_Madd_Output_cy_6_rt_19
+    );
+  Add_PC_Madd_Output_cy_7_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(7),
+      O => Add_PC_Madd_Output_cy_7_rt_21
+    );
+  Add_PC_Madd_Output_cy_8_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(8),
+      O => Add_PC_Madd_Output_cy_8_rt_23
+    );
+  Add_PC_Madd_Output_cy_9_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(9),
+      O => Add_PC_Madd_Output_cy_9_rt_25
+    );
+  Add_PC_Madd_Output_cy_10_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(10),
+      O => Add_PC_Madd_Output_cy_10_rt_2
+    );
+  Add_PC_Madd_Output_cy_11_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(11),
+      O => Add_PC_Madd_Output_cy_11_rt_4
+    );
+  Add_PC_Madd_Output_cy_12_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(12),
+      O => Add_PC_Madd_Output_cy_12_rt_6
+    );
+  Add_PC_Madd_Output_cy_13_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(13),
+      O => Add_PC_Madd_Output_cy_13_rt_8
+    );
+  Add_PC_Madd_Output_cy_14_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(14),
+      O => Add_PC_Madd_Output_cy_14_rt_10
+    );
+  Add_PC_Madd_Output_xor_15_rt : LUT1
+    generic map(
+      INIT => X"2"
+    )
+    port map (
+      I0 => PCReg_1_Output(15),
+      O => Add_PC_Madd_Output_xor_15_rt_27
+    );
+  clk_BUFGP : BUFGP
+    port map (
+      I => clk,
+      O => clk_BUFGP_103
+    );
+  Add_PC_Madd_Output_lut_2_INV_0 : INV
+    port map (
+      I => PCReg_1_Output(2),
+      O => Add_PC_Madd_Output_lut(2)
+    );
+  rst_inv1_INV_0 : INV
+    port map (
+      I => rst_IBUF_126,
+      O => InstructionMem_1_Inst_RAM_flag_FSM_Acst_FSM_inv
+    );
+  divClk_1_temp_not00011_INV_0 : INV
+    port map (
+      I => divClk_1_temp_108,
+      O => divClk_1_temp_not0001
     );
 
 end Structure;

@@ -32,7 +32,7 @@ use work.Common.all;
 entity RAM is
 	Port ( clk : in  STD_LOGIC;
 		rst : in  STD_LOGIC;
-		ramaddr : out  STD_LOGIC_VECTOR (15 downto 0);
+		ramaddr : out  STD_LOGIC_VECTOR (17 downto 0);
 		ramdata : inout  STD_LOGIC_VECTOR (15 downto 0);
 		OE : out  STD_LOGIC;
 		WE : out  STD_LOGIC;
@@ -54,13 +54,13 @@ begin
 			flag <= "00";
 			ramdata <= Int16_Zero;
 		elsif (clk'event and clk = '1') then
-			if r = '1' then
+			if r = '0' then
 				case flag is
 					when "00" =>
 						EN <= '0';
 						OE <= '1';
 						WE <= '1';
-						ramaddr <= addr;
+						ramaddr <= "00" & addr;
 						ramdata <= data;
 						flag <= "01";
 					when "01" => 
@@ -79,7 +79,7 @@ begin
 						EN <= '0';
 						OE <= '0';
 						WE <= '1';
-						ramaddr <= addr;
+						ramaddr <= "00" & addr;
 						flag <= "01";
 					when "01" => 
 						dataout <= ramdata;
@@ -95,4 +95,3 @@ begin
 		end if;
 	end process;
 end Behavioral;
-

@@ -31,15 +31,48 @@ use Common.all;
 
 entity InstructionMem is
 	Port(
+		clk : in std_logic;
+		rst : in std_logic;
 		Address : in  Int16;
-		Data : out  Int16
+		Data : out  Int16;
+		ramdata : INOUT std_logic_vector(15 downto 0);      
+		ramaddr : OUT std_logic_vector(17 downto 0);
+		OE : OUT std_logic;
+		WE : OUT std_logic;
+		EN : OUT std_logic
 	);
 end InstructionMem;
 
 architecture Behavioral of InstructionMem is
-
+	COMPONENT RAM
+	PORT(
+		clk : IN std_logic;
+		rst : IN std_logic;
+		addr : IN std_logic_vector(15 downto 0);
+		data : IN std_logic_vector(15 downto 0);
+		r : IN std_logic;    
+		ramdata : INOUT std_logic_vector(15 downto 0);      
+		ramaddr : OUT std_logic_vector(17 downto 0);
+		OE : OUT std_logic;
+		WE : OUT std_logic;
+		EN : OUT std_logic;
+		dataout : OUT std_logic_vector(15 downto 0)
+		);
+	END COMPONENT;
 begin
-
+	Inst_RAM: RAM PORT MAP(
+		clk => clk,
+		rst => rst,
+		ramaddr => ramaddr,
+		ramdata => ramdata,
+		OE => OE,
+		WE => WE,
+		EN => EN,
+		addr => Address,
+		data => Int16_Zero,
+		dataout => Data,
+		r => '1'
+	);
 
 end Behavioral;
 

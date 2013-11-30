@@ -44,7 +44,9 @@ end RiskChecker;
 architecture Behavioral of RiskChecker is
 
 begin
-
-
+-- TODO
+PCWrite <= '1';
+IFIDWrite <= '1';
+ControlRst <= '0';
 end Behavioral;
 
