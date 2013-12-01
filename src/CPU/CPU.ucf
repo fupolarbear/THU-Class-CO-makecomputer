@@ -83,7 +83,7 @@ NET "Ram1EN" LOC = M15;
 #NET "Ram2Data[15]" LOC = N11;
 
 
-## following is some signals
+## following is some signals define
 ## you can comment them when debug.
 ## note that you should 
 ## follow the name defined here.
@@ -156,10 +156,10 @@ NET "flash_ce" LOC = E4;
 NET "flash_oe" LOC = E1;
 NET "flash_we" LOC = D4;
 NET "flash_rp" LOC = D1;
-#NET "flash_sts" LOC = D2;
+#NET "flash_sts" LOC = D2; # DO NOT USE THIS!!
 
 # flash addr
-#NET "flash_addr[0]" LOC = T2;
+#NET "flash_addr[0]" LOC = T2; # DO NOT USE THIS!!
 NET "flash_addr[1]" LOC = T1;
 NET "flash_addr[2]" LOC = R3;
 NET "flash_addr[3]" LOC = R2;
