@@ -1,0 +1,8 @@
+INTSTYLE=impact
+INFILE=C:\Users\amber\mygit\makecomputer\src\VGA\impact.xsl
+OUTFILE=C:\Users\amber\mygit\makecomputer\src\VGA\impact.xsl
+FAMILY=Single
+PART=Single
+WORKINGDIR=C:\Users\amber\mygit\makecomputer\src\VGA
+LICENSE=iMPACT
+USER_INFO=iMPACT
