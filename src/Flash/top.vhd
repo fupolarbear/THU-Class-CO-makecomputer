@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: Fu Zuoyou.
 -- 
--- Create Date:    23:53:21 11/30/2013 
+-- Create Date:    10:08:05 12/01/2013 
 -- Design Name: 
--- Module Name:    LED_top - Behavioral 
+-- Module Name:    top - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,32 +29,34 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity LED_top is
+entity top is
 	port(
-		input16: in std_logic_vector(15 downto 0);
-		clock: in std_logic;
-		intput71: in std_logic_vector(6 downto 0);
-		intput72: in std_logic_vector(6 downto 0);
-		intput71: in std_logic_vector(6 downto 0);
+		-- 字模式下为22-1，字节模式为22-0
+		flash_addr: in std_logic_vector(22 downto 1);
+		datain: in std_logic_vector(15 downto 0);
+		dataout: out std_logic_vector(15 downto 0);
+		clk: in std_logic;
+		reset: in std_logic;
+		
+		flash_byte : out std_logic;
+		flash_vpen : out std_logic;
+		flash_ce : out std_logic;
+		flash_oe : out std_logic;
+		flash_we : out std_logic;
+		flash_rp : out std_logic;
+		flash_addr : out std_logic_vector(22 downto 1);
+		flash_data : inout std_logic_vector(15 downto 0);
+		
+		ctl_read : in  std_logic;
+		ctl_write : in  std_logic;
+		ctl_erase : in std_logic
 	);
-end LED_top;
+end top;
 
-architecture Behavioral of LED_top is
-	component LED16
-		Port(
-			LED_output : out std_logic_vector(15 downto 0);
-			input : in std_logic_vector(15 downto 0)
-		);
-	end component;
-	component LED_seg7
-		Port(
-			input : in  STD_LOGIC_VECTOR (3 downto 0);
-			output : out  STD_LOGIC_VECTOR (6 downto 0)
-		);
-	end component;
+architecture Behavioral of top is
+
 begin
 
-	seg71: LED_seg7 port map(input=> );
 
 end Behavioral;
 
