@@ -32,9 +32,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity flashio is
 	port(
 		-- 字模式下为22-1，字节模式为22-0
-		addr: in std_logic_vector(22 downto 1);
-		datain: in std_logic_vector(15 downto 0);
-		dataout: out std_logic_vector(15 downto 0);
+		KEY16_INPUT: in std_logic_vector(15 downto 0);
+		
+		LED_output: out std_logic_vector(15 downto 0);
+		led1: out std_logic_vector(6 downto 0);
 		clk: in std_logic;
 		reset: in std_logic;
 		
@@ -47,9 +48,7 @@ entity flashio is
 		flash_addr : out std_logic_vector(22 downto 1);
 		flash_data : inout std_logic_vector(15 downto 0);
 		
-		ctl_read : in  std_logic;
-		ctl_write : in  std_logic;
-		ctl_erase : in std_logic
+		addr_ram1: out std_logic_vector(15 downto 0)
 	);
 end flashio;
 
@@ -65,7 +64,38 @@ architecture Behavioral of flashio is
 	signal state : flash_state := waiting;
 	signal next_state : flash_state := waiting;
 	signal ctl_read_last, ctl_write_last, ctl_erase_last : std_logic;
+	signal dataout: std_logic_vector(15 downto 0);
+	signal addr: std_logic_vector(22 downto 1);
+	signal ctl_read : std_logic := '0';
+	signal ctl_write :std_logic:= '0';
+	signal ctl_erase :std_logic:= '0';
+	signal datain: std_logic_vector(15 downto 0);
+	component LED16
+	Port(
+		LED_output : out std_logic_vector(15 downto 0);
+		input : in std_logic_vector(15 downto 0)
+	);
+	end component;
+	component LED_seg7
+	Port(
+		input : in  STD_LOGIC_VECTOR (3 downto 0);
+		output : out  STD_LOGIC_VECTOR (6 downto 0)
+	);
+	end component;
+	signal tmp : std_logic_vector(3 downto 0);
 begin
+
+	l1: LED16 port map (LED_output => LED_output, input => dataout);
+	l3: LED16 port map (LED_output => addr_ram1, input => datain);
+	l2: LED_seg7 port map(input => addr(4 downto 1), output => led1);
+	
+	tmp <= '0' & ctl_read & ctl_write & ctl_erase;
+	addr <= "000000000000000" & KEY16_INPUT(6 downto 0);
+	datain <= KEY16_INPUT(12 downto 7) & "0000000000";
+	
+	ctl_read <= key16_input(15);
+	ctl_write <= key16_input(14);
+	ctl_erase <= key16_input(13);
 
 	-- always set 1 for 字模式
 	flash_byte <= '1';
@@ -79,6 +109,7 @@ begin
 	process(clk, reset)
 	begin
 		if (reset = '0') then
+			dataout <= (others => '0');
 			flash_oe <= '1';
 			flash_we <= '1';
 			state <= waiting;
