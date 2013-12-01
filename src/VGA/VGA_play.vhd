@@ -33,19 +33,22 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity VGA_play is
 	Port(
-		CLK_0: in std_logic;
+		CLK_0: in std_logic; -- must 50M
 		reset: in std_logic;
 		R: out std_logic_vector(2 downto 0) := "000";
 		G: out std_logic_vector(2 downto 0) := "000";
 		B: out std_logic_vector(2 downto 0) := "000";
 		Hs: out std_logic := '0';
 		Vs: out std_logic := '0';
-		hclk: in std_logic
+		-- hclk: in std_logic; -- hand-clock, for debug
+		wctrl: in std_logic_vector(0 downto 0);
+		waddr: in std_logic_vector(10 downto 0);
+		wdata : in std_logic_vector(7 downto 0)
 	);
 end VGA_play;
 
 architecture Behavioral of VGA_play is
-	signal clk: std_logic;
+	signal clk: std_logic; -- div 50M to 25M
 	signal vector_x : std_logic_vector(9 downto 0);		--X 10b 640
 	signal vector_y : std_logic_vector(8 downto 0);		--Y 9b 480
 	signal r0 : std_logic_vector(2 downto 0);
@@ -53,10 +56,6 @@ architecture Behavioral of VGA_play is
 	signal b0 : std_logic_vector(2 downto 0);
 	signal hs1 : std_logic;
 	signal vs1 : std_logic;
-
-	signal char: std_logic_vector(7 downto 0) := "00000000";
-	signal pr: STD_LOGIC_VECTOR(0 DOWNTO 0);
-	signal tmpp: std_logic_vector(14 downto 0);
 	
 	component char_mem
 		PORT (
@@ -65,21 +64,63 @@ architecture Behavioral of VGA_play is
 			douta : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
 		);
 	end component;
-
-begin
-
-	ram: char_mem port map(clka => clk, addra => tmpp, douta => pr);
 	
-	tmpp <=  char(6 downto 0) & vector_y(3 downto 0) & vector_x(3 downto 0);
-
-process(reset, hclk)
+	component fifo_mem
+		PORT (
+			-- a for write
+			clka : IN STD_LOGIC;
+			-- enable, 1 is write signal
+			wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+			addra : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
+			dina : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+			-- b for read
+			clkb : IN STD_LOGIC;
+			addrb : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
+			doutb : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+		);
+	end component;
+	
+	signal char: std_logic_vector(7 downto 0) := "00000000";
+	signal pr: STD_LOGIC_VECTOR(0 DOWNTO 0);
+	signal char_addr: std_logic_vector(14 downto 0);
+	signal caddr: std_logic_vector(10 downto 0);
+	
 begin
-	if reset = '0' then
-		char <= (others => '0');
-	elsif hclk'event and hclk = '1' then
-		char <= char + 1;
-	end if;
-end process;
+
+	-- store char
+	ram: char_mem port map(clka => clk, addra => char_addr, douta => pr);
+	
+	-- display cache
+	cache: fifo_mem port map(
+		-- a for write
+		clka => clk,
+		-- enable, 1 is write signal
+		wea => wctrl,
+		addra => waddr,
+		dina => wdata,
+		-- b for read
+		clkb => clk,
+		addrb => caddr,
+		doutb => char
+	);
+	
+	-- cache addr 5 + 6 = 11
+	caddr <= vector_y(8 downto 4) & vector_x(9 downto 4);
+	
+	-- char acess addr 7 + 4 + 4 = 15
+	-- last 2 control the display(x, y)
+	-- first char control which char
+	char_addr <=  char(6 downto 0) & vector_y(3 downto 0) & vector_x(3 downto 0);
+
+-- -- this is only for debug
+-- process(reset, hclk)
+-- begin
+	-- if reset = '0' then
+		-- char <= (others => '0');
+	-- elsif hclk'event and hclk = '1' then
+		-- char <= char + 1;
+	-- end if;
+-- end process;
 
 -- 50 MHz -> 25 MHz
 process(CLK_0)
