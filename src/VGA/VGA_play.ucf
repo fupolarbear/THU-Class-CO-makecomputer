@@ -2,8 +2,12 @@
 # PlanAhead Generated physical constraints 
 
 NET "CLK_0" LOC = B9;
-NET "Hs" LOC = D6;
+
+# hand-click
+NET "hclk" LOC = U9;
 NET "reset" LOC = U10;
+
+NET "Hs" LOC = D6;
 NET "Vs" LOC = E6;
 NET "B[2]" LOC = B6;
 NET "B[1]" LOC = A6;

@@ -39,21 +39,46 @@ entity VGA_play is
 		G: out std_logic_vector(2 downto 0) := "000";
 		B: out std_logic_vector(2 downto 0) := "000";
 		Hs: out std_logic := '0';
-		Vs: out std_logic := '0'		
+		Vs: out std_logic := '0';
+		hclk: in std_logic
 	);
 end VGA_play;
 
 architecture Behavioral of VGA_play is
 	signal clk: std_logic;
-	signal vector_x : std_logic_vector(9 downto 0);		--X
-	signal vector_y : std_logic_vector(8 downto 0);		--Y
+	signal vector_x : std_logic_vector(9 downto 0);		--X 640
+	signal vector_y : std_logic_vector(8 downto 0);		--Y 480
 	signal r0 : std_logic_vector(2 downto 0);
 	signal g0 : std_logic_vector(2 downto 0);
 	signal b0 : std_logic_vector(2 downto 0);
 	signal hs1 : std_logic;
 	signal vs1 : std_logic;
+
+	signal char: std_logic_vector(7 downto 0) := "00000000";
+	signal pr: std_logic_vector(7 downto 0);
+	signal tmpp: std_logic_vector(11 downto 0);
+	
+	component char_mem
+	  PORT (
+		clka : IN STD_LOGIC;
+		addra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+		douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+	  );
+	end component;
+	signal tmp2: std_logic_vector (3 downto 0);
 begin
 
+	ram: char_mem port map(clka => clk, addra => tmpp, douta => pr);
+	
+	tmpp <=  char(7 downto 0) & vector_y(8 downto 5);
+	tmp2 <= vector_x(3 downto 0);
+
+process(hclk)
+begin
+	if hclk'event and hclk = '1' then
+		char <= char + 1;
+	end if;
+end process;
 
 -- 50 MHz -> 25 MHz
 process(CLK_0)
@@ -140,23 +165,55 @@ begin
 			g0 <= "000";
 			b0 <= "000";
 		else		
-			-- play around		
-			if vector_x < 320 and vector_y < 240 then
-				r0 <= "111";
-				g0 <= "000";
-				b0 <= "000";
-			elsif vector_x >= 320 and vector_y < 240 then
-				r0 <= "111";
-				g0 <= "111";
-				b0 <= "000";
-			elsif vector_x < 320 and vector_y >= 240 then
-				r0 <= "111";
-				g0 <= "000";
-				b0 <= "111";
-			elsif vector_x >= 320 and vector_y >= 240 then
-				r0 <= "000";
-				g0 <= "111";
-				b0 <= "111";
+			-- play around
+			if tmp2 >= 0 and tmp2 < 2 then			
+				if pr(0) = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 2 and tmp2 < 4 then			
+				if pr(1) = '1'  then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 4 and tmp2 < 6 then			
+				if pr(2)  = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 6 and tmp2 < 8 then			
+				if pr(3)  = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 8 and tmp2 < 10 then			
+				if pr(4)  = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 10 and tmp2 < 12 then			
+				if pr(5)  = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 12 and tmp2 < 14 then			
+				if pr(6)  = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
+			elsif tmp2 >= 14 and tmp2 < 16 then			
+				if pr(7)  = '1' then
+					r0 <= "111";g0 <= "000";b0 <= "000";
+				else
+					r0 <= "000";g0 <= "000";b0 <= "000";
+				end if;
 			end if;
 		end if;
 	end if;
