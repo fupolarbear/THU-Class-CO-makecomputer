@@ -1,4 +1,7 @@
-MakeAComputerIn20Days
+Make A Computer In `4` Days
+============
+
+只有`4`天了QAQ
 ============
 
 奋战20天，做台计算机
