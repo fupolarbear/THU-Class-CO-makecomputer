@@ -40,12 +40,16 @@ entity CPU is
 		Ram1Data : inout  STD_LOGIC_VECTOR (15 downto 0);
 		Ram1OE : out  STD_LOGIC;
 		Ram1WE : out  STD_LOGIC;
-		Ram1EN : out  STD_LOGIC
+		Ram1EN : out  STD_LOGIC;
 --		Ram2Addr : out  STD_LOGIC_VECTOR (17 downto 0);
 --		Ram2Data : inout  STD_LOGIC_VECTOR (15 downto 0);
 --		Ram2OE : out  STD_LOGIC;
 --		Ram2WE : out  STD_LOGIC;
 --		Ram2EN : out  STD_LOGIC
+		
+		LED_output : out std_logic_vector(15 downto 0);
+		ledseg1: out std_logic_vector(6 downto 0);
+		ledseg2: out std_logic_vector(6 downto 0)
 	);
 end CPU;
 
@@ -264,12 +268,28 @@ component divClk is
 		clk : in  STD_LOGIC;
 		clk0 : out  STD_LOGIC);
 end component;
+
+
+component LED16 is
+	Port(
+		LED_output : out std_logic_vector(15 downto 0);
+		input : in std_logic_vector(15 downto 0)
+	);
+end component;
+component LED_seg7 is
+	Port(
+		input : in  STD_LOGIC_VECTOR (3 downto 0);
+		output : out  STD_LOGIC_VECTOR (6 downto 0)
+	);
+end component;
+
+
 signal pcreg_input: Int16:= Int16_Zero;
 signal pcreg_output: Int16:= Int16_Zero;
 
 signal pc_add4: Int16:= Int16_Zero;
 signal pc_imm: Int16:= Int16_Zero;
-signal pc_reg: Int16:= Int16_Zero;
+-- signal pc_reg: Int16:= Int16_Zero;
 
 signal instmem_data: Int16:= Int16_Zero;
 
@@ -346,9 +366,8 @@ signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 
 signal clk0: std_logic:='0';
-
+signal fuck: std_logic_vector(15 downto 0):=Int16_Zero;
 begin
-	pc_reg <= regfile_reg1;
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
 		Output => pcreg_output,
@@ -360,12 +379,12 @@ begin
 		choice => branch,
 		Input1 => pc_add4,
 		Input2 => pc_imm,
-		Input3 => pc_reg,
+		Input3 => regfile_reg1,
 		Output => pcreg_input
 		);
 	Add_PC: Add port map(
 		Input1 => pcreg_output,
-		Input2 => "0000000000000100",
+		Input2 => "0000000000000001",
 		Output => pc_add4
 		);
 	InstructionMem_1: InstructionMem port map(
@@ -575,6 +594,19 @@ begin
 		rst => rst,
 		clk => clk,
 		clk0 => clk0
+		);
+	fuck <= instmem_data(15 downto 1) & clk0;
+	LED16_test: LED16 Port map(
+		LED_output => LED_output,
+		input => fuck
+		);
+	LED_left: LED_seg7 port map(
+		input => pcreg_output(3 downto 0),
+		output => ledseg2
+		);
+	LED_right: LED_seg7 port map(
+		input => pc_add4(3 downto 0),
+		output => ledseg1
 		);
 end Behavioral;
 

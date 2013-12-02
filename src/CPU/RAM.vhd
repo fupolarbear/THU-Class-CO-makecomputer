@@ -69,7 +69,7 @@ begin
 					when "10" =>
 						WE <= '1';
 						EN <= '1';
-						flag <= "00";
+						flag <= "11";
 					when others => 
 						flag <= "00";
 				end case;
@@ -80,6 +80,7 @@ begin
 						OE <= '0';
 						WE <= '1';
 						ramaddr <= "00" & addr;
+						ramdata <= "ZZZZZZZZZZZZZZZZ";
 						flag <= "01";
 					when "01" => 
 						dataout <= ramdata;
@@ -87,7 +88,7 @@ begin
 					when "10" =>
 						OE <= '1';
 						EN <= '1';
-						flag <= "00";
+						flag <= "11";
 					when others => 
 						flag <= "00";
 				end case;

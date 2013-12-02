@@ -43,6 +43,7 @@ package Common is
 	constant Int3_Zero : Int3 := "000";
 	constant Int8_Zero : Int8 := "00000000";
 	constant Int16_eight: Int16 := "0000000000001000"; 
+	constant Int16_Z : int16 :=    "ZZZZZZZZZZZZZZZZ";
 	
 	constant Zero_Reg: Int4 := "1000"; 
 	constant PC_Reg: Int4 := "1010";

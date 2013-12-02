@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use Common.all;
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -44,35 +44,32 @@ entity InstructionMem is
 end InstructionMem;
 
 architecture Behavioral of InstructionMem is
-	COMPONENT RAM
-	PORT(
-		clk : IN std_logic;
-		rst : IN std_logic;
-		addr : IN std_logic_vector(15 downto 0);
-		data : IN std_logic_vector(15 downto 0);
-		r : IN std_logic;    
-		ramdata : INOUT std_logic_vector(15 downto 0);      
-		ramaddr : OUT std_logic_vector(17 downto 0);
-		OE : OUT std_logic;
-		WE : OUT std_logic;
-		EN : OUT std_logic;
-		dataout : OUT std_logic_vector(15 downto 0)
-		);
-	END COMPONENT;
+signal flag: std_logic:= '0';
 begin
-	Inst_RAM: RAM PORT MAP(
-		clk => clk,
-		rst => rst,
-		ramaddr => ramaddr,
-		ramdata => ramdata,
-		OE => OE,
-		WE => WE,
-		EN => EN,
-		addr => Address,
-		data => Int16_Zero,
-		dataout => Data,
-		r => '1'
-	);
-
+	process(rst, clk)
+	begin
+	if rst = '0' then
+		flag <= '0';
+		ramdata <= Int16_Z;
+		OE <= '1';
+		WE <= '1';
+		EN <= '1';
+		Data <= Int16_Zero;
+		ramaddr <= "00" & Int16_Zero;
+	elsif falling_edge(clk) then
+			case flag is
+					when '0' =>
+						EN <= '0';
+						OE <= '0';
+						WE <= '1';
+						ramaddr <= "00" & Address;
+						ramdata <= Int16_Z;
+						flag <= '1';
+					when '1' => 
+						data <= ramdata;
+						flag <= '0';
+					when others => flag <= '0';
+			end case;
+	end if;
+	end process;
 end Behavioral;
-

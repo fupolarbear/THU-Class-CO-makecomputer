@@ -38,20 +38,20 @@ end divClk;
 
 architecture Behavioral of divClk is
 signal num : std_logic_vector(1 downto 0) := "00";
-signal temp :std_logic:= '0';
+signal temp :std_logic:= '1';
 begin
 	process(rst, clk)
 	begin
-		clk0 <= temp;
 		if rst = '0' then
 			num <= "00";
-			clk0 <= '0';
+			temp <= '1';
 		elsif (clk'event and clk = '1') then
 			num <= num+1;
-			if num = "10" then 
+			if num = "01" then 
 				num <= "00";
 				temp <= not temp;
 			end if;
 		end if;
 	end process;
+	clk0 <= temp;
 end Behavioral;
