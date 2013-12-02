@@ -1,6 +1,7 @@
 # Output products list for <fifo_mem>
 fifo_mem.asy
 fifo_mem.gise
+fifo_mem.mif
 fifo_mem.ngc
 fifo_mem.vhd
 fifo_mem.vho

@@ -3,9 +3,9 @@
 <!--The data in this file is primarily intended for consumption by Xilinx tools.
 The structure and the elements are likely to change over the next few releases.
 This means code written to parse this file will need to be revisited each subsequent release.-->
-<application name="impact" timeStamp="Sun Dec 01 20:37:51 2013">
+<application name="impact" timeStamp="Mon Dec 02 13:32:36 2013">
 <section name="Project Information" visible="false">
-<property name="ProjectID" value="aa6e97389bac4be4b58575d1ee7c6a4c"/>
+<property name="ProjectID" value="a29f1f3eecdc46f48a0b1625f801cf19"/>
 <property name="ProjectIteration" value="1"/>
 </section>
 <section name="iMPACT Project Info" visible="true">
@@ -31,17 +31,11 @@ This means code written to parse this file will need to be revisited each subseq
 "/>
 <property name="BSCAN Operation" value="Program -p 0
 "/>
-<property name="BSCAN Operation" value="Program -p 0
-"/>
-<property name="BSCAN Operation" value="Program -p 0
-"/>
-<property name="BSCAN Operation" value="Program -p 0
-"/>
 </item>
 <item name="Cable Summary">
-<property name="Cable Type" value=""/>
-<property name="Cable Speed" value="0"/>
-<property name="Port" value="NULL"/>
+<property name="Cable Type" value="Platform Cable USB"/>
+<property name="Cable Speed" value="6 MHz"/>
+<property name="Port" value="usb-hs"/>
 <property name="Local_Server_Mode" value="Local"/>
 </item>
 </section>

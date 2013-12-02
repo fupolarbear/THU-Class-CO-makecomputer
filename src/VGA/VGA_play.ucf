@@ -4,7 +4,7 @@
 NET "CLK_0" LOC = B9;
 
 # hand-click
-NET "hclk" LOC = U9;
+# NET "hclk" LOC = U9;
 NET "reset" LOC = U10;
 
 NET "Hs" LOC = D6;

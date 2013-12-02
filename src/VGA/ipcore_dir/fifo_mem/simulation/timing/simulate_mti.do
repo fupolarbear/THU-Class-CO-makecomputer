@@ -45,6 +45,7 @@
 # PART OF THIS FILE AT ALL TIMES.
 set work work
 #--------------------------------------------------------------------------------
+cp ../../../fifo_mem.mif .
 
 vlib work
 vmap work work
