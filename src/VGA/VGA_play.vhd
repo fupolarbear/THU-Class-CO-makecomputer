@@ -33,18 +33,29 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity VGA_play is
 	Port(
+		-- common port
 		CLK_0: in std_logic; -- must 50M
+		clkout: out std_logic; -- used to sync
 		reset: in std_logic;
+		
+		-- vga port
 		R: out std_logic_vector(2 downto 0) := "000";
 		G: out std_logic_vector(2 downto 0) := "000";
 		B: out std_logic_vector(2 downto 0) := "000";
 		Hs: out std_logic := '0';
 		Vs: out std_logic := '0';
-		hclk: in std_logic; -- hand-clock, for debug
+		
+		-- following are debug ports
+		--hclk: in std_logic; -- hand-clock, for debug
 		--wctrlin: in std_logic_vector(0 downto 0);
-		KEY16_INPUT : in std_logic_vector(15 downto 0);
-		LED_output : out std_logic_vector(15 downto 0);
-		mout : out std_logic_vector(0 downto 0)
+		--KEY16_INPUT : in std_logic_vector(15 downto 0);
+		--LED_output : out std_logic_vector(15 downto 0);
+		--mout : out std_logic_vector(0 downto 0)
+		
+		-- fifo memory
+		wctrl: in std_logic_vector(0 downto 0); -- 1 is write
+		waddr: in std_logic_vector(10 downto 0);
+		wdata : in std_logic_vector(7 downto 0)
 	);
 end VGA_play;
 
@@ -57,10 +68,6 @@ architecture Behavioral of VGA_play is
 	signal b0 : std_logic_vector(2 downto 0);
 	signal hs1 : std_logic;
 	signal vs1 : std_logic;
-	
-	signal wctrl: std_logic_vector(0 downto 0) := "0";
-	signal waddr: std_logic_vector(10 downto 0);
-	signal wdata :std_logic_vector(7 downto 0);
 	
 	component char_mem
 		PORT (
@@ -92,18 +99,19 @@ architecture Behavioral of VGA_play is
 	
 begin
 
-	waddr <= "0000000" & KEY16_INPUT(11 downto 8);
-	wdata <= KEY16_INPUT(7 downto 0);
+	-- waddr <= "0000000" & KEY16_INPUT(11 downto 8);
+	-- wdata <= KEY16_INPUT(7 downto 0);
 	
-	LED_output <= "0000" & KEY16_INPUT(11 downto 8) & KEY16_INPUT(7 downto 0);
-	mout <= wctrl(0 downto 0);
+	-- debug code
+	-- LED_output <= "0000" & KEY16_INPUT(11 downto 8) & KEY16_INPUT(7 downto 0);
+	-- mout <= wctrl(0 downto 0);
 	
-	process(hclk)
-	begin
-		if(hclk'event and hclk = '1') then
-			wctrl(0 downto 0) <= not wctrl(0 downto 0);
-		end if;
-	end process;
+	-- process(hclk)
+	-- begin
+		-- if(hclk'event and hclk = '1') then
+			-- wctrl(0 downto 0) <= not wctrl(0 downto 0);
+		-- end if;
+	-- end process;
 
 	-- store char
 	ram: char_mem port map(clka => clk, addra => char_addr, douta => pr);
@@ -140,6 +148,8 @@ begin
 	-- end if;
 -- end process;
 
+-- 25 MHz Sync
+clkout <= clk;
 -- 50 MHz -> 25 MHz
 process(CLK_0)
 begin
