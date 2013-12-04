@@ -55,12 +55,12 @@ architecture Behavioral of RegFile is
 			input: in std_logic_vector(15 downto 0);
 			output: out std_logic_vector(15 downto 0);
 			wrn: in std_logic;
-			clock: in std_logic
+			clock: in std_logic;
+			reset: in std_logic
 		);
 	end component;
 	
 	signal debug_output: std_logic_vector(15 downto 0):= Int16_Zero;
-	
 	
 component LED16 is
 	Port(
@@ -70,26 +70,26 @@ component LED16 is
 end component;
 begin
 
-r0	: Reg16 port map(input => WriteData, output => opt0, wrn => control(0), clock => clk);
-r1	: Reg16 port map(input => WriteData, output => opt1, wrn => control(1), clock => clk);
-r2	: Reg16 port map(input => WriteData, output => opt2, wrn => control(2), clock => clk);
-r3	: Reg16 port map(input => WriteData, output => opt3, wrn => control(3), clock => clk);
-r4	: Reg16 port map(input => WriteData, output => opt4, wrn => control(4), clock => clk);
-r5	: Reg16 port map(input => WriteData, output => opt5, wrn => control(5), clock => clk);
-r6	: Reg16 port map(input => WriteData, output => opt6, wrn => control(6), clock => clk);
-r7	: Reg16 port map(input => WriteData, output => opt7, wrn => control(7), clock => clk);
+r0	: Reg16 port map(input => WriteData, output => opt0, wrn => control(0), clock => clk, reset => rst);
+r1	: Reg16 port map(input => WriteData, output => opt1, wrn => control(1), clock => clk, reset => rst);
+r2	: Reg16 port map(input => WriteData, output => opt2, wrn => control(2), clock => clk, reset => rst);
+r3	: Reg16 port map(input => WriteData, output => opt3, wrn => control(3), clock => clk, reset => rst);
+r4	: Reg16 port map(input => WriteData, output => opt4, wrn => control(4), clock => clk, reset => rst);
+r5	: Reg16 port map(input => WriteData, output => opt5, wrn => control(5), clock => clk, reset => rst);
+r6	: Reg16 port map(input => WriteData, output => opt6, wrn => control(6), clock => clk, reset => rst);
+r7	: Reg16 port map(input => WriteData, output => opt7, wrn => control(7), clock => clk, reset => rst);
 -- r8 Zero register
-r9	: Reg16 port map(input => WriteData, output => opt9, wrn => control(9), clock => clk);
+r9	: Reg16 port map(input => WriteData, output => opt9, wrn => control(9), clock => clk, reset => rst);
 -- r10 PC register
-r10	: Reg16 port map(input => WriteData, output => opt10, wrn => control(10), clock => clk);
+r10	: Reg16 port map(input => WriteData, output => opt10, wrn => control(10), clock => clk, reset => rst);
 -- r11 IH register (interrput ÖÐ¶Ï)
-r11	: Reg16 port map(input => WriteData, output => opt11, wrn => control(11), clock => clk);
+r11	: Reg16 port map(input => WriteData, output => opt11, wrn => control(11), clock => clk, reset => rst);
 -- r12 RA register (return address)
-r12	: Reg16 port map(input => WriteData, output => opt12, wrn => control(12), clock => clk);
+r12	: Reg16 port map(input => WriteData, output => opt12, wrn => control(12), clock => clk, reset => rst);
 -- r13 SP register (stack point)
-r13	: Reg16 port map(input => WriteData, output => opt13, wrn => control(13), clock => clk);
-r14	: Reg16 port map(input => WriteData, output => opt14, wrn => control(14), clock => clk);
-r15 : Reg16 port map(input => WriteData, output => opt15, wrn => control(15), clock => clk);
+r13	: Reg16 port map(input => WriteData, output => opt13, wrn => control(13), clock => clk, reset => rst);
+r14	: Reg16 port map(input => WriteData, output => opt14, wrn => control(14), clock => clk, reset => rst);
+r15 : Reg16 port map(input => WriteData, output => opt15, wrn => control(15), clock => clk, reset => rst);
 
 -- because it's forever zero output (but can still write)
 opt8 <= (others => '0');	--ZERO
@@ -151,11 +151,9 @@ with WriteAddress select control(13) <= (RegWrite) when "1101", '0' when others;
 with WriteAddress select control(14) <= (RegWrite) when "1110", '0' when others;
 with WriteAddress select control(15) <= (RegWrite) when "1111", '0' when others;
 
-
-
 LED16_test: LED16 port map(
 	LED_output => LED_output,
-	input => debug_output
+	input => debug
 	);
 with sel select 
 	debug_output <=opt0 when "0000",
