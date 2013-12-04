@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -39,7 +39,10 @@ entity RegFile is
 		Reg2 : out  STD_LOGIC_VECTOR (15 downto 0);
 		RegWrite : in  STD_LOGIC;
 		clk : in  STD_LOGIC;
-		rst : in  STD_LOGIC
+		rst : in  STD_LOGIC;
+		sel: in std_logic_vector(3 downto 0);
+		LED_output: out std_logic_vector(15 downto 0);
+		debug: in std_logic_vector(15 downto 0)
 	);
 end RegFile;
 
@@ -56,6 +59,16 @@ architecture Behavioral of RegFile is
 			reset: in std_logic
 		);
 	end component;
+	
+	signal debug_output: std_logic_vector(15 downto 0):= Int16_Zero;
+	
+	
+component LED16 is
+	Port(
+		LED_output : out std_logic_vector(15 downto 0);
+		input : in std_logic_vector(15 downto 0)
+	);
+end component;
 begin
 
 r0	: Reg16 port map(input => WriteData, output => opt0, wrn => control(0), clock => clk, reset => rst);
@@ -139,5 +152,29 @@ with WriteAddress select control(13) <= (RegWrite) when "1101", '0' when others;
 with WriteAddress select control(14) <= (RegWrite) when "1110", '0' when others;
 with WriteAddress select control(15) <= (RegWrite) when "1111", '0' when others;
 
+
+
+LED16_test: LED16 port map(
+	LED_output => LED_output,
+	input => debug
+	);
+with sel select 
+	debug_output <=opt0 when "0000",
+						opt1	when "0001",
+						opt2	when "0010",
+						opt3	when "0011",
+						opt4	when "0100",
+						opt5	when "0101",
+						opt6	when "0110",
+						opt7	when "0111",
+						opt8	when "1000",
+						opt9	when "1001",
+						opt10	when "1010",
+						opt11	when "1011",
+						opt12	when "1100",
+						opt13	when "1101",
+						opt14	when "1110",
+						opt15	when "1111",
+						opt0	when others;
 end Behavioral;
 

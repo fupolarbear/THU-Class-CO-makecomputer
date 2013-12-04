@@ -49,7 +49,9 @@ entity CPU is
 		
 		LED_output : out std_logic_vector(15 downto 0);
 		ledseg1: out std_logic_vector(6 downto 0);
-		ledseg2: out std_logic_vector(6 downto 0)
+		ledseg2: out std_logic_vector(6 downto 0);
+		
+		KEY16_INPUT: in std_logic_vector(3 downto 0)
 	);
 end CPU;
 
@@ -140,7 +142,11 @@ component RegFile is
 		Reg2 : out  STD_LOGIC_VECTOR (15 downto 0);
 		RegWrite : in  STD_LOGIC;
 		clk : in  STD_LOGIC;
-		rst : in  STD_LOGIC);
+		rst : in  STD_LOGIC;
+		sel: in std_logic_vector(3 downto 0);
+		LED_output: out std_logic_vector(15 downto 0);
+		debug: in std_logic_vector(15 downto 0)
+		);
 end component;
 component RiskChecker is
     Port ( PCWrite : out  STD_LOGIC;
@@ -249,13 +255,13 @@ component MEM_WB is
            WriteIn : in  STD_LOGIC;
            MemtoRegInput : in  STD_LOGIC;
            MemtoRegOutput : out  STD_LOGIC;
-			  RegWriteInput: in STD_LOGIC;
-			  RegWriteOutput: out STD_LOGIC;
+			RegWriteInput: in STD_LOGIC;
+			RegWriteOutput: out STD_LOGIC;
            AluResultInput : in  STD_LOGIC_VECTOR (15 downto 0);
            AluResultOutput : out  STD_LOGIC_VECTOR (15 downto 0);
-			  MemResultInput: in STD_LOGIC_VECTOR (15 downto 0);
-			  MemResultOutput: out STD_LOGIC_VECTOR (15 downto 0);
-			  RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
+			MemResultInput: in STD_LOGIC_VECTOR (15 downto 0);
+			MemResultOutput: out STD_LOGIC_VECTOR (15 downto 0);
+			RegReadInput1 : in  STD_LOGIC_VECTOR (3 downto 0);
            RegReadInput2 : in  STD_LOGIC_VECTOR (3 downto 0);
            RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
            RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
@@ -270,12 +276,6 @@ component divClk is
 end component;
 
 
-component LED16 is
-	Port(
-		LED_output : out std_logic_vector(15 downto 0);
-		input : in std_logic_vector(15 downto 0)
-	);
-end component;
 component LED_seg7 is
 	Port(
 		input : in  STD_LOGIC_VECTOR (3 downto 0);
@@ -418,7 +418,7 @@ begin
 		);
 		
 	Add_imm: Add port map(
-		Input1 => sll_2(decoder_imm),
+		Input1 => decoder_imm,
 		Input2 => pcreg_output,
 		Output => pc_imm
 		);
@@ -439,17 +439,20 @@ begin
 		RegInput => regfile_reg1,
 		T => T_sign,
 		Branch => branch
-		);
+		);	
 	RegFile_1: RegFile port map(
 		ReadAddress1 => decoder_reg1,
 		ReadAddress2 => decoder_reg2,
-		WriteAddress => decoder_reg3,
+		WriteAddress => MEMWB_regwriteto,
 		WriteData => regfile_writedata,
 		Reg1 => regfile_reg1,
 		Reg2 => regfile_reg2,
 		RegWrite => MEMWB_regwrite,
 		clk => clk0,
-		rst => rst
+		rst => rst,
+		sel => KEY16_INPUT,
+		LED_output => LED_output,
+		debug => fuck
 		);
 	RiskChecker_1: RiskChecker port map(
 		PCWrite => pcwrite, 
@@ -595,18 +598,15 @@ begin
 		clk => clk,
 		clk0 => clk0
 		);
-	fuck <= instmem_data(15 downto 1) & clk0;
-	LED16_test: LED16 Port map(
-		LED_output => LED_output,
-		input => fuck
-		);
 	LED_left: LED_seg7 port map(
 		input => pcreg_output(3 downto 0),
 		output => ledseg2
 		);
 	LED_right: LED_seg7 port map(
-		input => pc_add4(3 downto 0),
+		input => alu_output(3 downto 0),
 		output => ledseg1
 		);
+	fuck <= alu_input1(3 downto 0) & alu_input2(3 downto 0) & alu_output(3 downto 0) & IDEX_aluop & '0';
+	--EXMEM_regwrite & EXMEM_regwriteto(2 downto 0) & IDEX_regread1 & IDEX_regread2 & ForwardA & ForwardB;
 end Behavioral;
 

@@ -47,6 +47,6 @@ begin
 -- TODO
 PCWrite <= '1';
 IFIDWrite <= '1';
-ControlRst <= '0';
+ControlRst <= '1';
 end Behavioral;
 
