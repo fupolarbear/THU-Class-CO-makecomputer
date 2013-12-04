@@ -153,7 +153,7 @@ with WriteAddress select control(15) <= (RegWrite) when "1111", '0' when others;
 
 LED16_test: LED16 port map(
 	LED_output => LED_output,
-	input => debug
+	input => debug_output
 	);
 with sel select 
 	debug_output <=opt0 when "0000",
