@@ -42,7 +42,8 @@ entity RegFile is
 		rst : in  STD_LOGIC;
 		sel: in std_logic_vector(3 downto 0);
 		LED_output: out std_logic_vector(15 downto 0);
-		debug: in std_logic_vector(15 downto 0)
+		debug: in std_logic_vector(15 downto 0);
+		vga_reg1: out std_logic_vector(15 downto 0)
 	);
 end RegFile;
 
@@ -155,6 +156,7 @@ LED16_test: LED16 port map(
 	LED_output => LED_output,
 	input => debug_output
 	);
+vga_reg1 <= opt1;
 with sel select 
 	debug_output <=opt0 when "0000",
 						opt1	when "0001",

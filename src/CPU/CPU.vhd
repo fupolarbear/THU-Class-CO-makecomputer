@@ -51,7 +51,15 @@ entity CPU is
 		ledseg1: out std_logic_vector(6 downto 0);
 		ledseg2: out std_logic_vector(6 downto 0);
 		
-		KEY16_INPUT: in std_logic_vector(3 downto 0)
+		KEY16_INPUT: in std_logic_vector(3 downto 0);
+		
+		CLK_0: in std_logic; -- must 50M
+		-- vga port
+		R: out std_logic_vector(2 downto 0) := "000";
+		G: out std_logic_vector(2 downto 0) := "000";
+		B: out std_logic_vector(2 downto 0) := "000";
+		Hs: out std_logic := '0';
+		Vs: out std_logic := '0'
 	);
 end CPU;
 
@@ -145,7 +153,8 @@ component RegFile is
 		rst : in  STD_LOGIC;
 		sel: in std_logic_vector(3 downto 0);
 		LED_output: out std_logic_vector(15 downto 0);
-		debug: in std_logic_vector(15 downto 0)
+		debug: in std_logic_vector(15 downto 0);
+		vga_reg1: out std_logic_vector(15 downto 0)
 		);
 end component;
 component RiskChecker is
@@ -283,7 +292,24 @@ component LED_seg7 is
 	);
 end component;
 
-
+component VGA_top is
+	port(
+		pc: in std_logic_vector(15 downto 0);
+		control: in std_logic_vector(15 downto 0);
+		vga_reg1: in std_logic_vector(15 downto 0);
+		
+		CLK_0: in std_logic; -- must 50M
+		clk_out: out std_logic; -- used to sync
+		reset: in std_logic;
+		
+		-- vga port
+		R: out std_logic_vector(2 downto 0) := "000";
+		G: out std_logic_vector(2 downto 0) := "000";
+		B: out std_logic_vector(2 downto 0) := "000";
+		Hs: out std_logic := '0';
+		Vs: out std_logic := '0'
+	);
+end component;
 signal pcreg_input: Int16:= Int16_Zero;
 signal pcreg_output: Int16:= Int16_Zero;
 
@@ -365,8 +391,11 @@ signal regwrite: std_logic:= '0';
 signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 
+signal clk25: std_logic:='0';
 signal clk0: std_logic:='0';
 signal fuck: std_logic_vector(15 downto 0):=Int16_Zero;
+signal control_temp: std_logic_vector(15 downto 0):=Int16_Zero;
+signal vga_reg1: std_logic_vector(15 downto 0):=Int16_Zero;
 begin
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
@@ -450,9 +479,11 @@ begin
 		RegWrite => MEMWB_regwrite,
 		clk => clk0,
 		rst => rst,
+		
 		sel => KEY16_INPUT,
 		LED_output => LED_output,
-		debug => fuck
+		debug => fuck,
+		vga_reg1 => vga_reg1
 		);
 	RiskChecker_1: RiskChecker port map(
 		PCWrite => pcwrite, 
@@ -608,5 +639,19 @@ begin
 		);
 	fuck <= alu_input1(3 downto 0) & alu_input2(3 downto 0) & alu_output(3 downto 0) & IDEX_aluop & '0';
 	--EXMEM_regwrite & EXMEM_regwriteto(2 downto 0) & IDEX_regread1 & IDEX_regread2 & ForwardA & ForwardB;
+	control_temp <= decoder_op & controller_rst & aluop & alusrc & ttype & twrite & memread & memwrite & memtoreg & regwrite;
+	Inst_VGA_top: VGA_top PORT MAP(
+		pc => pcreg_output,
+		control => control_temp,
+		vga_reg1 => vga_reg1,
+		CLK_0 => CLK_0,
+		clk_out => clk25,
+		reset => rst,
+		R => R,
+		G => G,
+		B => B,
+		Hs => Hs,
+		Vs => Vs
+	);
 end Behavioral;
 
