@@ -62,7 +62,6 @@ architecture Behavioral of RegFile is
 	
 	signal debug_output: std_logic_vector(15 downto 0):= Int16_Zero;
 	
-	
 component LED16 is
 	Port(
 		LED_output : out std_logic_vector(15 downto 0);
@@ -151,8 +150,6 @@ with WriteAddress select control(12) <= (RegWrite) when "1100", '0' when others;
 with WriteAddress select control(13) <= (RegWrite) when "1101", '0' when others;
 with WriteAddress select control(14) <= (RegWrite) when "1110", '0' when others;
 with WriteAddress select control(15) <= (RegWrite) when "1111", '0' when others;
-
-
 
 LED16_test: LED16 port map(
 	LED_output => LED_output,
