@@ -93,7 +93,7 @@ architecture Behavioral of MemoryTop is
 		-- work cpu CM
 		READ1, IDEL1, RW1, IDEL2
 	);
-	signal state : state_type := BOOT;
+	signal state : state_type := Read1;
 	
 -------------------------------------
 -- flash
@@ -269,7 +269,7 @@ begin
 	process(clock, reset)
 	begin
 		if reset='0' then
-			state <= BOOT;
+			state <= Read1; --TODO
 			buffer1 <= extendDatabus;
 		elsif clock'event and clock='1' then
 			case state is

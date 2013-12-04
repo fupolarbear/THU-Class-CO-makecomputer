@@ -36,16 +36,17 @@ entity CPU is
 		clk : in  STD_LOGIC;
 		rst : in  STD_LOGIC;
 		
-		Ram1Addr : out  STD_LOGIC_VECTOR (17 downto 0);
-		Ram1Data : inout  STD_LOGIC_VECTOR (15 downto 0);
-		Ram1OE : out  STD_LOGIC;
-		Ram1WE : out  STD_LOGIC;
+		--Ram1Addr : out  STD_LOGIC_VECTOR (17 downto 0);
+		--Ram1Data : inout  STD_LOGIC_VECTOR (15 downto 0);
+		Ram1Data : inout  STD_LOGIC_VECTOR (7 downto 0);
+		--Ram1OE : out  STD_LOGIC;
+		--Ram1WE : out  STD_LOGIC;
 		Ram1EN : out  STD_LOGIC;
---		Ram2Addr : out  STD_LOGIC_VECTOR (17 downto 0);
---		Ram2Data : inout  STD_LOGIC_VECTOR (15 downto 0);
---		Ram2OE : out  STD_LOGIC;
---		Ram2WE : out  STD_LOGIC;
---		Ram2EN : out  STD_LOGIC
+		Ram2Addr : out  STD_LOGIC_VECTOR (17 downto 0);
+		Ram2Data : inout  STD_LOGIC_VECTOR (15 downto 0);
+		Ram2OE : out  STD_LOGIC;
+		Ram2WE : out  STD_LOGIC;
+		Ram2EN : out  STD_LOGIC;
 		
 		LED_output : out std_logic_vector(15 downto 0);
 		ledseg1: out std_logic_vector(6 downto 0);
@@ -59,7 +60,22 @@ entity CPU is
 		G: out std_logic_vector(2 downto 0) := "000";
 		B: out std_logic_vector(2 downto 0) := "000";
 		Hs: out std_logic := '0';
-		Vs: out std_logic := '0'
+		Vs: out std_logic := '0';
+		flash_byte : out std_logic;
+		flash_vpen : out std_logic;
+		flash_ce : out std_logic;
+		flash_oe : out std_logic;
+		flash_we : out std_logic;
+		flash_rp : out std_logic;
+		flash_addr : out std_logic_vector(22 downto 1);
+		flash_data : inout std_logic_vector(15 downto 0);
+		serialWRN : out STD_LOGIC;
+		serialRDN : out STD_LOGIC;
+		DATAREADY : in STD_LOGIC;
+		serialTSRE : in STD_LOGIC;
+		serialTBRE : in STD_LOGIC;
+		basicDatabus : inout STD_LOGIC_VECTOR(7 downto 0)
+		--ram1EN : out STD_LOGIC;
 	);
 end CPU;
 
@@ -90,19 +106,19 @@ component Add is
 		Input2 : in  Int16;
 		Output : out Int16);
 end component;
-component InstructionMem is
-    Port (
-		rst : in std_logic;
-		clk : in std_logic;
-		Address : in  Int16;
-		Data : out  Int16;
-		ramdata : INOUT std_logic_vector(15 downto 0);      
-		ramaddr : OUT std_logic_vector(17 downto 0);
-		OE : OUT std_logic;
-		WE : OUT std_logic;
-		EN : OUT std_logic
-		);
-end component;
+-- component InstructionMem is
+    -- Port (
+		-- rst : in std_logic;
+		-- clk : in std_logic;
+		-- Address : in  Int16;
+		-- Data : out  Int16;
+		-- ramdata : INOUT std_logic_vector(15 downto 0);      
+		-- ramaddr : OUT std_logic_vector(17 downto 0);
+		-- OE : OUT std_logic;
+		-- WE : OUT std_logic;
+		-- EN : OUT std_logic
+		-- );
+-- end component;
 
 component IF_ID is
     Port ( Instruction_in : in  Int16;
@@ -250,13 +266,13 @@ component EX_MEM is
 end component;
 
 -- MEM
-component DataMem is
-    Port ( Address : in  STD_LOGIC_VECTOR (15 downto 0);
-		Input : in  STD_LOGIC_VECTOR (15 downto 0);
-		Output : out  STD_LOGIC_VECTOR (15 downto 0);
-		MemWrite : in  STD_LOGIC;
-		MemRead : in  STD_LOGIC);
-end component;
+-- component DataMem is
+    -- Port ( Address : in  STD_LOGIC_VECTOR (15 downto 0);
+		-- Input : in  STD_LOGIC_VECTOR (15 downto 0);
+		-- Output : out  STD_LOGIC_VECTOR (15 downto 0);
+		-- MemWrite : in  STD_LOGIC;
+		-- MemRead : in  STD_LOGIC);
+-- end component;
 
 component MEM_WB is
     Port ( clk : in  STD_LOGIC;
@@ -310,6 +326,42 @@ component VGA_top is
 		Vs: out std_logic := '0'
 	);
 end component;
+
+COMPONENT MemoryTop
+	PORT(
+		address1 : IN std_logic_vector(15 downto 0);
+		address2 : IN std_logic_vector(15 downto 0);
+		clock : IN std_logic;
+		dataInput : IN std_logic_vector(15 downto 0);
+		MemWrite : IN std_logic;
+		MemRead : IN std_logic;
+		serial_dataready : IN std_logic;
+		serial_tsre : IN std_logic;
+		serial_tbre : IN std_logic;
+		reset : IN std_logic;    
+		extendDatabus : INOUT std_logic_vector(15 downto 0);
+		flash_data : INOUT std_logic_vector(15 downto 0);
+		basicdatabus : INOUT std_logic_vector(7 downto 0);      
+		output1 : OUT std_logic_vector(15 downto 0);
+		output2 : OUT std_logic_vector(15 downto 0);
+		cpuclock : OUT std_logic;
+		memoryAddress : OUT std_logic_vector(17 downto 0);
+		memoryEN : OUT std_logic;
+		memoryOE : OUT std_logic;
+		memoryRW : OUT std_logic;
+		flash_byte : OUT std_logic;
+		flash_vpen : OUT std_logic;
+		flash_ce : OUT std_logic;
+		flash_oe : OUT std_logic;
+		flash_we : OUT std_logic;
+		flash_rp : OUT std_logic;
+		flash_addr : OUT std_logic_vector(22 downto 1);
+		serial_wrn : OUT std_logic;
+		serial_rdn : OUT std_logic;
+		ram1_en : OUT std_logic
+		);
+END COMPONENT;
+
 signal pcreg_input: Int16:= Int16_Zero;
 signal pcreg_output: Int16:= Int16_Zero;
 
@@ -416,17 +468,17 @@ begin
 		Input2 => "0000000000000001",
 		Output => pc_add4
 		);
-	InstructionMem_1: InstructionMem port map(
-		clk => clk,
-		rst => rst,
-		Address => pcreg_output,
-		Data => instmem_data,
-		ramaddr => Ram1Addr,
-		ramdata => Ram1Data,
-		OE => Ram1OE,
-		WE => Ram1WE,
-		EN => Ram1EN
-		);
+	-- InstructionMem_1: InstructionMem port map(
+		-- clk => clk,
+		-- rst => rst,
+		-- Address => pcreg_output,
+		-- Data => instmem_data,
+		-- ramaddr => Ram1Addr,
+		-- ramdata => Ram1Data,
+		-- OE => Ram1OE,
+		-- WE => Ram1WE,
+		-- EN => Ram1EN
+		-- );
 		
 	IF_ID_1: IF_ID port map(
 		Instruction_in => instmem_data,
@@ -590,13 +642,13 @@ begin
 		RegWriteToOutput => EXMEM_regwriteto
 		);
 	
-	DataMem_1: DataMem port map(
-		Address => EXMEM_data,
-		Input => EXMEM_regresult,
-		Output => DataMem_output,
-		MemWrite => EXMEM_memwrite,
-		MemRead => EXMEM_memread
-		);
+	-- DataMem_1: DataMem port map(
+		-- Address => EXMEM_data,
+		-- Input => EXMEM_regresult,
+		-- Output => DataMem_output,
+		-- MemWrite => EXMEM_memwrite,
+		-- MemRead => EXMEM_memread
+		-- );
 	
 	MEM_WB_1: MEM_WB port map(
 		clk => clk0,
@@ -624,11 +676,11 @@ begin
 		Input2 => MEMWB_memresult,
 		Output => regfile_writedata
 		);
-	divClk_1: divClk port map(
-		rst => rst,
-		clk => clk,
-		clk0 => clk0
-		);
+	-- divClk_1: divClk port map(
+		-- rst => rst,
+		-- clk => clk,
+		-- clk0 => clk0
+		-- );
 	LED_left: LED_seg7 port map(
 		input => pcreg_output(3 downto 0),
 		output => ledseg2
@@ -641,7 +693,7 @@ begin
 	--EXMEM_regwrite & EXMEM_regwriteto(2 downto 0) & IDEX_regread1 & IDEX_regread2 & ForwardA & ForwardB;
 	control_temp <= decoder_op & controller_rst & aluop & alusrc & ttype & twrite & memread & memwrite & memtoreg & regwrite;
 	Inst_VGA_top: VGA_top PORT MAP(
-		pc => pcreg_output,
+		pc => EXMEM_regresult,
 		control => control_temp,
 		vga_reg1 => vga_reg1,
 		CLK_0 => CLK_0,
@@ -652,6 +704,39 @@ begin
 		B => B,
 		Hs => Hs,
 		Vs => Vs
+	);
+	
+	Inst_MemoryTop: MemoryTop PORT MAP(
+		address1 => pcreg_output,
+		output1 => instmem_data,
+		address2 => EXMEM_data,
+		output2 => DataMem_output,
+		clock => clk,
+		cpuclock => clk0,
+		dataInput => EXMEM_regresult,
+		MemWrite => EXMEM_memwrite,
+		MemRead => EXMEM_memread,
+		memoryAddress => Ram2Addr,
+		extendDatabus => Ram2Data,
+		memoryEN => Ram2EN,
+		memoryOE => Ram2OE,
+		memoryRW => Ram2WE,
+		flash_byte => flash_byte,
+		flash_vpen => flash_vpen,
+		flash_ce => flash_ce,
+		flash_oe => flash_oe,
+		flash_we => flash_we,
+		flash_rp => flash_rp,
+		flash_addr => flash_addr,
+		flash_data => flash_data,
+		serial_wrn => serialwrn,
+		serial_rdn => serialrdn,
+		serial_dataready => dataReady,
+		serial_tsre => serialTSRE,
+		serial_tbre => serialTBRE,
+		basicdatabus => Ram1Data(7 downto 0),
+		ram1_en => Ram1EN,
+		reset => rst
 	);
 end Behavioral;
 

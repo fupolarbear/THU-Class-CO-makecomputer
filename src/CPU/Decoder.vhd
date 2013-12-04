@@ -74,8 +74,8 @@ begin
 				Reg1 <= '0' & Instruction(10 downto 8);
 				Reg2 <= '0' & Instruction(7 downto 5);
 			when "01010" | "01011" => --SLL, SRA
-				Reg1 <= '0' & Instruction(10 downto 8);
-				Reg2 <= '0' & Instruction(7 downto 5);
+				Reg3 <= '0' & Instruction(10 downto 8);
+				Reg1 <= '0' & Instruction(7 downto 5);
 				if Instruction(4 downto 2) /= "000" then 
 					Imm <= extend("0000000000000" & Instruction(4 downto 2), "0011", '0');
 				else 

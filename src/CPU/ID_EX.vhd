@@ -79,6 +79,7 @@ begin
 			MemReadOutput <= '0';
 			MemWriteOutput <= '0';
 			MemtoRegOutput <= '0';
+			RegResult <= Int16_Zero;
 		elsif (clk'event and clk = '1') then
 			if (WriteIn = '1') then
 				ALUopOutput <= ALUopInput;
@@ -90,6 +91,7 @@ begin
 				MemWriteOutput <= MemWriteInput;
 				MemtoRegOutput <= MemtoRegInput;
 				ALUdata1 <= DataInput1;
+				RegResult <= DataInput2;
 				if  ALUsrcInput = '0' then
 					ALUdata2 <= DataInput2;
 				else

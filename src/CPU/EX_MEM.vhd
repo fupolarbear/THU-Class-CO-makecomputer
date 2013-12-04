@@ -65,6 +65,7 @@ begin
 			MemWriteOutput <= '0';
 			MemtoRegOutput <= '0';
 			RegWriteOutput <= '0';
+			RegResultOutput <= RegResultInput;
 		elsif (clk'event and clk = '1') then
 			if (WriteIn = '1') then
 				MemReadOutput <= MemReadInput;
@@ -74,6 +75,7 @@ begin
 				RegReadOutput1 <= RegReadInput1;
 				RegReadOutput2 <= RegReadInput2;
 				RegWriteToOutput <= RegWriteToInput;
+				RegResultOutput <= RegResultInput;
 				DataOutput <= DataInput;
 			end if;
 		end if;

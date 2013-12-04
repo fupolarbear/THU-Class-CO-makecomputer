@@ -2,24 +2,24 @@
 NET "CLK" LOC = U9;
 NET "RST" LOC = U10;
 
-NET "Ram1Addr[0]" LOC = C17;
-NET "Ram1Addr[1]" LOC = C18;
-NET "Ram1Addr[2]" LOC = D16;
-NET "Ram1Addr[3]" LOC = D17;
-NET "Ram1Addr[4]" LOC = E15;
-NET "Ram1Addr[5]" LOC = E16;
-NET "Ram1Addr[6]" LOC = F14;
-NET "Ram1Addr[7]" LOC = F15;
-NET "Ram1Addr[8]" LOC = F17;
-NET "Ram1Addr[9]" LOC = F18;
-NET "Ram1Addr[10]" LOC = G13;
-NET "Ram1Addr[11]" LOC = G14;
-NET "Ram1Addr[12]" LOC = G15;
-NET "Ram1Addr[13]" LOC = G16;
-NET "Ram1Addr[14]" LOC = H14;
-NET "Ram1Addr[15]" LOC = H15;
-NET "Ram1Addr[16]" LOC = H16;
-NET "Ram1Addr[17]" LOC = H17;
+#NET "Ram1Addr[0]" LOC = C17;
+#NET "Ram1Addr[1]" LOC = C18;
+#NET "Ram1Addr[2]" LOC = D16;
+#NET "Ram1Addr[3]" LOC = D17;
+#NET "Ram1Addr[4]" LOC = E15;
+#NET "Ram1Addr[5]" LOC = E16;
+#NET "Ram1Addr[6]" LOC = F14;
+#NET "Ram1Addr[7]" LOC = F15;
+#NET "Ram1Addr[8]" LOC = F17;
+#NET "Ram1Addr[9]" LOC = F18;
+#NET "Ram1Addr[10]" LOC = G13;
+#NET "Ram1Addr[11]" LOC = G14;
+#NET "Ram1Addr[12]" LOC = G15;
+#NET "Ram1Addr[13]" LOC = G16;
+#NET "Ram1Addr[14]" LOC = H14;
+#NET "Ram1Addr[15]" LOC = H15;
+#NET "Ram1Addr[16]" LOC = H16;
+#NET "Ram1Addr[17]" LOC = H17;
 
 NET "Ram1Data[0]" LOC = J12;
 NET "Ram1Data[1]" LOC = J13;
@@ -29,58 +29,58 @@ NET "Ram1Data[4]" LOC = J16;
 NET "Ram1Data[5]" LOC = J17;
 NET "Ram1Data[6]" LOC = K12;
 NET "Ram1Data[7]" LOC = K13;
-NET "Ram1Data[8]" LOC = K14;
-NET "Ram1Data[9]" LOC = K15;
-NET "Ram1Data[10]" LOC = L15;
-NET "Ram1Data[11]" LOC = L16;
-NET "Ram1Data[12]" LOC = L17;
-NET "Ram1Data[13]" LOC = L18;
-NET "Ram1Data[14]" LOC = M13;
-NET "Ram1Data[15]" LOC = M14;
+#NET "Ram1Data[8]" LOC = K14;
+#NET "Ram1Data[9]" LOC = K15;
+#NET "Ram1Data[10]" LOC = L15;
+#NET "Ram1Data[11]" LOC = L16;
+#NET "Ram1Data[12]" LOC = L17;
+#NET "Ram1Data[13]" LOC = L18;
+#NET "Ram1Data[14]" LOC = M13;
+#NET "Ram1Data[15]" LOC = M14;
 
-NET "Ram1OE" LOC = M16;
-NET "Ram1WE" LOC = M18;
+#NET "Ram1OE" LOC = M16;
+#NET "Ram1WE" LOC = M18;
 NET "Ram1EN" LOC = M15;
 
-#NET "Ram2OE" LOC = R9;
-#NET "Ram2WE" LOC = M9;
-#NET "Ram2EN" LOC = N10;
-#
-#NET "Ram2Addr[0]" LOC = N14;
-#NET "Ram2Addr[1]" LOC = N15;
-#NET "Ram2Addr[2]" LOC = N18;
-#NET "Ram2Addr[3]" LOC = P16;
-#NET "Ram2Addr[4]" LOC = P17;
-#NET "Ram2Addr[5]" LOC = P18;
-#NET "Ram2Addr[6]" LOC = R15;
-#NET "Ram2Addr[7]" LOC = R16;
-#NET "Ram2Addr[8]" LOC = R18;
-#NET "Ram2Addr[9]" LOC = T17;
-#NET "Ram2Addr[10]" LOC = T18;
-#NET "Ram2Addr[11]" LOC = U18;
-#NET "Ram2Addr[12]" LOC = V15;
-#NET "Ram2Addr[13]" LOC = V13;
-#NET "Ram2Addr[14]" LOC = V12;
-#NET "Ram2Addr[15]" LOC = V9;
-#NET "Ram2Addr[16]" LOC = U16;
-#NET "Ram2Addr[17]" LOC = U15;
-#
-#NET "Ram2Data[0]" LOC = U13;
-#NET "Ram2Data[1]" LOC = T16;
-#NET "Ram2Data[2]" LOC = T15;
-#NET "Ram2Data[3]" LOC = T14;
-#NET "Ram2Data[4]" LOC = T12;
-#NET "Ram2Data[5]" LOC = R13;
-#NET "Ram2Data[6]" LOC = R14;
-#NET "Ram2Data[7]" LOC = R12;
-#NET "Ram2Data[8]" LOC = R11;
-#NET "Ram2Data[9]" LOC = R10;
-#NET "Ram2Data[10]" LOC = P13;
-#NET "Ram2Data[11]" LOC = P12;
-#NET "Ram2Data[12]" LOC = P11;
-#NET "Ram2Data[13]" LOC = P10;
-#NET "Ram2Data[14]" LOC = N12;
-#NET "Ram2Data[15]" LOC = N11;
+NET "Ram2OE" LOC = R9;
+NET "Ram2WE" LOC = M9;
+NET "Ram2EN" LOC = N10;
+
+NET "Ram2Addr[0]" LOC = N14;
+NET "Ram2Addr[1]" LOC = N15;
+NET "Ram2Addr[2]" LOC = N18;
+NET "Ram2Addr[3]" LOC = P16;
+NET "Ram2Addr[4]" LOC = P17;
+NET "Ram2Addr[5]" LOC = P18;
+NET "Ram2Addr[6]" LOC = R15;
+NET "Ram2Addr[7]" LOC = R16;
+NET "Ram2Addr[8]" LOC = R18;
+NET "Ram2Addr[9]" LOC = T17;
+NET "Ram2Addr[10]" LOC = T18;
+NET "Ram2Addr[11]" LOC = U18;
+NET "Ram2Addr[12]" LOC = V15;
+NET "Ram2Addr[13]" LOC = V13;
+NET "Ram2Addr[14]" LOC = V12;
+NET "Ram2Addr[15]" LOC = V9;
+NET "Ram2Addr[16]" LOC = U16;
+NET "Ram2Addr[17]" LOC = U15;
+
+NET "Ram2Data[0]" LOC = U13;
+NET "Ram2Data[1]" LOC = T16;
+NET "Ram2Data[2]" LOC = T15;
+NET "Ram2Data[3]" LOC = T14;
+NET "Ram2Data[4]" LOC = T12;
+NET "Ram2Data[5]" LOC = R13;
+NET "Ram2Data[6]" LOC = R14;
+NET "Ram2Data[7]" LOC = R12;
+NET "Ram2Data[8]" LOC = R11;
+NET "Ram2Data[9]" LOC = R10;
+NET "Ram2Data[10]" LOC = P13;
+NET "Ram2Data[11]" LOC = P12;
+NET "Ram2Data[12]" LOC = P11;
+NET "Ram2Data[13]" LOC = P10;
+NET "Ram2Data[14]" LOC = N12;
+NET "Ram2Data[15]" LOC = N11;
 
 
 ## following is some signals define
@@ -147,62 +147,62 @@ NET "KEY16_INPUT[3]" LOC = V4;
 #NET "KEY16_INPUT[14]" LOC = U14;
 #NET "KEY16_INPUT[15]" LOC = U11;
 #
-####### flash - begin  ######
-#
-## flash control
-#NET "flash_byte" LOC = C1;
-#NET "flash_vpen" LOC = C2;
-#NET "flash_ce" LOC = E4;
-#NET "flash_oe" LOC = E1;
-#NET "flash_we" LOC = D4;
-#NET "flash_rp" LOC = D1;
-##NET "flash_sts" LOC = D2; # DO NOT USE THIS!!
-#
-## flash addr
-##NET "flash_addr[0]" LOC = T2; # DO NOT USE THIS!!
-#NET "flash_addr[1]" LOC = T1;
-#NET "flash_addr[2]" LOC = R3;
-#NET "flash_addr[3]" LOC = R2;
-#NET "flash_addr[4]" LOC = P4;
-#NET "flash_addr[5]" LOC = P3;
-#NET "flash_addr[6]" LOC = P2;
-#NET "flash_addr[7]" LOC = P1;
-#NET "flash_addr[8]" LOC = N5;
-#NET "flash_addr[9]" LOC = N4;
-#NET "flash_addr[10]" LOC = M6;
-#NET "flash_addr[11]" LOC = M5;
-#NET "flash_addr[12]" LOC = M4;
-#NET "flash_addr[13]" LOC = M3;
-#NET "flash_addr[14]" LOC = L6;
-#NET "flash_addr[15]" LOC = L5;
-#NET "flash_addr[16]" LOC = L4;
-#NET "flash_addr[17]" LOC = L3;
-#NET "flash_addr[18]" LOC = L2;
-#NET "flash_addr[19]" LOC = L1;
-#NET "flash_addr[20]" LOC = K6;
-#NET "flash_addr[21]" LOC = K5;
-#NET "flash_addr[22]" LOC = K4;
-#
-## flash data
-#NET "flash_data[0]" LOC = J5;
-#NET "flash_data[1]" LOC = J4;
-#NET "flash_data[2]" LOC = J2;
-#NET "flash_data[3]" LOC = J1;
-#NET "flash_data[4]" LOC = H6;
-#NET "flash_data[5]" LOC = H5;
-#NET "flash_data[6]" LOC = H4;
-#NET "flash_data[7]" LOC = H3;
-#
-#NET "flash_data[8]" LOC = H2;
-#NET "flash_data[9]" LOC = H1;
-#NET "flash_data[10]" LOC = G6;
-#NET "flash_data[11]" LOC = G5;
-#NET "flash_data[12]" LOC = G4;
-#NET "flash_data[13]" LOC = G3;
-#NET "flash_data[14]" LOC = F2;
-#NET "flash_data[15]" LOC = F1;
-#
-####### flash - end ######
+###### flash - begin  ######
+
+# flash control
+NET "flash_byte" LOC = C1;
+NET "flash_vpen" LOC = C2;
+NET "flash_ce" LOC = E4;
+NET "flash_oe" LOC = E1;
+NET "flash_we" LOC = D4;
+NET "flash_rp" LOC = D1;
+#NET "flash_sts" LOC = D2; # DO NOT USE THIS!!
+
+# flash addr
+#NET "flash_addr[0]" LOC = T2; # DO NOT USE THIS!!
+NET "flash_addr[1]" LOC = T1;
+NET "flash_addr[2]" LOC = R3;
+NET "flash_addr[3]" LOC = R2;
+NET "flash_addr[4]" LOC = P4;
+NET "flash_addr[5]" LOC = P3;
+NET "flash_addr[6]" LOC = P2;
+NET "flash_addr[7]" LOC = P1;
+NET "flash_addr[8]" LOC = N5;
+NET "flash_addr[9]" LOC = N4;
+NET "flash_addr[10]" LOC = M6;
+NET "flash_addr[11]" LOC = M5;
+NET "flash_addr[12]" LOC = M4;
+NET "flash_addr[13]" LOC = M3;
+NET "flash_addr[14]" LOC = L6;
+NET "flash_addr[15]" LOC = L5;
+NET "flash_addr[16]" LOC = L4;
+NET "flash_addr[17]" LOC = L3;
+NET "flash_addr[18]" LOC = L2;
+NET "flash_addr[19]" LOC = L1;
+NET "flash_addr[20]" LOC = K6;
+NET "flash_addr[21]" LOC = K5;
+NET "flash_addr[22]" LOC = K4;
+
+# flash data
+NET "flash_data[0]" LOC = J5;
+NET "flash_data[1]" LOC = J4;
+NET "flash_data[2]" LOC = J2;
+NET "flash_data[3]" LOC = J1;
+NET "flash_data[4]" LOC = H6;
+NET "flash_data[5]" LOC = H5;
+NET "flash_data[6]" LOC = H4;
+NET "flash_data[7]" LOC = H3;
+
+NET "flash_data[8]" LOC = H2;
+NET "flash_data[9]" LOC = H1;
+NET "flash_data[10]" LOC = G6;
+NET "flash_data[11]" LOC = G5;
+NET "flash_data[12]" LOC = G4;
+NET "flash_data[13]" LOC = G3;
+NET "flash_data[14]" LOC = F2;
+NET "flash_data[15]" LOC = F1;
+
+###### flash - end ######
 
 ### VGA
 NET "Hs" LOC = D6;
@@ -219,3 +219,10 @@ NET "R[0]" LOC = A7;
 
 # 50M
 NET "CLK_0" LOC = B9;
+
+NET "serialWRN" LOC = U5;
+NET "serialRDN" LOC = C14;
+NET "ram1EN" LOC = M15;
+NET "dataReady" LOC = A16;
+NET "serialTSRE" LOC = N9;
+NET "serialTBRE" LOC = D14;
