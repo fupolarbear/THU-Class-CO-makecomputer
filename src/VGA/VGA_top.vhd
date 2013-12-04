@@ -124,11 +124,11 @@ begin
 				case datast is
 					when s1 =>
 						dwaddr <= "0000000" & "0000";
-						dwdata <= "0000000" & KEY16_INPUT(0);
+						dwdata <= "0001" & input(15 downto 12);
 						datast <= s2;
 					when s2 =>
 						dwaddr <= "0000000" & "0001";
-						dwdata <= "0000000" & KEY16_INPUT(1);
+						dwdata <= "0001" & input(11 downto 8);
 						datast <= s3;
 					when s3 =>
 						dwaddr <= "0000000" & "0010";
