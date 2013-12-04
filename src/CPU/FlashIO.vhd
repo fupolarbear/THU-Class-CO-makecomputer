@@ -39,6 +39,7 @@ entity FlashIO is
 		clk: in std_logic;
 		reset: in std_logic;
 		
+		-- hard port connecting flash chip
 		flash_byte : out std_logic;
 		flash_vpen : out std_logic;
 		flash_ce : out std_logic;
@@ -48,6 +49,7 @@ entity FlashIO is
 		flash_addr : out std_logic_vector(22 downto 1);
 		flash_data : inout std_logic_vector(15 downto 0);
 		
+		-- signal to vhdl entity
 		ctl_read : in  std_logic;
 		ctl_write : in  std_logic;
 		ctl_erase : in std_logic

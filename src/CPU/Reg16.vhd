@@ -34,7 +34,8 @@ entity Reg16 is
 		input: in std_logic_vector(15 downto 0);
 		output: out std_logic_vector(15 downto 0);
 		wrn: in std_logic;
-		clock: in std_logic
+		clock: in std_logic;
+		reset: in std_logic
 	);
 end Reg16;
 
@@ -45,9 +46,10 @@ begin
 	
 	process(wrn, clock)
 	begin
-		-- at droping edge of clock 
-		-- and when chosen(wrn) then change mem
-		if clock'event and clock = '0' then
+		if reset='0' then
+			mem <= (others => '0');
+		-- at droping edge of clock and get chosen(wrn) then change mem
+		elsif clock'event and clock = '0' then
 			if wrn = '1' then
 				mem <= input;
 			end if;
