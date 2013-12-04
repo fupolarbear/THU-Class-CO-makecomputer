@@ -42,11 +42,12 @@ end Reg16;
 architecture Behavioral of Reg16 is
 	signal mem : std_logic_vector(15 downto 0);
 begin
+
 	output <= mem;
 	
-	process(wrn, clock)
+	process(wrn, clock, reset)
 	begin
-		if reset='0' then
+		if reset = '0' then
 			mem <= (others => '0');
 		-- at droping edge of clock and get chosen(wrn) then change mem
 		elsif clock'event and clock = '0' then
