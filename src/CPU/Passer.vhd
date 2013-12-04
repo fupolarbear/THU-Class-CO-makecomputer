@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
+use work.Common.all;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
@@ -46,7 +46,22 @@ architecture Behavioral of Passer is
 
 begin
  -- TODO
+	process(EXMEM_RegWrite, MEMWB_RegWrite, EXMEM_W, MEMWB_W, IDEX_R1, IDEX_R2)
+	begin
 	ForwardB <= "00";
 	ForwardA <= "00";
+	if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R1) then
+		ForwardA <= "10";
+	end if;
+	if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R2) then
+		ForwardB <= "10";
+	end if;
+	if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R1 and MEMWB_W = IDEX_R1) then 
+		ForwardA <= "01";
+	end if;
+	if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R2 and MEMWB_W = IDEX_R2) then 
+		ForwardA <= "01";
+	end if;
+	end process;
 end Behavioral;
 

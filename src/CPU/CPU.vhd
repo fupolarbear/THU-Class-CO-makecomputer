@@ -606,6 +606,7 @@ begin
 		input => alu_output(3 downto 0),
 		output => ledseg1
 		);
-	fuck <= alu_input1(3 downto 0) & alu_input2(3 downto 0) & alu_output(3 downto 0) & decoder_imm(3 downto 0);
+	fuck <= alu_input1(3 downto 0) & alu_input2(3 downto 0) & alu_output(3 downto 0) & IDEX_aluop & '0';
+	--EXMEM_regwrite & EXMEM_regwriteto(2 downto 0) & IDEX_regread1 & IDEX_regread2 & ForwardA & ForwardB;
 end Behavioral;
 
