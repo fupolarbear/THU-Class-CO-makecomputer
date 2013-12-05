@@ -78,7 +78,7 @@ entity MemoryController is
 end MemoryController;
 
 architecture Behavioral of MemoryController is
-	type state_type is (BOOT, BOOT_FLASH, BOOT_RAM1, BOOT_RAM2, BOOT_READY, READ1, IDEL1, RW2, IDEL2);
+	type state_type is (BOOT, BOOT_FLASH, BOOT_RAM1, BOOT_RAM2, BOOT_READY, READ1, IDEL1, RW2, IDEL2, RWtmp);
 	signal state : state_type := BOOT;
 	signal readin, holder, addressTemp : STD_LOGIC_VECTOR (15 downto 0);
 	signal serialHolder : STD_LOGIC_VECTOR (7 downto 0);
