@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: –Ì–¿»ª
+-- Engineer: xxr
 -- 
 -- Create Date:    16:02:24 11/06/2012 
 -- Design Name: 
@@ -41,7 +41,7 @@ entity MemoryController is
 		   address2 : in  STD_LOGIC_VECTOR (15 downto 0);
 		   output2 : out  STD_LOGIC_VECTOR (15 downto 0);
 		   clock : in STD_LOGIC;
-		   stdClock : out STD_LOGIC; -- for standard CPU clock
+		   cpuclock : out STD_LOGIC; -- for standard CPU clock
 
 	-- only for address 2
 		   dataInput : in  STD_LOGIC_VECTOR (15 downto 0); --only for address2
@@ -54,13 +54,13 @@ entity MemoryController is
 		   memoryOE : out STD_LOGIC;
 		   memoryRW : out STD_LOGIC;
 	-- connection with serial port
-		   serialWRN : out STD_LOGIC;
-		   serialRDN : out STD_LOGIC;
-		   serialDATA_READY : in STD_LOGIC;
-		   serialTSRE : in STD_LOGIC;
-		   serialTBRE : in STD_LOGIC;
+		   serial_wrn : out STD_LOGIC;
+		   serial_rdn : out STD_LOGIC;
+		   serial_dataready : in STD_LOGIC;
+		   serial_tsre : in STD_LOGIC;
+		   serial_tbre : in STD_LOGIC;
 		   basicDatabus : inout STD_LOGIC_VECTOR(7 downto 0);
-		   ram1EN : out STD_LOGIC;
+		   ram1_en : out STD_LOGIC;
 		   reset : in STD_LOGIC;
 
 	-- connection with FLASH	
@@ -146,9 +146,9 @@ begin
 	output1 <= buffer1;
 	output2 <= buffer2;
 	memoryEN <= '0';
-	ram1EN <= '1';	--disable ram1
-	BF01(0) <= serialTSRE and serialTBRE;
-	BF01(1) <= serialDATA_READY;
+	ram1_en <= '1';	--disable ram1
+	BF01(0) <= serial_tsre and serial_tbre;
+	BF01(1) <= serial_dataready;
 	BF01(15 downto 2) <= "00000000000000";
 	BF03(0) <= '0';
 	BF03(15 downto 1) <= "000000000000000";
@@ -172,8 +172,8 @@ begin
 	with state select
 		serial_flag <= NOT MemWrite when RW2 | IDEL1 | IDEL2,
 					   '1' when others;
-	serialWRN <= NOT MemWrite when (address2=x"BF00" and state=RW2) else '1';
-	serialRDN <= NOT MemRead when (address2=x"BF00" and (state=IDEL1 or state=RW2 or state=IDEL2)) else '1';
+	serial_wrn <= NOT MemWrite when (address2=x"BF00" and state=RW2) else '1';
+	serial_rdn <= NOT MemRead when (address2=x"BF00" and (state=IDEL1 or state=RW2 or state=IDEL2)) else '1';
 	memoryRW <= '1' when (address2=x"BF00" and state=RW2) else 
 				NOT MemWrite when state=RW2 else 
 				'0' when (state=BOOT_RAM2) else 
@@ -183,7 +183,7 @@ begin
 				  dataInput when others;
 	serialHolder <= dataInput (7 downto 0);
 	with state select
-		stdClock <= '1' when IDEL1 | READ1,
+		cpuclock <= '1' when IDEL1 | READ1,
 					'0' when others;
 	
 	process(clock, reset)
