@@ -35,6 +35,7 @@ entity RegFile is
 		ReadAddress2 : in  STD_LOGIC_VECTOR (3 downto 0);
 		WriteAddress : in  STD_LOGIC_VECTOR (3 downto 0);
 		WriteData : in  STD_LOGIC_VECTOR (15 downto 0);
+		PCinput: in  STD_LOGIC_VECTOR (15 downto 0);
 		Reg1 : out  STD_LOGIC_VECTOR (15 downto 0);
 		Reg2 : out  STD_LOGIC_VECTOR (15 downto 0);
 		RegWrite : in  STD_LOGIC;
@@ -82,7 +83,8 @@ r7	: Reg16 port map(input => WriteData, output => opt7, wrn => control(7), clock
 -- r8 Zero register
 r9	: Reg16 port map(input => WriteData, output => opt9, wrn => control(9), clock => clk, reset => rst);
 -- r10 PC register
-r10	: Reg16 port map(input => WriteData, output => opt10, wrn => control(10), clock => clk, reset => rst);
+opt10 <= PCinput;
+-- r10	: Reg16 port map(input => PCinput, output => opt10, wrn => control(10), clock => clk, reset => rst);
 -- r11 IH register (interrput ÖĞ¶Ï)
 r11	: Reg16 port map(input => WriteData, output => opt11, wrn => control(11), clock => clk, reset => rst);
 -- r12 RA register (return address)
