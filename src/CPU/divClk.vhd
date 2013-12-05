@@ -46,11 +46,7 @@ begin
 			num <= "00";
 			temp <= '1';
 		elsif (clk'event and clk = '1') then
-			num <= num+1;
-			if num = "01" then 
-				num <= "00";
-				temp <= not temp;
-			end if;
+			temp <= not temp;
 		end if;
 	end process;
 	clk0 <= temp;
