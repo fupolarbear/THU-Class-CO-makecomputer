@@ -128,8 +128,10 @@ def main():
             # to provide smarter parse.  Keep parseWithPrototype pure and
             # clean.
             if printBin:
-				print (parseWithPrototype(tokenList)), 
-				print codeAddr, tokenList
+				meow = parseWithPrototype(tokenList)
+				print (meow), 
+				print hex(int(meow, 2)),
+				print 'cd:', codeAddr, 'L:', lineNum, tokenList
             fout.write(genFromBinStr(parseWithPrototype(tokenList)))
         except Exception as err:
             raise Exception('Line %d: %s' % (lineNum, err.message))
