@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company:
--- Engineer: 邹林希
+-- Engineer: ZLX
 --
 -- Create Date:    15:22:18 11/06/2012
 -- Design Name:
@@ -22,16 +22,16 @@ Use IEEE.Std_logic_1164.all;
 USe IEEE.Std_logic_unsigned.all;
 use IEEE.Std_logic_arith.all;
 
-ENTITY keytorank IS
+ENTITY KeySignaltoChar IS
 	PORT
 	(
 		key: in std_logic_vector(7 downto 0);
 		rank: out std_logic_vector(5 downto 0)
 	);
-END keytorank ;
+END KeySignaltoChar ;
 
 
-ARCHITECTURE behave OF keytorank IS
+ARCHITECTURE behave OF KeySignaltoChar IS
 begin
 process(key)
 begin
