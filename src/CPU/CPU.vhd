@@ -52,7 +52,7 @@ entity CPU is
 		ledseg1: out std_logic_vector(6 downto 0);
 		ledseg2: out std_logic_vector(6 downto 0);
 		
-		KEY16_INPUT: in std_logic_vector(3 downto 0);
+		KEY16_INPUT: in std_logic_vector(4 downto 0);
 		
 		CLK_0: in std_logic; -- must 50M
 		-- vga port
@@ -162,6 +162,7 @@ component RegFile is
 		ReadAddress2 : in  STD_LOGIC_VECTOR (3 downto 0);
 		WriteAddress : in  STD_LOGIC_VECTOR (3 downto 0);
 		WriteData : in  STD_LOGIC_VECTOR (15 downto 0);
+		PCinput: in  STD_LOGIC_VECTOR (15 downto 0);
 		Reg1 : out  STD_LOGIC_VECTOR (15 downto 0);
 		Reg2 : out  STD_LOGIC_VECTOR (15 downto 0);
 		RegWrite : in  STD_LOGIC;
@@ -444,7 +445,8 @@ signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 
 signal clk25: std_logic:='0';
-signal clk0: std_logic:='0';
+signal clk0: std_logic:='0'; 
+signal clk_out : std_logic:= '0';
 signal fuck: std_logic_vector(15 downto 0):=Int16_Zero;
 signal control_temp: std_logic_vector(15 downto 0):=Int16_Zero;
 signal vga_reg1: std_logic_vector(15 downto 0):=Int16_Zero;
@@ -483,7 +485,7 @@ begin
 	IF_ID_1: IF_ID port map(
 		Instruction_in => instmem_data,
 		Instruction_out => IFID_inst_out,
-		PC_in => pcreg_output,
+		PC_in => pc_add4,
 		PC_out => IFID_pc_out,
 		clk => clk0, 
 		rst => rst, 
@@ -526,13 +528,14 @@ begin
 		ReadAddress2 => decoder_reg2,
 		WriteAddress => MEMWB_regwriteto,
 		WriteData => regfile_writedata,
+		pcinput => IFID_pc_out,
 		Reg1 => regfile_reg1,
 		Reg2 => regfile_reg2,
 		RegWrite => MEMWB_regwrite,
 		clk => clk0,
 		rst => rst,
 		
-		sel => KEY16_INPUT,
+		sel => KEY16_INPUT(3 downto 0),
 		LED_output => LED_output,
 		debug => fuck,
 		vga_reg1 => vga_reg1
@@ -693,9 +696,9 @@ begin
 	--EXMEM_regwrite & EXMEM_regwriteto(2 downto 0) & IDEX_regread1 & IDEX_regread2 & ForwardA & ForwardB;
 	control_temp <= decoder_op & controller_rst & aluop & alusrc & ttype & twrite & memread & memwrite & memtoreg & regwrite;
 	Inst_VGA_top: VGA_top PORT MAP(
-		pc => EXMEM_regresult,
+		pc => pcreg_output,
 		control => control_temp,
-		vga_reg1 => vga_reg1,
+		vga_reg1 => instmem_data,
 		CLK_0 => CLK_0,
 		clk_out => clk25,
 		reset => rst,
@@ -711,7 +714,7 @@ begin
 		output1 => instmem_data,
 		address2 => EXMEM_data,
 		output2 => DataMem_output,
-		clock => clk,
+		clock => clk_out,
 		cpuclock => clk0,
 		dataInput => EXMEM_regresult,
 		MemWrite => EXMEM_memwrite,
@@ -738,5 +741,8 @@ begin
 		ram1_en => Ram1EN,
 		reset => rst
 	);
+	
+	with KEY16_INPUT(4) select 
+		clk_out <= clk when '0', clk_0 when others;
 end Behavioral;
 

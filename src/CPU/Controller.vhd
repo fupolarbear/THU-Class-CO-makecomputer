@@ -91,7 +91,7 @@ begin
 				TWrite <= '0';
 			end if;
 			
-			if Op =  "01000" or Op = "10110" then 
+			if Op =  "01111" or Op = "10110" then 
 				MemRead <= '1';
 			else
 				MemRead <= '0';
@@ -109,7 +109,7 @@ begin
 				MemtoReg <= '0';
 			end if;
 			
-			if (Op >= "00001" and Op <= "00011") or (Op >= "00101" and Op <= "00111") or 
+			if (Op >= "00001" and Op <= "00111") or 
 				(Op >= "01010" and Op <= "01111") or (Op = "10001") or 
 				(Op >= "10011" and Op <= "10110") then
 				RegWrite <= '1';
