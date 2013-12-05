@@ -189,7 +189,7 @@ begin
 	process(clock, reset)
 	begin
 		if reset='0' then
-			state <= BOOT;
+			state <= READ1;
 			buffer1 <= extendDatabus;
 		elsif clock'event and clock='1' then
 			case state is
