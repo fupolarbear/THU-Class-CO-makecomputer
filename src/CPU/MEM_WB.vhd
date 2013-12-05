@@ -47,7 +47,9 @@ entity MEM_WB is
 		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0)
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0);
+		retinput: in std_logic;
+		retoutput: out std_logic
 	);
 end MEM_WB;
 
@@ -59,6 +61,7 @@ begin
 		if (rst = '0') then 
 			MemtoRegOutput <= '0';
 			RegWriteOutput <= '0';
+			retoutput <= '0';
 		elsif (clk'event and clk = '1') then
 			if (WriteIn = '1') then
 				MemtoRegOutput <= MemtoRegInput;
@@ -68,6 +71,7 @@ begin
 				RegReadOutput1 <= RegReadInput1;
 				RegReadOutput2 <= RegReadInput2;
 				RegWriteToOutput <= RegWriteToInput;
+				retoutput <= retinput;
 			end if;
 		end if;
 	end process;

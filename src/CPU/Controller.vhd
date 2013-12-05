@@ -40,7 +40,8 @@ entity Controller is
 		MemRead : out  STD_LOGIC;
 		MemWrite : out  STD_LOGIC;
 		MemtoReg : out  STD_LOGIC;
-		RegWrite: out STD_LOGIC
+		RegWrite: out STD_LOGIC;
+		ret: out std_logic
 	);
 end Controller;
 
@@ -56,6 +57,7 @@ begin
 			MemWrite <= '0';
 			MemtoReg <= '0';
 			RegWrite <= '0';
+			ret <= '0';
 		else
 			case Op is 
 				when "01000" | "01001" | "01101" | "10010" => 
@@ -115,6 +117,12 @@ begin
 				RegWrite <= '1';
 			else 
 				RegWrite <= '0';
+			end if;
+			
+			if Op = "11111" then
+				ret <= '1';
+			else 
+				ret <= '0';
 			end if;
 		end if;
 	end process;

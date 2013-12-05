@@ -38,8 +38,8 @@ NET "Ram1Data[7]" LOC = K13;
 #NET "Ram1Data[14]" LOC = M13;
 #NET "Ram1Data[15]" LOC = M14;
 
-#NET "Ram1OE" LOC = M16;
-#NET "Ram1WE" LOC = M18;
+NET "Ram1OE" LOC = M16;
+NET "Ram1WE" LOC = M18;
 NET "Ram1EN" LOC = M15;
 
 NET "Ram2OE" LOC = R9;

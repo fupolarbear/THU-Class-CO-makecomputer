@@ -61,7 +61,9 @@ entity ID_EX is
 		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0)
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0);
+		retinput: in std_logic;
+		retoutput: out std_logic
 	);
 end ID_EX;
 
@@ -80,6 +82,7 @@ begin
 			MemWriteOutput <= '0';
 			MemtoRegOutput <= '0';
 			RegResult <= Int16_Zero;
+			retoutput <= '0';
 		elsif (clk'event and clk = '1') then
 			if (WriteIn = '1') then
 				ALUopOutput <= ALUopInput;
@@ -100,6 +103,7 @@ begin
 				RegReadOutput1 <= RegReadInput1;
 				RegReadOutput2 <= RegReadInput2;
 				RegWriteToOutput <= RegWriteToInput;
+				retoutput <= retinput;
 			end if;
 		end if;
 	end process;

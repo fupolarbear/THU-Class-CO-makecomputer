@@ -31,6 +31,7 @@ use work.Common.all;
 
 entity Passer is
 	Port(
+		IDEX_alusrc: in std_logic;
 		EXMEM_RegWrite : in  STD_LOGIC;
 		MEMWB_RegWrite : in  STD_LOGIC;
 		EXMEM_W : in  STD_LOGIC_VECTOR (3 downto 0);
@@ -38,29 +39,38 @@ entity Passer is
 		IDEX_R1 : in  STD_LOGIC_VECTOR (3 downto 0);
 		IDEX_R2 : in  STD_LOGIC_VECTOR (3 downto 0);
 		ForwardA : out  STD_LOGIC_VECTOR (1 downto 0);
-		ForwardB : out  STD_LOGIC_VECTOR (1 downto 0)
+		ForwardB : out  STD_LOGIC_VECTOR (1 downto 0);
+		ForwardC : out STD_LOGIC_VECTOR (1 downto 0)
 	);
 end Passer;
 
 architecture Behavioral of Passer is
 
 begin
- -- TODO
 	process(EXMEM_RegWrite, MEMWB_RegWrite, EXMEM_W, MEMWB_W, IDEX_R1, IDEX_R2)
 	begin
 	ForwardB <= "00";
 	ForwardA <= "00";
+	ForwardC <= "00";
 	if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R1) then
 		ForwardA <= "10";
 	end if;
 	if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R2) then
-		ForwardB <= "10";
+		if IDEX_alusrc = '0' then
+			ForwardB <= "10";
+		else
+			ForwardC <= "10";
+		end if;
 	end if;
 	if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R1 and MEMWB_W = IDEX_R1) then 
 		ForwardA <= "01";
 	end if;
 	if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R2 and MEMWB_W = IDEX_R2) then 
-		ForwardA <= "01";
+		if IDEX_alusrc = '0' then
+			ForwardB <= "01";
+		else 
+			ForwardC <= "01";
+		end if;
 	end if;
 	end process;
 end Behavioral;

@@ -51,7 +51,9 @@ entity EX_MEM is
 		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0)
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0);
+		retinput: in std_logic;
+		retoutput: out std_logic
 	);
 end EX_MEM;
 
@@ -66,6 +68,7 @@ begin
 			MemtoRegOutput <= '0';
 			RegWriteOutput <= '0';
 			RegResultOutput <= RegResultInput;
+			retoutput <= '0';
 		elsif (clk'event and clk = '1') then
 			if (WriteIn = '1') then
 				MemReadOutput <= MemReadInput;
@@ -77,6 +80,7 @@ begin
 				RegWriteToOutput <= RegWriteToInput;
 				RegResultOutput <= RegResultInput;
 				DataOutput <= DataInput;
+				retoutput <= retinput;
 			end if;
 		end if;
 	end process;

@@ -73,7 +73,7 @@ entity MemoryController is
 		   flash_rp : out std_logic;
 		--flash_sts : in std_logic;
 		   flash_addr : out std_logic_vector(22 downto 1);
-		   flash_data : inout std_logic_vector(15 downto 0);
+		   flash_data : inout std_logic_vector(15 downto 0)
 	   );
 end MemoryController;
 

@@ -52,6 +52,7 @@ START: ;³õÊ¼»¯IH¼Ä´æÆ÷£¬×î¸ßÎ»Îª1Ê±£¬ÔÊÐíÖÐ¶Ï£¬Îª0Ê±²»ÔÊÐí¡£³õÊ¼»¯Îª0£¬kernel²»Ô
 	LI R0 0x000D
 	SW R6 R0 0x0000
 	NOP
+	RET
 TESTW:	
 	NOP	 		
 	LI R6 0x00BF 

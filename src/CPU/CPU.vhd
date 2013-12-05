@@ -39,8 +39,8 @@ entity CPU is
 		--Ram1Addr : out  STD_LOGIC_VECTOR (17 downto 0);
 		--Ram1Data : inout  STD_LOGIC_VECTOR (15 downto 0);
 		Ram1Data : inout  STD_LOGIC_VECTOR (7 downto 0);
-		--Ram1OE : out  STD_LOGIC;
-		--Ram1WE : out  STD_LOGIC;
+		Ram1OE : out  STD_LOGIC;
+		Ram1WE : out  STD_LOGIC;
 		Ram1EN : out  STD_LOGIC;
 		Ram2Addr : out  STD_LOGIC_VECTOR (17 downto 0);
 		Ram2Data : inout  STD_LOGIC_VECTOR (15 downto 0);
@@ -149,7 +149,8 @@ component Controller is
 		MemRead : out  STD_LOGIC;
 		MemWrite : out  STD_LOGIC;
 		MemtoReg : out  STD_LOGIC;
-		RegWrite: out STD_LOGIC);
+		RegWrite: out STD_LOGIC;
+		ret: out std_logic);
 end component;
 component BranchSelector is
     Port ( Op : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -215,7 +216,10 @@ component ID_EX is
 		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0);
+		retinput: in std_logic;
+		retoutput: out std_logic
+		);
 end component;
 
 --EX 
@@ -232,14 +236,17 @@ component TReg is
 		T : out  STD_LOGIC);
 end component;
 component Passer is
-    Port ( EXMEM_RegWrite : in  STD_LOGIC;
+    Port (
+		IDEX_alusrc: in std_logic;
+		EXMEM_RegWrite : in  STD_LOGIC;
 		MEMWB_RegWrite : in  STD_LOGIC;
 		EXMEM_W : in  STD_LOGIC_VECTOR (3 downto 0);
 		MEMWB_W : in  STD_LOGIC_VECTOR (3 downto 0);
 		IDEX_R1 : in  STD_LOGIC_VECTOR (3 downto 0);
 		IDEX_R2 : in  STD_LOGIC_VECTOR (3 downto 0);
 		ForwardA : out  STD_LOGIC_VECTOR (1 downto 0);
-		ForwardB : out  STD_LOGIC_VECTOR (1 downto 0));
+		ForwardB : out  STD_LOGIC_VECTOR (1 downto 0);
+		ForwardC : out  STD_LOGIC_VECTOR (1 downto 0));
 end component;
 
 component EX_MEM is
@@ -263,7 +270,10 @@ component EX_MEM is
 		RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
 		RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+		RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0);
+		retinput: in std_logic;
+		retoutput: out std_logic
+		);
 end component;
 
 -- MEM
@@ -292,7 +302,10 @@ component MEM_WB is
            RegWriteToInput : in  STD_LOGIC_VECTOR (3 downto 0);
            RegReadOutput1 : out  STD_LOGIC_VECTOR (3 downto 0);
            RegReadOutput2 : out  STD_LOGIC_VECTOR (3 downto 0);
-           RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0));
+           RegWriteToOutput : out  STD_LOGIC_VECTOR (3 downto 0);
+		   retinput: in std_logic;
+			retoutput: out std_logic
+		   );
 end component;
 
 component divClk is
@@ -417,6 +430,7 @@ signal EXMEM_regread2: Int4 := Int4_One;
 signal EXMEM_regwriteto: Int4 := Int4_One;
 signal EXMEM_data: Int16:= Int16_Zero;
 signal EXMEM_regresult: Int16:= Int16_Zero;
+signal EXMEM_regresultinput: int16:= Int16_Zero;
 
 signal MEMWB_regwrite: std_logic:= '0';
 signal MEMWB_regread1: Int4 := Int4_One;
@@ -443,6 +457,7 @@ signal regwrite: std_logic:= '0';
 
 signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
+signal forwardC: std_logic_vector(1 downto 0):= "00";
 
 signal clk25: std_logic:='0';
 signal clk0: std_logic:='0'; 
@@ -450,6 +465,14 @@ signal clk_out : std_logic:= '0';
 signal fuck: std_logic_vector(15 downto 0):=Int16_Zero;
 signal control_temp: std_logic_vector(15 downto 0):=Int16_Zero;
 signal vga_reg1: std_logic_vector(15 downto 0):=Int16_Zero;
+signal debug_serialwrn: std_logic;
+signal debug_serialrdn: std_logic;
+signal ret: std_logic:='0';
+signal IDEX_ret: std_logic:='0';
+signal EXMEM_ret: std_logic:='0';
+signal MEMWB_ret: std_logic:='0';
+signal clk0_S: std_logic:='0';
+
 begin
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
@@ -515,7 +538,8 @@ begin
 		MemRead => memread,
 		MemWrite => memwrite,
 		MemToReg => memtoreg,
-		RegWrite => regwrite
+		RegWrite => regwrite,
+		ret => ret
 		);
 	BranchSelector_1: BranchSelector port map(
 		Op => decoder_op,
@@ -581,7 +605,9 @@ begin
 		RegWriteToInput => decoder_reg3,
 		RegReadOutput1 => IDEX_regread1,
 		RegReadOutput2 => IDEX_regread2,
-		RegWriteToOutput => IDEX_regwriteto
+		RegWriteToOutput => IDEX_regwriteto,
+		retinput => ret,
+		retoutput => IDEX_ret
 		);
 	
 	ALU_1: ALU port map(
@@ -610,7 +636,15 @@ begin
 		Input3 => EXMEM_data,
 		Output => alu_input2
 		);
+	Mux_regsultsrc: Mux port map(
+		choice => forwardC,
+		Input1 => IDEX_regresult,
+		Input2 => regfile_writedata,
+		Input3 => EXMEM_data,
+		Output => EXMEM_regresultinput
+		);
 	Passer_1: Passer port map(
+		IDEX_alusrc => IDEX_alusrc,
 		EXMEM_RegWrite => EXMEM_regwrite,
 		MEMWB_RegWrite => MEMWB_regwrite,
 		EXMEM_W => EXMEM_regwriteto,
@@ -618,7 +652,8 @@ begin
 		IDEX_R1 => IDEX_regread1,
 		IDEX_R2 => IDEX_regread2,
 		ForwardA => forwardA,
-		ForwardB => forwardB
+		ForwardB => forwardB,
+		ForwardC => forwardC
 		);
 	
 	EX_MEM_1: EX_MEM port map(
@@ -635,14 +670,16 @@ begin
 		RegWriteOutput => EXMEM_regwrite,
 		DataInput => alu_output,
 		DataOutput => EXMEM_data,
-		RegResultInput => IDEX_regresult,
+		RegResultInput => EXMEM_regresultinput,
 		RegResultOutput => EXMEM_regresult,
 		RegReadInput1 => IDEX_regread1,
 		RegReadInput2 => IDEX_regread2,
 		RegWriteToInput => IDEX_regwriteto,
 		RegReadOutput1 => EXMEM_regread1,
 		RegReadOutput2 => EXMEM_regread2,
-		RegWriteToOutput => EXMEM_regwriteto
+		RegWriteToOutput => EXMEM_regwriteto,
+		retinput => IDEX_ret,
+		retoutput => EXMEM_ret
 		);
 	
 	-- DataMem_1: DataMem port map(
@@ -670,7 +707,9 @@ begin
 		RegWriteToInput => EXMEM_regwriteto,
 		RegReadOutput1 => MEMWB_regread1,
 		RegReadOutput2 => MEMWB_regread2,
-		RegWriteToOutput => MEMWB_regwriteto
+		RegWriteToOutput => MEMWB_regwriteto,
+		retinput => EXMEM_ret,
+		retoutput => MEMWB_ret
 		);
 	
 	Mux_wb: Mux2 port map(
@@ -694,11 +733,13 @@ begin
 		);
 	fuck <= alu_input1(3 downto 0) & alu_input2(3 downto 0) & alu_output(3 downto 0) & IDEX_aluop & '0';
 	--EXMEM_regwrite & EXMEM_regwriteto(2 downto 0) & IDEX_regread1 & IDEX_regread2 & ForwardA & ForwardB;
-	control_temp <= decoder_op & controller_rst & aluop & alusrc & ttype & twrite & memread & memwrite & memtoreg & regwrite;
+	
+	
+	control_temp <= EXMEM_memwrite & EXMEM_memread & debug_serialwrn & debug_serialrdn & '0' & controller_rst & aluop & alusrc & ttype & twrite & memread & memwrite & memtoreg & regwrite;
 	Inst_VGA_top: VGA_top PORT MAP(
 		pc => pcreg_output,
 		control => control_temp,
-		vga_reg1 => instmem_data,
+		vga_reg1 => EXMEM_data,
 		CLK_0 => CLK_0,
 		clk_out => clk25,
 		reset => rst,
@@ -708,14 +749,14 @@ begin
 		Hs => Hs,
 		Vs => Vs
 	);
-	
+	clk0 <= clk0_s and (not MEMWB_ret);
 	Inst_MemoryTop: MemoryTop PORT MAP(
 		address1 => pcreg_output,
 		output1 => instmem_data,
 		address2 => EXMEM_data,
 		output2 => DataMem_output,
 		clock => clk_out,
-		cpuclock => clk0,
+		cpuclock => clk0_S,
 		dataInput => EXMEM_regresult,
 		MemWrite => EXMEM_memwrite,
 		MemRead => EXMEM_memread,
@@ -732,8 +773,8 @@ begin
 		flash_rp => flash_rp,
 		flash_addr => flash_addr,
 		flash_data => flash_data,
-		serial_wrn => serialwrn,
-		serial_rdn => serialrdn,
+		serial_wrn => debug_serialwrn,
+		serial_rdn => debug_serialrdn,
 		serial_dataready => dataReady,
 		serial_tsre => serialTSRE,
 		serial_tbre => serialTBRE,
@@ -741,8 +782,13 @@ begin
 		ram1_en => Ram1EN,
 		reset => rst
 	);
+	serialwrn <= debug_serialwrn;
+	serialrdn <= debug_serialrdn;
+	
 	
 	with KEY16_INPUT(4) select 
 		clk_out <= clk when '0', clk_0 when others;
+	Ram1OE <= '1';
+	Ram1WE <= '1';
 end Behavioral;
 
