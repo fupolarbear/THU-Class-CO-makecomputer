@@ -120,24 +120,24 @@ begin
 				Reg2 <= '0' & Instruction(7 downto 5);
 				Imm <= extend("00000000000" & Instruction(4 downto 0), "0101", '1');
 			when "11000" => --B
-				Reg1 <= PC_reg;
-				Reg3 <= PC_reg;
+				-- Reg1 <= PC_reg;
+				-- Reg3 <= PC_reg;
 				Imm <= extend(Int5_Zero & Instruction(10 downto 0), "1011", '1');
 			when "11001" => --BTEQZ
-				Reg1 <= PC_reg;
-				Reg3 <= PC_reg;
+				-- Reg1 <= PC_reg;
+				-- Reg3 <= PC_reg;
 				Imm <= extend(Int8_Zero & Instruction(10 downto 3), "1000", '1');
 			when "11010" | "11011"=> --BEQZ, BNEZ 
 				Reg1 <= '0' & Instruction(10 downto 8);
-				Reg2 <= PC_reg;
-				Reg3 <= PC_reg;
+				-- Reg2 <= PC_reg;
+				-- Reg3 <= PC_reg;
 				Imm <= extend(Int8_zero & Instruction(7 downto 0), "1000", '1');
 			when "11100" => --JRRA*
 				Reg1 <= RA_reg;
-				Reg3 <= PC_reg;
+				-- Reg3 <= PC_reg;
 			when "11101" => --JR
 				Reg1 <= '0' & Instruction(10 downto 8);
-				Reg3 <= PC_reg;
+				-- Reg3 <= PC_reg;
 			when others => null;
 		end case;
 	end process;

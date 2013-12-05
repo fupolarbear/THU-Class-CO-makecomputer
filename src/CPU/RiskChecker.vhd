@@ -37,7 +37,9 @@ entity RiskChecker is
 		IDEX_MemWrite : in  STD_LOGIC;
 		IDEX_W : in  Int4;
 		IFID_R1 : in  Int4;
-		IFID_R2 : in  Int4
+		IFID_R2 : in  Int4;
+		op : in Int5;
+		forwardBEQZ: out std_logic
 	);
 end RiskChecker;
 
@@ -48,5 +50,12 @@ begin
 	PCWrite <= '1';
 	IFIDWrite <= '1';
 	ControlRst <= '1';
+	process(op, IDEX_W, IFID_R1)
+	begin
+		forwardBEQZ <= '0';
+		if ((op = "11010" or op = "11011") and IDEX_W /= Zero_reg and IDEX_W = IFID_R1) then
+			forwardBEQZ <= '1';
+		end if;
+	end process;
 end Behavioral;
 

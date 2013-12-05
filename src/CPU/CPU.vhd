@@ -182,7 +182,10 @@ component RiskChecker is
 		IDEX_MemWrite : in  STD_LOGIC;
 		IDEX_W : in  Int4;
 		IFID_R1 : in  Int4;
-		IFID_R2 : in  Int4);
+		IFID_R2 : in  Int4;
+		op : in Int5;
+		forwardBEQZ: out std_logic
+		);
 end component;
 
 component ID_EX is
@@ -458,6 +461,9 @@ signal regwrite: std_logic:= '0';
 signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 signal forwardC: std_logic_vector(1 downto 0):= "00";
+signal forwardBEQZ: std_logic:= '0';
+
+signal BranchReg: Int16:= Int16_Zero;
 
 signal clk25: std_logic:='0';
 signal clk0: std_logic:='0'; 
@@ -543,7 +549,7 @@ begin
 		);
 	BranchSelector_1: BranchSelector port map(
 		Op => decoder_op,
-		RegInput => regfile_reg1,
+		RegInput => BranchReg,
 		T => T_sign,
 		Branch => branch
 		);	
@@ -565,13 +571,15 @@ begin
 		vga_reg1 => vga_reg1
 		);
 	RiskChecker_1: RiskChecker port map(
+		op => decoder_op,
 		PCWrite => pcwrite, 
 		IFIDWrite => IFID_writein,
 		ControlRst => controller_rst,
 		IDEX_MemWrite => IDEX_memwrite,
 		IDEX_W => IDEX_regwriteto,
 		IFID_R1 => decoder_reg1,
-		IFID_R2 => decoder_reg2
+		IFID_R2 => decoder_reg2,
+		forwardBEQZ => forwardBEQZ
 		);
 	
 	ID_EX_1: ID_EX port map(
@@ -635,6 +643,12 @@ begin
 		Input2 => regfile_writedata,
 		Input3 => EXMEM_data,
 		Output => alu_input2
+		);
+	Mux_BEQZ: Mux2 port map(
+		choice => forwardBEQZ,
+		Input1 => regfile_reg1,
+		Input2 => alu_output,
+		Output => BranchReg
 		);
 	Mux_regsultsrc: Mux port map(
 		choice => forwardC,

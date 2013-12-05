@@ -14,4 +14,5 @@ ADDIU R3 0x2
 SUBU R4 R5 R4
 BNEZ R4 loop_begin ;R4不为0则到循环开始处
 NOP
-RET
+JR r7
+NOP

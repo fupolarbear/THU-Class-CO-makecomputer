@@ -21,10 +21,6 @@ DELINT:   ;中断处理程序
 	SW R6 R1 0x0001
 	SW R6 R2 0x0002
 	
-
-	
-
-	
 	;R1=中断号
 	LW_SP R1 0x0000
 	ADDSP 0x0001
