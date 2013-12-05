@@ -270,7 +270,7 @@ TESTR:
 	BEQZ R0 TESTR   ;BF01&2=0  ‘Úµ»¥˝	
 	NOP	
 	JR R7
-	NOP 		
+	NOP
 	
 	
 SHOWREGS:    ;R√¸¡Ó£¨¥Ú”°R0-R5
