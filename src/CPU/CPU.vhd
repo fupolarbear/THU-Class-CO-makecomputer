@@ -472,7 +472,7 @@ signal IDEX_ret: std_logic:='0';
 signal EXMEM_ret: std_logic:='0';
 signal MEMWB_ret: std_logic:='0';
 signal clk0_S: std_logic:='0';
-
+signal clk1 : std_logic:='0';
 begin
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
@@ -718,11 +718,11 @@ begin
 		Input2 => MEMWB_memresult,
 		Output => regfile_writedata
 		);
-	-- divClk_1: divClk port map(
-		-- rst => rst,
-		-- clk => clk,
-		-- clk0 => clk0
-		-- );
+	divClk_1: divClk port map(
+		rst => rst,
+		clk => clk_0,
+		clk0 => clk1
+		);
 	LED_left: LED_seg7 port map(
 		input => pcreg_output(3 downto 0),
 		output => ledseg2
@@ -787,7 +787,7 @@ begin
 	
 	
 	with KEY16_INPUT(4) select 
-		clk_out <= clk when '0', clk_0 when others;
+		clk_out <= clk when '0', clk1 when others;
 	Ram1OE <= '1';
 	Ram1WE <= '1';
 end Behavioral;
