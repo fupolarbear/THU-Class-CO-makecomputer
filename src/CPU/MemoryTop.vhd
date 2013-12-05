@@ -161,11 +161,10 @@ begin
 	memoryRW <= 
 		'1' when (address2 = x"BF00" and state = RW1) 
 		else NOT MemWrite when state = RW1
-		else '0' when (state=BOOT_RAM2)
+		else '0' when (state = BOOT_RAM2)
 		else '1';
 	
 	extendDatabus <= holder when bus_flag = '0' else "ZZZZZZZZZZZZZZZZ";
-	basicDatabus <= serialHolder when serial_flag = '0' else "ZZZZZZZZ";
 	
 	memoryAddress <= "00" & addressTemp;
 	with state select
@@ -210,7 +209,7 @@ begin
 	serial_wrn <= 
 		NOT MemWrite when (address2 = x"BF00" and state = RW1) else '1';
 	serial_rdn <= 
-		NOT MemRead when (address2 = x"BF00" and ((state = IDEL1) or (state = RW1) or (state=IDEL2))) else '1';
+		NOT MemRead when (address2 = x"BF00" and ((state = IDEL1) or (state = RW1) or (state = IDEL2))) else '1';
 	
 	serialHolder <= dataInput (7 downto 0);
 	
