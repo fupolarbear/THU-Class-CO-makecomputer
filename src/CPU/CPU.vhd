@@ -184,7 +184,8 @@ component RiskChecker is
 		IFID_R1 : in  Int4;
 		IFID_R2 : in  Int4;
 		op : in Int5;
-		forwardBEQZ: out std_logic
+		forwardBEQZ: out std_logic_vector(1 downto 0);
+		EXMEM_W : in Int4
 		);
 end component;
 
@@ -461,7 +462,7 @@ signal regwrite: std_logic:= '0';
 signal forwardA: std_logic_vector(1 downto 0):= "00";
 signal forwardB: std_logic_vector(1 downto 0):= "00";
 signal forwardC: std_logic_vector(1 downto 0):= "00";
-signal forwardBEQZ: std_logic:= '0';
+signal forwardBEQZ: std_logic_vector(1 downto 0):= "00";
 
 signal BranchReg: Int16:= Int16_Zero;
 
@@ -579,7 +580,8 @@ begin
 		IDEX_W => IDEX_regwriteto,
 		IFID_R1 => decoder_reg1,
 		IFID_R2 => decoder_reg2,
-		forwardBEQZ => forwardBEQZ
+		forwardBEQZ => forwardBEQZ,
+		EXMEM_W => EXMEM_regwriteto
 		);
 	
 	ID_EX_1: ID_EX port map(
@@ -644,10 +646,11 @@ begin
 		Input3 => EXMEM_data,
 		Output => alu_input2
 		);
-	Mux_BEQZ: Mux2 port map(
+	Mux_BEQZ: Mux port map(
 		choice => forwardBEQZ,
 		Input1 => regfile_reg1,
 		Input2 => alu_output,
+		Input3 => EXMEM_data,
 		Output => BranchReg
 		);
 	Mux_regsultsrc: Mux port map(

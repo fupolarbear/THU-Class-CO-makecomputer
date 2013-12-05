@@ -1,4 +1,10 @@
 ~$*
+*.exe
+*.bin
+*.txt
+*.spl
+*.sym
+*.vhi
 # copy from git hub
 # intermediate build files
 *.bgn

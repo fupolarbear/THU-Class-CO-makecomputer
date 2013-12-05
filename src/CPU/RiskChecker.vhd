@@ -39,7 +39,8 @@ entity RiskChecker is
 		IFID_R1 : in  Int4;
 		IFID_R2 : in  Int4;
 		op : in Int5;
-		forwardBEQZ: out std_logic
+		forwardBEQZ: out std_logic_vector(1 downto 0);
+		EXMEM_W : in Int4
 	);
 end RiskChecker;
 
@@ -52,9 +53,11 @@ begin
 	ControlRst <= '1';
 	process(op, IDEX_W, IFID_R1)
 	begin
-		forwardBEQZ <= '0';
+		forwardBEQZ <= "00";
 		if ((op = "11010" or op = "11011") and IDEX_W /= Zero_reg and IDEX_W = IFID_R1) then
-			forwardBEQZ <= '1';
+			forwardBEQZ <= "01";
+		elsif ((op = "11010" or op = "11011") and EXMEM_W /= Zero_reg and EXMEM_W = IFID_R1) then
+			forwardBEQZ <= "10";
 		end if;
 	end process;
 end Behavioral;
