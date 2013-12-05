@@ -129,9 +129,9 @@ def main():
             # clean.
             if printBin:
 				meow = parseWithPrototype(tokenList)
-				print (meow), 
-				print hex(int(meow, 2)),
-				print 'cd:', codeAddr, 'L:', lineNum, tokenList
+				print 'L:{0:<3d}'.format(lineNum), (meow), 
+				print '{0:6}'.format(hex(int(meow, 2))),
+				print 'C:{0:<3d}'.format(codeAddr), tokenList
             fout.write(genFromBinStr(parseWithPrototype(tokenList)))
         except Exception as err:
             raise Exception('Line %d: %s' % (lineNum, err.message))
