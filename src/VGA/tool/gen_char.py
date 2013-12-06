@@ -1,4 +1,4 @@
-f = open("genmem.coe", 'w')
+f = open("genmem.txt", 'w')
 
 # for i in range(2048):
 	# f.write('{0:08b},\n'.format(i % 95));
