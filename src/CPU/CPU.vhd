@@ -330,14 +330,30 @@ component LED_seg7 is
 	);
 end component;
 
-component VGA_top is
-	port(
-		pc: in std_logic_vector(15 downto 0);
-		control: in std_logic_vector(15 downto 0);
-		vga_reg1: in std_logic_vector(15 downto 0);
+-- component VGA_top is
+	-- port(
+		-- pc: in std_logic_vector(15 downto 0);
+		-- control: in std_logic_vector(15 downto 0);
+		-- vga_reg1: in std_logic_vector(15 downto 0);
 		
+		-- CLK_0: in std_logic; -- must 50M
+		-- clk_out: out std_logic; -- used to sync
+		-- reset: in std_logic;
+		
+		-- -- vga port
+		-- R: out std_logic_vector(2 downto 0) := "000";
+		-- G: out std_logic_vector(2 downto 0) := "000";
+		-- B: out std_logic_vector(2 downto 0) := "000";
+		-- Hs: out std_logic := '0';
+		-- Vs: out std_logic := '0'
+	-- );
+-- end component;
+
+component VGA_play
+	Port(
+		-- common port
 		CLK_0: in std_logic; -- must 50M
-		clk_out: out std_logic; -- used to sync
+		clkout: out std_logic; -- used to sync
 		reset: in std_logic;
 		
 		-- vga port
@@ -345,7 +361,12 @@ component VGA_top is
 		G: out std_logic_vector(2 downto 0) := "000";
 		B: out std_logic_vector(2 downto 0) := "000";
 		Hs: out std_logic := '0';
-		Vs: out std_logic := '0'
+		Vs: out std_logic := '0';
+		
+		-- fifo memory
+		wctrl: in std_logic_vector(0 downto 0); -- 1 is write
+		waddr: in std_logic_vector(10 downto 0);
+		wdata : in std_logic_vector(7 downto 0)
 	);
 end component;
 
@@ -383,7 +404,10 @@ COMPONENT MemoryTop
 		ram1_en : OUT std_logic;
 		Keyboard_Data : in std_logic_vector(7 downto 0);
 		Keyboard_Dataready : in std_logic;
-		Keyboard_wrn : out std_logic
+		Keyboard_wrn : out std_logic;
+		VGA_addr : out std_logic_vector(10 downto 0);
+		VGA_write : out std_LOGIC_vector(0 downto 0);
+		VGA_char : out std_logic_vector(7 downto 0)
 		);
 END COMPONENT;
 
@@ -503,6 +527,10 @@ signal clk1 : std_logic:='0';
 signal keyb_data: std_logic_vector(7 downto 0);
 signal Keyb_dataready: std_logic;
 signal Keyb_wrn: std_logic;
+
+signal vgawctrl: std_logic_vector(0 downto 0); -- 1 is write
+signal vgawaddr: std_logic_vector(10 downto 0);
+signal vgawdata: std_logic_vector(7 downto 0);
 
 begin
 	PCReg_1: PCReg port map(
@@ -777,12 +805,27 @@ begin
 	
 	
 	control_temp <= EXMEM_memwrite & EXMEM_memread & debug_serialwrn & debug_serialrdn & '0' & controller_rst & aluop & alusrc & ttype & twrite & memread & memwrite & memtoreg & regwrite;
-	Inst_VGA_top: VGA_top PORT MAP(
-		pc => pcreg_output,
-		control => control_temp,
-		vga_reg1 => EXMEM_data,
+	
+	-- Inst_VGA_top: VGA_top PORT MAP(
+		-- pc => pcreg_output,
+		-- control => control_temp,
+		-- vga_reg1 => EXMEM_data,
+		-- CLK_0 => CLK_0,
+		-- clk_out => clk25,
+		-- reset => rst,
+		-- R => R,
+		-- G => G,
+		-- B => B,
+		-- Hs => Hs,
+		-- Vs => Vs
+	-- );
+	
+	Inst_VGA_play: VGA_play PORT MAP(
+		wctrl => vgawctrl, 
+		waddr => vgawaddr,
+		wdata => vgawdata,		
 		CLK_0 => CLK_0,
-		clk_out => clk25,
+		clkout => clk25,
 		reset => rst,
 		R => R,
 		G => G,
@@ -790,6 +833,7 @@ begin
 		Hs => Hs,
 		Vs => Vs
 	);
+	
 	clk0 <= clk0_s and (not MEMWB_ret);
 	Inst_MemoryTop: MemoryTop PORT MAP(
 		address1 => pcreg_output,
@@ -824,7 +868,11 @@ begin
 		reset => rst,
 		Keyboard_Data => keyb_data,
 		Keyboard_Dataready => keyb_dataready, 
-		Keyboard_wrn => keyb_wrn
+		Keyboard_wrn => keyb_wrn,
+		
+		VGA_addr => vgawaddr,
+		VGA_write => vgawctrl,
+		VGA_char => vgawdata
 	);
 	serialwrn <= debug_serialwrn;
 	serialrdn <= debug_serialrdn;

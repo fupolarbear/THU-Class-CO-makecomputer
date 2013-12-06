@@ -84,7 +84,12 @@ entity MemoryTop is
 	--connection with keyboard
 		Keyboard_Data : in std_logic_vector(7 downto 0);
 		Keyboard_Dataready : in std_logic;
-		Keyboard_wrn : out std_logic
+		Keyboard_wrn : out std_logic;
+		
+	--connection with vga
+		VGA_addr : out std_logic_vector(10 downto 0);
+		VGA_write : out std_LOGIC_vector(0 downto 0);
+		VGA_char : out std_logic_vector(7 downto 0)
 	);
 end MemoryTop;
 
@@ -272,6 +277,14 @@ begin
 		cpuclock <= 
 			'1' when IDEL1 | READ1,
 			'0' when others;
+
+-------------------------------------
+-- VGA
+
+VGA_addr <= address2(10 downto 0);
+VGA_char <= dataInput(7 downto 0);
+VGA_write <= 
+	"1" when ((MemWrite='1') and (state=RW1) and (address2(15 downto 12)=x"F"))else "0"; -- 1111 XXXX XXXX XXXX, > F
 
 -------------------------------------
 -- main machine part
