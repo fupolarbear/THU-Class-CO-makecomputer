@@ -42,9 +42,9 @@ addy:
 ADDIU R2 0x1
 LI R1 0x0
 
-LI R4 0x1f ; y > 40 char(0x28)
+LI R4 0x1e ; y > 40 char(0x28)
 CMP R2 R4
-BTEQZ addy
+BTEQZ restr
 NOP
 
 skip:
@@ -64,6 +64,18 @@ NOP
 addenter:
 ADDIU R2 0x1
 LI R1 0x0
+
+LI R4 0x1e ; y > 40 char(0x28)
+CMP R2 R4
+BTEQZ restr
+NOP
+
+B loop
+NOP
+
+restr:
+LI R1 0x0
+LI R2 0x0
 
 B loop
 NOP
