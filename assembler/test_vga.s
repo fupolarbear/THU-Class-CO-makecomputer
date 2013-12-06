@@ -1,0 +1,19 @@
+loop:
+
+LI R1 0x1
+LI R2 0x1
+LI R3 0x15
+
+LI R4 0xF0
+SLL R4 R4 0x0
+SLL R2 R2 0x6
+OR R4 R1
+OR R4 R2
+SW R4 R3 0x0
+NOP
+
+B loop
+NOP
+
+JR R7
+NOP
