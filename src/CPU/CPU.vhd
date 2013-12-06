@@ -74,8 +74,12 @@ entity CPU is
 		DATAREADY : in STD_LOGIC;
 		serialTSRE : in STD_LOGIC;
 		serialTBRE : in STD_LOGIC;
-		basicDatabus : inout STD_LOGIC_VECTOR(7 downto 0)
+		basicDatabus : inout STD_LOGIC_VECTOR(7 downto 0);
 		--ram1EN : out STD_LOGIC;
+		
+		-- keyboard
+		keydatain: in std_logic;
+		keyclkin: in std_logic
 	);
 end CPU;
 
@@ -376,9 +380,24 @@ COMPONENT MemoryTop
 		flash_addr : OUT std_logic_vector(22 downto 1);
 		serial_wrn : OUT std_logic;
 		serial_rdn : OUT std_logic;
-		ram1_en : OUT std_logic
+		ram1_en : OUT std_logic;
+		Keyboard_Data : in std_logic_vector(7 downto 0);
+		Keyboard_Dataready : in std_logic;
+		Keyboard_wrn : out std_logic
 		);
 END COMPONENT;
+
+
+-------------------------------------
+-- KeyTop
+component KeyTop
+	port(
+		datain,clkin,clk50,rst_in: in std_logic;
+		dataready_out: out std_logic;
+		datareceived: in std_logic;
+		out_char: out std_logic_vector(7 downto 0)
+	);
+end component;
 
 signal pcreg_input: Int16:= Int16_Zero;
 signal pcreg_output: Int16:= Int16_Zero;
@@ -480,6 +499,11 @@ signal EXMEM_ret: std_logic:='0';
 signal MEMWB_ret: std_logic:='0';
 signal clk0_S: std_logic:='0';
 signal clk1 : std_logic:='0';
+
+signal keyb_data: std_logic_vector(7 downto 0);
+signal Keyb_dataready: std_logic;
+signal Keyb_wrn: std_logic;
+
 begin
 	PCReg_1: PCReg port map(
 		Input => pcreg_input,
@@ -741,11 +765,11 @@ begin
 		clk0 => clk1
 		);
 	LED_left: LED_seg7 port map(
-		input => pcreg_output(3 downto 0),
+		input => keyb_data(7 downto 4),
 		output => ledseg2
 		);
 	LED_right: LED_seg7 port map(
-		input => alu_output(3 downto 0),
+		input => keyb_data(3 downto 0),
 		output => ledseg1
 		);
 	fuck <= alu_input1(3 downto 0) & alu_input2(3 downto 0) & alu_output(3 downto 0) & IDEX_aluop & '0';
@@ -797,10 +821,25 @@ begin
 		serial_tbre => serialTBRE,
 		basicdatabus => Ram1Data(7 downto 0),
 		ram1_en => Ram1EN,
-		reset => rst
+		reset => rst,
+		Keyboard_Data => keyb_data,
+		Keyboard_Dataready => keyb_dataready, 
+		Keyboard_wrn => keyb_wrn
 	);
 	serialwrn <= debug_serialwrn;
 	serialrdn <= debug_serialrdn;
+	
+	board: KeyTop
+	port map(
+		datain => keydatain,
+		clkin => keyclkin,
+		clk50 => clk_0,
+		rst_in => rst,
+		dataready_out => keyb_dataready,
+		datareceived => keyb_wrn,
+		out_char => keyb_data
+	);
+	
 	
 	
 	with KEY16_INPUT(4) select 

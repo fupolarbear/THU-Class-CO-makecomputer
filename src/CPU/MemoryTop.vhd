@@ -79,7 +79,12 @@ entity MemoryTop is
 		basicdatabus : inout STD_LOGIC_VECTOR(7 downto 0);
 		-- to make ram1 disable not disturb databus (set to 1)
 		ram1_en : out STD_LOGIC;
-		reset : in STD_LOGIC
+		reset : in STD_LOGIC;
+		
+	--connection with keyboard
+		Keyboard_Data : in std_logic_vector(7 downto 0);
+		Keyboard_Dataready : in std_logic;
+		Keyboard_wrn : out std_logic
 	);
 end MemoryTop;
 
@@ -152,6 +157,14 @@ architecture Behavioral of MemoryTop is
 begin
 
 -------------------------------------
+-- kayboard
+	Keyboard_wrn <= 
+		MemRead when (address2=x"BF02" and (state=IDEL2)) else '0';
+	
+	BF03(0) <= Keyboard_Dataready;
+	BF03(15 downto 1) <= "000000000000000";
+
+-------------------------------------
 -- memory control
 
 	output1 <= buffer1;
@@ -190,8 +203,6 @@ begin
 	BF01(0) <= serial_tsre and serial_tbre;
 	BF01(1) <= serial_dataready;
 	BF01(15 downto 2) <= "00000000000000";
-	--BF03(0) <= Keyboard_Dataready;
-	BF03(15 downto 1) <= "000000000000000";
 
 -------------------------------------
 -- serial port part
@@ -314,8 +325,8 @@ begin
 						when x"BF00" =>
 							buffer2 <= "00000000" & basicDatabus;
 						when x"BF02" =>
-							-- buffer2 <= "0000000000" & Keyboard_Data;
-							buffer2 <= (others => '0');
+							buffer2 <= "00000000" & Keyboard_Data;
+							-- buffer2 <= (others => '0');
 						when x"BF03" =>
 							buffer2 <= BF03;
 						when others =>

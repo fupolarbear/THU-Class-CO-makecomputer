@@ -125,8 +125,8 @@ NET "LED_OUTPUT[14]" LOC = E13;
 NET "LED_OUTPUT[15]" LOC = A14;
 
 ## PS2 signal
-#NET "keyboard_in" LOC = U6;
-#NET "keyboard_data" LOC = V6;
+NET "keydatain" LOC = V6;
+NET "keyclkin" LOC = U6;
 #
 ####### Key input  ######
 #

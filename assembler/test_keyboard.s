@@ -1,0 +1,56 @@
+LI R5 0xBf ;输出
+SLL R5 R5 0x0
+
+loop:
+
+LI R3 0x0 
+MFPC R4
+ADDIU R4 0x0003	
+NOP
+B TESTR
+NOP
+LW R5 R3 0x2
+NOP
+
+MFPC R4
+ADDIU R4 0x0003
+NOP
+B TESTW
+NOP
+SW R5 R3 0x0
+NOP
+
+B loop
+NOP
+
+end:
+JR R7
+NOP
+
+; keyboard is read
+TESTR:	
+	NOP	 		
+	LI R6 0x00BF 
+	SLL R6 R6 0x0000 
+	ADDIU R6 0x0003 
+	LW R6 R0 0x0000 
+	LI R6 0x0001 
+	AND R0 R6 
+	BEQZ R0 TESTR     ;BF01&1=0 则等待	
+	NOP		
+	JR R4
+	NOP 
+
+; serial is writable
+TESTW:	
+	NOP	 		
+	LI R6 0x00BF 
+	SLL R6 R6 0x0000 
+	ADDIU R6 0x0001
+	LW R6 R0 0x0000 
+	LI R6 0x0001 
+	AND R0 R6 
+	BEQZ R0 TESTW     ;BF01&1=0 则等待	
+	NOP		
+	JR R4
+	NOP 
