@@ -370,7 +370,7 @@ TODO
 
 根据流水寄存器的值和译码阶段的寄存器的值判断是否有数据冲突，输出控制信号。
 
-```
+~~~~ {.vhdl .numberLines startFrom="1" stepnumber=5 caption="喵喵1"}
 if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R1) then
 		ForwardA <= "10";
 	end if;
@@ -391,7 +391,7 @@ if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R1) then
 			ForwardC <= "01";
 		end if;
 	end if;
-```
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### RegFile
 
@@ -409,15 +409,15 @@ TODO
 
 ## 自定义指令集
 
-课本上的指令集为了实现44条指令，不仅通过前5位作为Op判断指令类型，还需要通过其他的位才能判断具体是什么指令。这在decoder时，在一层case中要需要嵌套一层case语句来判断具体指令，而且在后面需要根据指令类型的运算中需要传入整个16位指令，不能只通过前5位op来判断。这很不方便。而我们得cpu只要求实现30条指令(25条基本+5条扩展)，因次前5位op完全足够判断指令类型，因此我们自定义了指令集。定义指令集的过程中遵守相似的指令相邻。这样就可以少写很多case。如controller中对控制信号alusrc选择可以如下写：
+课本上的指令集为了实现44条指令，不仅通过前5位作为Op判断指令类型，还需要通过其他的位才能判断具体是什么指令。这在decoder时，在一层case中要需要嵌套一层case语句来判断具体指令，而且在后面需要根据指令类型的运算中需要传入整个16位指令，不能只通过前5位op来判断。这很不方便。而我们得cpu只要求实现30条指令(25条基本+5条扩展)，因次前5位op完全足够判断指令类型，因此我们自定义了指令集。定义指令集的过程中遵守相似的指令相邻。这样就可以少写很多case。如controller中对控制信号ALUSrc选择可以如下写：
 
-```
+~~~~ {.vhdl .numberLines startFrom="1" stepnumber=5 caption="寄存器堆 - RegFile"}
 if Op = "01010" or Op = "01011" or (Op >= "01110" and Op <= "10111") then
 	ALUsrc <= '1';
 else 
 	ALUsrc <= '0';
 end if;
-```
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 否则要通过大量case语句来实现，这里得到了大大的简化。
 
