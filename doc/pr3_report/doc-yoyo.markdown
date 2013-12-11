@@ -372,25 +372,25 @@ TODO
 
 ~~~~ {.vhdl .numberLines startFrom="1" stepnumber=5 caption="喵喵1"}
 if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R1) then
-		ForwardA <= "10";
+	ForwardA <= "10";
+end if;
+if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R2) then
+	if IDEX_alusrc = '0' then
+		ForwardB <= "10";
+	else
+		ForwardC <= "10";
 	end if;
-	if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R2) then
-		if IDEX_alusrc = '0' then
-			ForwardB <= "10";
-		else
-			ForwardC <= "10";
-		end if;
+end if;
+if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R1 and MEMWB_W = IDEX_R1) then 
+	ForwardA <= "01";
+end if;
+if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R2 and MEMWB_W = IDEX_R2) then 
+	if IDEX_alusrc = '0' then
+		ForwardB <= "01";
+	else 
+		ForwardC <= "01";
 	end if;
-	if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R1 and MEMWB_W = IDEX_R1) then 
-		ForwardA <= "01";
-	end if;
-	if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R2 and MEMWB_W = IDEX_R2) then 
-		if IDEX_alusrc = '0' then
-			ForwardB <= "01";
-		else 
-			ForwardC <= "01";
-		end if;
-	end if;
+end if;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### RegFile
