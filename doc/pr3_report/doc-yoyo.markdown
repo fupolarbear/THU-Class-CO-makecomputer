@@ -59,7 +59,6 @@ THINPAD大实验\
 
 - VGA分辨率为640*480，VGA（显存）运行频率25MHz
 
-- TODO
 
 
 # 实验成果简列
@@ -519,6 +518,7 @@ CPU-CLOCK  & 0           & 0                  & 0                  & 0          
 根据流水寄存器的值和译码阶段的寄存器的值判断是否有数据冲突，输出控制信号。
 
 ~~~~ {.vhdl .numberLines startFrom="1" stepnumber=5 caption="数据冲突检测单元"}
+...
 if (EXMEM_RegWrite = '1' and EXMEM_W /= Zero_Reg and EXMEM_W = IDEX_R1) then
 	ForwardA <= "10";
 end if;
@@ -539,6 +539,7 @@ if (MEMWB_RegWrite = '1' and MEMWB_W /= Zero_Reg and EXMEM_W /= IDEX_R2 and MEMW
 		ForwardC <= "01";
 	end if;
 end if;
+...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### RegFile
@@ -637,7 +638,7 @@ char_addr <=  char(6 downto 0) & vector_y(3 downto 0) & vector_x(3 downto 0);
 
 程序读取PS2键盘的输入，然后将结果发送至串口，同时显示在VGA上。在VGA上的显示支持换行。
 
-![简单记事本](notepad.jpg)
+![简单记事本程序(键盘输入，转发至VGA与串口)](notepad.jpg)
 
 
 
@@ -649,13 +650,15 @@ CPU可运行所有指令，能正常运行Term。
 
 顺利完成所有综合、布线、生成二进制bin文件。
 
-![Xilinx 编译报告](xilinx.jpg)
+![Xilinx 编译结果报告](xilinx.jpg)
+
 
 ## RTL图
 
 （可参见cpu-schematic.pdf）
 
-![RTL图](RTL.jpg)
+![RTL图（可参见cpu-schematic.pdf）](RTL.jpg)
+
 
 ## 操作流程
 
@@ -689,8 +692,7 @@ CPU可运行所有指令，能正常运行Term。
 
 ![键盘、串口及VGA显示的记事本](notepad2.jpg)
 
-![整体测试截图](totaltest.jpg)
-
+![整体测试](totaltest.jpg)
 
 
 
@@ -718,7 +720,9 @@ end if;
 
 由于是两个人同时写代码，所以需要有效的代码管理和同步，我们使用了Git9对代码进行了管理。不仅能独立的在各自分支中开发相应功能，也能很快的同步对方的代码、查看小组的整体进度，还可以使用git工具对之前的提交版本进行对比从而更加高效的从错误中恢复。
 
-![git使用](git.png)
+![使用Git9管理代码(截至今天已经有128次提交)](git.png)
+
+\FloatBarrier
 
 ## 代码调试
 
