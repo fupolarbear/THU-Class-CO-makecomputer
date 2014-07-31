@@ -1,0 +1,8 @@
+INTSTYLE=impact
+INFILE=C:\Users\amber\mygit\makecomputer\src\CPU\impact.xsl
+OUTFILE=C:\Users\amber\mygit\makecomputer\src\CPU\impact.xsl
+FAMILY=Single
+PART=Single
+WORKINGDIR=C:\Users\amber\mygit\makecomputer\src\CPU
+LICENSE=iMPACT
+USER_INFO=iMPACT

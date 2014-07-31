@@ -77,3 +77,10 @@ planAhead*/
 # strange file
 *.debug
 *.tcl
+
+assembler/exe/
+*.diff
+exe/
+ref/
+thinpad/
+doc/pr3_report/hardwork*.*
